@@ -271,8 +271,8 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
       onRestart={generateGrid}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
-        <p className={`text-center mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <p className={`text-center mb-6 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
           Trouve tous les mots caches dans la grille
         </p>
 
@@ -317,7 +317,7 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
                       cell.isSelected
                         ? 'bg-emerald-400 text-white scale-110'
                         : cell.isFound
-                          ? `${wordColors[cell.wordIndex !== null ? cell.wordIndex % wordColors.length : 0]} ${darkMode ? 'text-white' : 'text-gray-800'}`
+                          ? `${wordColors[cell.wordIndex !== null ? cell.wordIndex % wordColors.length : 0]} ${darkMode ? 'text-parchment' : 'text-ink'}`
                           : darkMode
                             ? 'bg-gray-700 text-gray-200 hover:bg-gray-600'
                             : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
@@ -330,7 +330,7 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
           </div>
         </div>
 
-        <p className={`text-center mt-6 text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+        <p className={`text-center mt-6 text-sm ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
           Clique et glisse pour selectionner un mot
         </p>
       </div>

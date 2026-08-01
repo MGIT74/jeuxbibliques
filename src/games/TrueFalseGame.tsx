@@ -109,7 +109,7 @@ export function TrueFalseGame({ onBack, darkMode }: TrueFalseGameProps) {
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucune question disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -127,10 +127,10 @@ export function TrueFalseGame({ onBack, darkMode }: TrueFalseGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Question {currentIndex + 1}/{gameQuestions.length}
             </span>
           </div>
@@ -142,8 +142,8 @@ export function TrueFalseGame({ onBack, darkMode }: TrueFalseGameProps) {
           </div>
         </div>
 
-        <div className={`text-center py-8 px-4 rounded-xl mb-6 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-          <h3 className={`text-xl font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <div className={`text-center py-8 px-4 rounded-xl mb-6 ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+          <h3 className={`text-xl font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             {currentQuestion.question}
           </h3>
         </div>
@@ -162,7 +162,7 @@ export function TrueFalseGame({ onBack, darkMode }: TrueFalseGameProps) {
               } else if (isSelected) {
                 buttonClass += 'border-red-500 bg-red-50 dark:bg-red-900/20';
               } else {
-                buttonClass += darkMode ? 'border-gray-700 bg-gray-700/50' : 'border-gray-200 bg-gray-50';
+                buttonClass += darkMode ? 'border-gold/10 bg-ink/40' : 'border-gold-dim/15 bg-parchment-dim';
               }
             } else {
               buttonClass += isVrai
@@ -185,7 +185,7 @@ export function TrueFalseGame({ onBack, darkMode }: TrueFalseGameProps) {
                     : <ThumbsDown className="text-red-500" size={32} />
                   }
                 </div>
-                <span className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                <span className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   {answer}
                 </span>
                 {showResult && isCorrect && <Check className="text-green-500" size={24} />}

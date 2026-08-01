@@ -115,7 +115,7 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucune question disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -133,10 +133,10 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Citation {currentIndex + 1}/{gameQuestions.length}
             </span>
           </div>
@@ -151,12 +151,12 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
         <div className={`relative py-8 px-6 rounded-xl mb-6 ${darkMode ? 'bg-gradient-to-br from-rose-900/20 to-pink-900/20' : 'bg-gradient-to-br from-rose-50 to-pink-50'}`}>
           <Quote className={`absolute top-4 left-4 ${darkMode ? 'text-rose-700' : 'text-rose-200'}`} size={40} />
           <Quote className={`absolute bottom-4 right-4 rotate-180 ${darkMode ? 'text-rose-700' : 'text-rose-200'}`} size={40} />
-          <p className={`text-lg italic text-center relative z-10 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+          <p className={`text-lg italic text-center relative z-10 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             "{currentQuestion.question}"
           </p>
         </div>
 
-        <p className={`text-center mb-4 font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className={`text-center mb-4 font-medium ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
           Qui a prononcé ces paroles ?
         </p>
 
@@ -173,7 +173,7 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
               } else if (isSelected) {
                 buttonClass += 'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300';
               } else {
-                buttonClass += darkMode ? 'border-gray-700 bg-gray-700/50 text-gray-400' : 'border-gray-200 bg-gray-50 text-gray-400';
+                buttonClass += darkMode ? 'border-gold/10 bg-ink/40 text-parchment/50' : 'border-gold-dim/15 bg-parchment-dim text-ink/40';
               }
             } else {
               buttonClass += darkMode

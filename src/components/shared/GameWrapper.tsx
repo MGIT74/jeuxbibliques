@@ -29,31 +29,31 @@ export function GameWrapper({
 }: GameWrapperProps) {
   return (
     <div className="min-h-screen">
-      <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b sticky top-16 z-30`}>
+      <div className={`${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'} border-b sticky top-16 z-30`}>
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={onBack}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
             >
               <ArrowLeft size={20} />
               Retour
             </button>
 
-            <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <h2 className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               {title}
             </h2>
 
             <div className="flex items-center gap-3">
-              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-amber-50'}`}>
-                <Trophy className="text-amber-500" size={20} />
-                <span className={`font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              <div className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-ink' : 'bg-gold/10'}`}>
+                <Trophy className="text-gold" size={20} />
+                <span className={`font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   {score}/{maxScore}
                 </span>
               </div>
               <button
                 onClick={onRestart}
-                className={`p-2 rounded-xl ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+                className={`p-2 rounded-xl ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
               >
                 <RotateCcw size={20} />
               </button>

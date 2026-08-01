@@ -143,14 +143,14 @@ export function CharacterMatchGame({ onBack, darkMode }: CharacterMatchGameProps
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
-        <p className={`text-center mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <p className={`text-center mb-6 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
           Relie chaque personnage biblique a son histoire
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Personnages
             </h3>
             <div className="space-y-3">
@@ -177,11 +177,11 @@ export function CharacterMatchGame({ onBack, darkMode }: CharacterMatchGameProps
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className={`font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                      <span className={`font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                         {item.character.name}
                       </span>
                       {item.character.book && (
-                        <span className={`text-xs ml-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <span className={`text-xs ml-2 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                           ({item.character.book})
                         </span>
                       )}
@@ -214,7 +214,7 @@ export function CharacterMatchGame({ onBack, darkMode }: CharacterMatchGameProps
           </div>
 
           <div>
-            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Histoires
             </h3>
             <div className="space-y-3">
@@ -233,13 +233,13 @@ export function CharacterMatchGame({ onBack, darkMode }: CharacterMatchGameProps
                         : 'border-gray-200 bg-gray-50'
                   }`}
                 >
-                  <span className={darkMode ? 'text-white' : 'text-gray-800'}>
+                  <span className={darkMode ? 'text-parchment' : 'text-ink'}>
                     {story}
                   </span>
                 </button>
               ))}
               {availableStories.length === 0 && !showResults && (
-                <p className={`text-center py-4 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                <p className={`text-center py-4 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
                   Toutes les histoires ont ete associees
                 </p>
               )}
@@ -266,7 +266,7 @@ export function CharacterMatchGame({ onBack, darkMode }: CharacterMatchGameProps
             <p className={`font-medium ${
               score === maxScore
                 ? darkMode ? 'text-green-300' : 'text-green-800'
-                : darkMode ? 'text-amber-300' : 'text-amber-800'
+                : darkMode ? 'text-gold-bright' : 'text-gold-dim'
             }`}>
               {score === maxScore ? 'Parfait !' : `${score}/${maxScore} bonnes reponses`}
             </p>

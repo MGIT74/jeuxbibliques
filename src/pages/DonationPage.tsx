@@ -37,7 +37,7 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
             ? 'bg-gray-800 hover:bg-gray-700 text-white'
             : 'bg-white hover:bg-gray-50 text-gray-800'
         } transition-colors shadow-sm border ${
-          darkMode ? 'border-gray-700' : 'border-gray-200'
+          darkMode ? 'border-gold/10' : 'border-gold-dim/15'
         }`}
       >
         <ArrowLeft size={20} />
@@ -46,7 +46,7 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
 
       <div
         className={`${
-          darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+          darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'
         } rounded-2xl shadow-lg border p-8`}
       >
         <div className="text-center mb-8">
@@ -55,14 +55,14 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
           </div>
           <h1
             className={`text-3xl font-bold mb-4 ${
-              darkMode ? 'text-white' : 'text-gray-800'
+              darkMode ? 'text-parchment' : 'text-ink'
             }`}
           >
             Faire un don
           </h1>
           <p
             className={`text-lg ${
-              darkMode ? 'text-gray-300' : 'text-gray-600'
+              darkMode ? 'text-parchment/80' : 'text-ink/70'
             } max-w-2xl mx-auto`}
           >
             Votre soutien nous aide à maintenir et améliorer cette plateforme
@@ -72,18 +72,18 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
 
         <div
           className={`${
-            darkMode ? 'bg-gray-900/50' : 'bg-gray-50'
+            darkMode ? 'bg-ink-dark/50' : 'bg-parchment-dim'
           } rounded-xl p-6 min-h-[500px] flex items-center justify-center`}
         >
           {loading ? (
             <div className="flex flex-col items-center gap-3">
               <Loader2
                 className={`animate-spin ${
-                  darkMode ? 'text-gray-400' : 'text-gray-500'
+                  darkMode ? 'text-parchment/60' : 'text-ink/50'
                 }`}
                 size={48}
               />
-              <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                 Chargement...
               </p>
             </div>
@@ -93,7 +93,7 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
               dangerouslySetInnerHTML={{ __html: settings.iframe_code }}
             />
           ) : (
-            <p className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Le formulaire de don n'est pas encore configuré.
             </p>
           )}

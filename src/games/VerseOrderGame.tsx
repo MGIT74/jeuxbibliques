@@ -176,7 +176,7 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucun verset disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -194,10 +194,10 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Verset {currentIndex + 1}/{gameVerses.length}
             </span>
             <span className={`text-sm font-medium ${darkMode ? 'text-orange-400' : 'text-orange-600'}`}>
@@ -212,7 +212,7 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
           </div>
         </div>
 
-        <p className={`text-center mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className={`text-center mb-6 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
           Remets les mots dans le bon ordre pour reconstituer le verset
         </p>
 
@@ -229,7 +229,7 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
           onDragOver={handleDragOver}
           onDrop={handleDropToOrdered}
         >
-          <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-sm mb-3 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             Ta réponse :
           </p>
           <div className="flex flex-wrap gap-2">
@@ -255,7 +255,7 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
               </div>
             ))}
             {orderedWords.length === 0 && (
-              <span className={`text-sm italic ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+              <span className={`text-sm italic ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
                 Clique ou glisse les mots ici...
               </span>
             )}
@@ -263,11 +263,11 @@ export function VerseOrderGame({ onBack, darkMode }: VerseOrderGameProps) {
         </div>
 
         <div
-          className={`min-h-[80px] p-4 rounded-xl ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}
+          className={`min-h-[80px] p-4 rounded-xl ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}
           onDragOver={handleDragOver}
           onDrop={handleDropToWords}
         >
-          <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-sm mb-3 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             Mots disponibles :
           </p>
           <div className="flex flex-wrap gap-2">

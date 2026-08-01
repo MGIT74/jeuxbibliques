@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,38 +6,66 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Manrope', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply text-gray-800;
+    @apply text-ink bg-parchment;
   }
 
   .dark body {
-    @apply text-gray-200;
+    @apply text-parchment bg-ink-dark;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, serif;
   }
 }
 
 @layer components {
+  /* Bouton principal : accent or sur fond encre */
   .btn-primary {
-    @apply bg-gradient-to-r from-blue-500 to-teal-500 text-white px-6 py-3 rounded-xl font-semibold
-           hover:from-blue-600 hover:to-teal-600 transition-all shadow-lg hover:shadow-xl;
+    @apply bg-gold text-ink-dark px-6 py-3 rounded-full font-semibold tracking-wide
+           hover:bg-gold-bright transition-all shadow-tile hover:shadow-lg hover:-translate-y-0.5;
   }
 
+  .btn-secondary {
+    @apply bg-lapis text-parchment px-6 py-3 rounded-full font-semibold tracking-wide
+           hover:bg-lapis-bright transition-all shadow-tile hover:-translate-y-0.5;
+  }
+
+  /* Carte "tuile de mosaïque" : coins asymétriques, liseré or */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 transition-all;
+    @apply bg-white dark:bg-ink-light rounded-tile shadow-tile p-6 transition-all
+           border border-gold/15 dark:border-gold/20;
   }
 
   .card-hover {
-    @apply hover:shadow-xl hover:scale-[1.02] cursor-pointer;
+    @apply hover:shadow-lg hover:-translate-y-1 hover:border-gold/40 cursor-pointer;
+  }
+
+  /* Sceau médaillon : icône circulaire encerclée d'un anneau or, façon pièce ancienne */
+  .seal {
+    @apply relative flex items-center justify-center rounded-seal
+           bg-gradient-to-br from-lapis to-ink text-gold
+           shadow-seal ring-1 ring-gold/40;
+  }
+
+  .seal::before {
+    content: '';
+    @apply absolute inset-[3px] rounded-seal border border-gold/25;
+  }
+
+  .eyebrow {
+    @apply uppercase tracking-[0.2em] text-xs font-semibold text-gold-dim dark:text-gold;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-blue-500 to-teal-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-gold to-coral bg-clip-text text-transparent;
   }
 
   .rotate-y-180 {
@@ -51,13 +79,13 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800 rounded-full;
+  @apply bg-parchment-dim dark:bg-ink-light rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  @apply bg-gold-dim/60 dark:bg-gold/40 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  @apply bg-gold-dim dark:bg-gold/70;
 }

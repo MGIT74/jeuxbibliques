@@ -81,18 +81,18 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
 
   return (
     <>
-      <header className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b sticky top-0 z-40 transition-colors`}>
+      <header className={`${darkMode ? 'bg-ink border-gold/10' : 'bg-parchment border-gold-dim/20'} border-b sticky top-0 z-40 backdrop-blur transition-colors`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <a href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-blue-500 to-teal-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                <BookOpen className="text-white" size={20} />
+              <div className="seal w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
+                <BookOpen size={18} />
               </div>
               <div className="min-w-0">
-                <h1 className={`text-base sm:text-xl font-bold truncate ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                <h1 className={`font-display text-base sm:text-xl font-semibold truncate ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   Jeux Bibliques
                 </h1>
-                <p className={`text-xs hidden sm:block ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`eyebrow hidden sm:block normal-case tracking-normal text-[11px] font-medium ${darkMode ? 'text-parchment/50' : 'text-ink/50'}`}>
                   Apprends en t'amusant
                 </p>
               </div>
@@ -101,29 +101,29 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
             <div className="flex items-center gap-2 sm:gap-4">
               {showUserCounter && (
                 <div
-                  className={`hidden sm:flex relative items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300 ${
-                    darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
-                  } ${countAnimating ? 'scale-110 ring-2 ring-green-400/50' : 'scale-100'}`}
+                  className={`hidden sm:flex relative items-center gap-2 px-3 py-2 rounded-full transition-all duration-300 ${
+                    darkMode ? 'bg-ink-light text-parchment/70' : 'bg-white text-ink/70'
+                  } ${countAnimating ? 'scale-110 ring-2 ring-gold/50' : 'scale-100'}`}
                   title="Utilisateurs en ligne"
                 >
                   <div className="relative">
                     <Users
                       size={18}
-                      className={`transition-all duration-300 ${countAnimating ? 'text-green-500 rotate-12' : ''}`}
+                      className={`transition-all duration-300 ${countAnimating ? 'text-gold rotate-12' : ''}`}
                     />
-                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white dark:border-gray-700" />
+                    <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-gold rounded-full border border-white dark:border-ink-light" />
                   </div>
                   <span
                     className={`text-sm font-semibold tabular-nums transition-all duration-300 ${
-                      countAnimating ? 'text-green-500 scale-125' : ''
+                      countAnimating ? 'text-gold scale-125' : ''
                     }`}
                   >
                     {onlineCount}
                   </span>
                   {countAnimating && onlineCount > prevOnlineCount && (
                     <>
-                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping" />
-                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full" />
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full animate-ping" />
+                      <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full" />
                     </>
                   )}
                 </div>
@@ -132,14 +132,14 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
               {profile?.is_admin && (
                 <button
                   onClick={toggleUserCounter}
-                  className={`hidden sm:block p-2 rounded-lg ${
+                  className={`hidden sm:block p-2 rounded-full ${
                     showUserCounter
                       ? darkMode
-                        ? 'bg-green-700 text-green-300 hover:bg-green-600'
-                        : 'bg-green-100 text-green-600 hover:bg-green-200'
+                        ? 'bg-lapis/30 text-lapis-bright hover:bg-lapis/40'
+                        : 'bg-lapis/10 text-lapis hover:bg-lapis/20'
                       : darkMode
-                      ? 'bg-gray-700 text-gray-400 hover:bg-gray-600'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                      ? 'bg-ink-light text-parchment/40 hover:bg-ink-light/70'
+                      : 'bg-parchment-dim text-ink/40 hover:bg-parchment-dim/70'
                   } transition-colors`}
                   title={showUserCounter ? 'Masquer le compteur en ligne' : 'Afficher le compteur en ligne'}
                 >
@@ -149,7 +149,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
 
               <button
                 onClick={onToggleDarkMode}
-                className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'} transition-colors`}
+                className={`p-2 rounded-full ${darkMode ? 'bg-ink-light text-gold hover:bg-ink-light/70' : 'bg-parchment-dim text-ink/60 hover:bg-parchment-dim/70'} transition-colors`}
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
@@ -158,29 +158,29 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                 <div className="relative" ref={menuRef}>
                   <button
                     onClick={() => setShowMenu(!showMenu)}
-                    className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 rounded-xl ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'} transition-colors`}
+                    className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 rounded-full ${darkMode ? 'bg-ink-light hover:bg-ink-light/70' : 'bg-white hover:bg-parchment-dim'} transition-colors border border-gold/15`}
                   >
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <User className="text-white" size={16} />
+                    <div className="seal w-8 h-8 flex-shrink-0">
+                      <User size={14} />
                     </div>
-                    <span className={`hidden sm:inline font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                    <span className={`hidden sm:inline font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                       {profile.username || 'Joueur'}
                     </span>
-                    <div className="flex items-center gap-1 text-amber-500">
+                    <div className="flex items-center gap-1 text-gold">
                       <Trophy size={16} />
                       <span className="text-sm font-semibold">{profile.total_points}</span>
                     </div>
                   </button>
 
                   {showMenu && (
-                    <div className={`absolute right-0 top-full mt-2 w-48 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl border shadow-lg py-2`}>
+                    <div className={`absolute right-0 top-full mt-2 w-48 ${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'} rounded-tile border shadow-tile py-2`}>
                       {onOpenProfile && (
                         <button
                           onClick={() => {
                             onOpenProfile();
                             setShowMenu(false);
                           }}
-                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} transition-colors`}
+                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-parchment/80 hover:bg-ink/40' : 'text-ink/80 hover:bg-parchment-dim'} transition-colors`}
                         >
                           <User size={18} />
                           Mon profil
@@ -192,7 +192,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                             onOpenAdmin();
                             setShowMenu(false);
                           }}
-                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-amber-400 hover:bg-gray-700' : 'text-amber-600 hover:bg-gray-100'} transition-colors`}
+                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-gold hover:bg-ink/40' : 'text-gold-dim hover:bg-parchment-dim'} transition-colors`}
                         >
                           <Settings size={18} />
                           Paramètres
@@ -204,7 +204,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                             onOpenDonation();
                             setShowMenu(false);
                           }}
-                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-pink-400 hover:bg-gray-700' : 'text-pink-600 hover:bg-gray-100'} transition-colors`}
+                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-coral hover:bg-ink/40' : 'text-coral-dim hover:bg-parchment-dim'} transition-colors`}
                         >
                           <Heart size={18} />
                           Faire un don
@@ -215,7 +215,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                           signOut();
                           setShowMenu(false);
                         }}
-                        className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'} transition-colors`}
+                        className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-parchment/80 hover:bg-ink/40' : 'text-ink/80 hover:bg-parchment-dim'} transition-colors`}
                       >
                         <LogOut size={18} />
                         Deconnexion
@@ -226,7 +226,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="bg-gradient-to-r from-blue-500 to-teal-500 text-white px-4 sm:px-6 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-teal-600 transition-all text-sm sm:text-base"
+                  className="btn-primary text-sm sm:text-base px-4 sm:px-6 py-2"
                 >
                   Connexion
                 </button>

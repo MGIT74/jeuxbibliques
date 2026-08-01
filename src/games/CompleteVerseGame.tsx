@@ -178,7 +178,7 @@ export function CompleteVerseGame({ onBack, darkMode }: CompleteVerseGameProps) 
                       {blank.userAnswer}
                     </span>
                   ) : (
-                    <span className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <span className={`text-sm ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
                       _{blankCounter}_
                     </span>
                   )}
@@ -199,7 +199,7 @@ export function CompleteVerseGame({ onBack, darkMode }: CompleteVerseGameProps) 
           }
 
           return (
-            <span key={idx} className={darkMode ? 'text-white' : 'text-gray-800'}>
+            <span key={idx} className={darkMode ? 'text-parchment' : 'text-ink'}>
               {word}
             </span>
           );
@@ -252,7 +252,7 @@ export function CompleteVerseGame({ onBack, darkMode }: CompleteVerseGameProps) 
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucun verset disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -272,10 +272,10 @@ export function CompleteVerseGame({ onBack, darkMode }: CompleteVerseGameProps) 
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Verset {currentIndex + 1}/{gameVerses.length}
             </span>
             <span className={`text-sm font-medium ${darkMode ? 'text-lime-400' : 'text-lime-600'}`}>
@@ -290,12 +290,12 @@ export function CompleteVerseGame({ onBack, darkMode }: CompleteVerseGameProps) 
           </div>
         </div>
 
-        <div className={`py-8 px-4 rounded-xl mb-6 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+        <div className={`py-8 px-4 rounded-xl mb-6 ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
           {renderVerse()}
         </div>
 
         <div className="mb-6">
-          <p className={`text-sm mb-3 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-sm mb-3 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             Mots disponibles :
           </p>
           <div className="flex flex-wrap gap-2 justify-center">

@@ -144,7 +144,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin text-blue-500" size={48} />
+        <Loader2 className="animate-spin text-lapis" size={48} />
       </div>
     );
   }
@@ -185,7 +185,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucun mot disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -203,10 +203,10 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Mot {currentIndex + 1}/{gameWords.length}
             </span>
             <div className="flex items-center gap-1">
@@ -230,9 +230,9 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
           </div>
         </div>
 
-        <div className={`text-center py-6 px-4 rounded-xl mb-6 ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
+        <div className={`text-center py-6 px-4 rounded-xl mb-6 ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
           {currentWord.category && (
-            <span className={`text-xs px-3 py-1 rounded-full mb-4 inline-block ${darkMode ? 'bg-blue-900/40 text-blue-300' : 'bg-blue-100 text-blue-700'}`}>
+            <span className={`text-xs px-3 py-1 rounded-full mb-4 inline-block ${darkMode ? 'bg-blue-900/40 text-lapis-bright' : 'bg-blue-100 text-lapis-dim'}`}>
               {currentWord.category}
             </span>
           )}
@@ -271,7 +271,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
             {showHint ? 'Masquer l\'indice' : 'Voir l\'indice'}
           </button>
           {showHint && currentWord.hint && (
-            <p className={`text-center mt-3 text-sm italic ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className={`text-center mt-3 text-sm italic ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
               Indice : {currentWord.hint}
             </p>
           )}

@@ -71,23 +71,23 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
 
   const inputClass = `w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
     darkMode
-      ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-amber-500 focus:border-amber-500'
-      : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500'
+      ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40 focus:ring-gold focus:border-gold'
+      : 'bg-white border-gold-dim/25 text-ink placeholder-ink/40 focus:ring-lapis focus:border-lapis'
   } focus:ring-2`;
 
-  const labelClass = `block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`;
+  const labelClass = `block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto`}>
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 ${darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'} transition-colors`}
+          className={`absolute top-4 right-4 ${darkMode ? 'text-parchment/50 hover:text-parchment' : 'text-ink/40 hover:text-ink/70'} transition-colors`}
         >
           <X size={24} />
         </button>
 
-        <h2 className={`text-2xl font-bold mb-6 text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h2 className={`text-2xl font-bold mb-6 text-center ${darkMode ? 'text-parchment' : 'text-ink'}`}>
           Mon profil
         </h2>
 
@@ -95,7 +95,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
           <div>
             <label className={labelClass}>Email</label>
             <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={20} />
+              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={20} />
               <input
                 type="email"
                 value={user?.email || ''}
@@ -103,7 +103,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
                 className={`${inputClass} opacity-60 cursor-not-allowed`}
               />
             </div>
-            <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+            <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
               L'email ne peut pas etre modifie
             </p>
           </div>
@@ -111,7 +111,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
           <div>
             <label className={labelClass}>Nom d'utilisateur</label>
             <div className="relative">
-              <User className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={20} />
+              <User className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={20} />
               <input
                 type="text"
                 value={username}
@@ -126,7 +126,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
           <div>
             <label className={labelClass}>Nom complet</label>
             <div className="relative">
-              <User className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={20} />
+              <User className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={20} />
               <input
                 type="text"
                 value={fullName}
@@ -144,8 +144,8 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
               onChange={(e) => setAgeGroup(e.target.value as 'child' | 'teen' | 'adult')}
               className={`w-full px-4 py-3 border rounded-xl transition-all ${
                 darkMode
-                  ? 'bg-gray-700 border-gray-600 text-white focus:ring-amber-500 focus:border-amber-500'
-                  : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'
+                  ? 'bg-ink border-gold/20 text-parchment focus:ring-gold focus:border-gold'
+                  : 'bg-white border-gold-dim/25 text-ink focus:ring-lapis focus:border-lapis'
               } focus:ring-2`}
             >
               <option value="child">Enfant (moins de 12 ans)</option>
@@ -157,14 +157,14 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
           <div>
             <label className={labelClass}>Pays</label>
             <div className="relative">
-              <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`} size={20} />
+              <MapPin className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={20} />
               <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 className={`w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
                   darkMode
-                    ? 'bg-gray-700 border-gray-600 text-white focus:ring-amber-500 focus:border-amber-500'
-                    : 'bg-white border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500'
+                    ? 'bg-ink border-gold/20 text-parchment focus:ring-gold focus:border-gold'
+                    : 'bg-white border-gold-dim/25 text-ink focus:ring-lapis focus:border-lapis'
                 } focus:ring-2`}
               >
                 <option value="">Selectionne ton pays</option>
@@ -190,8 +190,8 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
             </div>
           </div>
 
-          <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'}`}>
-            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+          <div className={`p-4 rounded-xl ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'}`}>
+            <h3 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               Preferences de communication
             </h3>
 
@@ -200,14 +200,14 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
                 type="checkbox"
                 checked={newsletterConsent}
                 onChange={(e) => setNewsletterConsent(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                className="mt-1 w-4 h-4 rounded border-gold-dim/40 text-lapis focus:ring-lapis"
               />
               <div>
-                <div className={`flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                <div className={`flex items-center gap-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   <Bell size={16} />
                   <span className="font-medium">Newsletter</span>
                 </div>
-                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                   Recevoir des nouvelles et mises a jour sur les jeux bibliques
                 </p>
               </div>
@@ -218,14 +218,14 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
                 type="checkbox"
                 checked={marketingConsent}
                 onChange={(e) => setMarketingConsent(e.target.checked)}
-                className="mt-1 w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                className="mt-1 w-4 h-4 rounded border-gold-dim/40 text-lapis focus:ring-lapis"
               />
               <div>
-                <div className={`flex items-center gap-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                <div className={`flex items-center gap-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   <Megaphone size={16} />
                   <span className="font-medium">Offres et promotions</span>
                 </div>
-                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                   Recevoir des offres speciales et recommandations personnalisees
                 </p>
               </div>
@@ -247,7 +247,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-500 to-teal-500 text-white py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-teal-600 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-lapis to-gold text-white py-3 rounded-xl font-semibold hover:from-lapis-bright hover:to-gold-bright transition-all disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <>

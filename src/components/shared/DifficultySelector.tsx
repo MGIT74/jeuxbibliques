@@ -24,8 +24,8 @@ export function DifficultySelector({ selected, onChange, darkMode }: DifficultyS
             selected === diff.value
               ? `bg-gradient-to-r ${diff.color} text-white shadow-lg scale-105`
               : darkMode
-                ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-ink text-parchment/80 hover:bg-ink/70'
+                : 'bg-parchment-dim text-ink/70 hover:bg-parchment-dim/70'
           }`}
         >
           {diff.icon}

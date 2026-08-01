@@ -54,18 +54,18 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
   const unknownUsers = usersByCountry.get('UNKNOWN') || [];
 
   return (
-    <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+    <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl relative">
             <Globe className="text-white" size={24} />
-            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white dark:border-gray-800 animate-pulse" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white dark:border-ink-light animate-pulse" />
           </div>
           <div>
-            <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               Utilisateurs en ligne
             </h3>
-            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               En temps reel par pays
             </p>
           </div>
@@ -75,7 +75,7 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
           <span className={`text-xl font-bold ${darkMode ? 'text-green-400' : 'text-green-600'}`}>
             {onlineCount}
           </span>
-          <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             en ligne
           </span>
         </div>
@@ -88,15 +88,15 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
             return (
               <div
                 key={countryCode}
-                className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} transition-all hover:scale-[1.01]`}
+                className={`p-4 rounded-xl ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'} transition-all hover:scale-[1.01]`}
               >
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-3xl">{country.flag}</span>
                   <div className="flex-1">
-                    <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                    <h4 className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                       {country.name}
                     </h4>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                       {users.length} utilisateur{users.length > 1 ? 's' : ''} en ligne
                     </p>
                   </div>
@@ -109,7 +109,7 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
                       />
                     ))}
                     {users.length > 5 && (
-                      <span className={`text-xs ml-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <span className={`text-xs ml-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         +{users.length - 5}
                       </span>
                     )}
@@ -121,22 +121,22 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
                     <div
                       key={idx}
                       className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${
-                        darkMode ? 'bg-gray-600/50' : 'bg-white'
-                      } border ${darkMode ? 'border-gray-600' : 'border-gray-200'}`}
+                        darkMode ? 'bg-ink/50' : 'bg-white'
+                      } border ${darkMode ? 'border-gold/15' : 'border-gold-dim/15'}`}
                     >
                       <div className="w-2 h-2 bg-green-500 rounded-full" />
-                      <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <span className={`text-sm ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                         {user.username || 'Visiteur'}
                       </span>
-                      <span className={`text-xs flex items-center gap-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <span className={`text-xs flex items-center gap-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
                         <Clock size={10} />
                         {getTimeAgo(user.online_at)}
                       </span>
                     </div>
                   ))}
                   {users.length > 8 && (
-                    <div className={`px-3 py-1.5 rounded-lg ${darkMode ? 'bg-gray-600/30' : 'bg-gray-100'}`}>
-                      <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    <div className={`px-3 py-1.5 rounded-lg ${darkMode ? 'bg-ink/30' : 'bg-parchment-dim'}`}>
+                      <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         +{users.length - 8} autres
                       </span>
                     </div>
@@ -147,14 +147,14 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
           })}
 
           {unknownUsers.length > 0 && (
-            <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700/30' : 'bg-gray-50/50'} border ${darkMode ? 'border-gray-700' : 'border-gray-200'} border-dashed`}>
+            <div className={`p-4 rounded-xl ${darkMode ? 'bg-ink/25' : 'bg-parchment-dim/60'} border ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'} border-dashed`}>
               <div className="flex items-center gap-3">
                 <span className="text-2xl opacity-50">{'\u{1F30D}'}</span>
                 <div className="flex-1">
-                  <h4 className={`font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <h4 className={`font-medium ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
                     Pays non defini
                   </h4>
-                  <p className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                  <p className={`text-sm ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
                     {unknownUsers.length} utilisateur{unknownUsers.length > 1 ? 's' : ''}
                   </p>
                 </div>
@@ -172,25 +172,25 @@ export function LiveWorldMap({ darkMode }: LiveWorldMapProps) {
           )}
         </div>
       ) : (
-        <div className={`text-center py-12 rounded-xl ${darkMode ? 'bg-gray-700/30' : 'bg-gray-50'}`}>
-          <Users className={`mx-auto mb-4 ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} size={48} />
-          <p className={`font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+        <div className={`text-center py-12 rounded-xl ${darkMode ? 'bg-ink/25' : 'bg-parchment-dim'}`}>
+          <Users className={`mx-auto mb-4 ${darkMode ? 'text-parchment/50' : 'text-ink/30'}`} size={48} />
+          <p className={`font-medium ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             Aucun utilisateur en ligne
           </p>
-          <p className={`text-sm mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+          <p className={`text-sm mt-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
             Les utilisateurs apparaitront ici en temps reel
           </p>
         </div>
       )}
 
-      <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between text-xs`}>
+      <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'} flex items-center justify-between text-xs`}>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+          <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>
             Mise a jour en temps reel
           </span>
         </div>
-        <span className={darkMode ? 'text-gray-500' : 'text-gray-400'}>
+        <span className={darkMode ? 'text-parchment/40' : 'text-ink/40'}>
           {sortedCountries.length} pays represente{sortedCountries.length > 1 ? 's' : ''}
         </span>
       </div>

@@ -36,19 +36,19 @@ type View = 'home' | 'game' | 'admin' | 'donation';
 function BlockedBanner({ darkMode, onDismiss }: { darkMode: boolean; onDismiss: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-8 max-w-md w-full shadow-2xl text-center`}>
-        <div className="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
-          <Ban className="text-red-500" size={32} />
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-tile p-8 max-w-md w-full shadow-tile text-center border border-gold/15`}>
+        <div className="w-16 h-16 rounded-seal bg-coral/15 flex items-center justify-center mx-auto mb-4">
+          <Ban className="text-coral" size={32} />
         </div>
-        <h2 className={`text-xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h2 className={`font-display text-xl font-semibold mb-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
           Compte bloque
         </h2>
-        <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className={`mb-6 ${darkMode ? 'text-parchment/70' : 'text-ink/60'}`}>
           Votre compte a ete bloque par un administrateur. Vous ne pouvez plus acceder a l'application.
         </p>
         <button
           onClick={onDismiss}
-          className={`px-6 py-2 rounded-xl font-medium ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+          className={`px-6 py-2 rounded-full font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
         >
           Fermer
         </button>
@@ -153,7 +153,7 @@ function AppContent() {
   }
 
   return (
-    <div className={`min-h-screen transition-colors ${darkMode ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50 via-white to-teal-50'}`}>
+    <div className={`min-h-screen transition-colors ${darkMode ? 'bg-ink-dark' : 'bg-parchment'}`}>
       <Header
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(!darkMode)}
@@ -170,7 +170,6 @@ function AppContent() {
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        darkMode={darkMode}
       />
       {showBlockedBanner && (
         <BlockedBanner

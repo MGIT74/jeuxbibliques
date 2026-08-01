@@ -26,7 +26,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   if (!profile?.is_admin) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className={`text-center ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           <Shield size={64} className="mx-auto mb-4 opacity-50" />
           <p>Acces non autorise</p>
         </div>
@@ -46,20 +46,20 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
 
   return (
     <div className="min-h-screen">
-      <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b sticky top-16 z-30`}>
+      <div className={`${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'} border-b sticky top-16 z-30`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <button
               onClick={onBack}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
             >
               <ArrowLeft size={20} />
               Retour
             </button>
 
             <div className="flex items-center gap-2">
-              <Shield className="text-amber-500" size={24} />
-              <h2 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              <Shield className="text-gold" size={24} />
+              <h2 className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                 Administration
               </h2>
             </div>
@@ -107,14 +107,14 @@ function OverviewTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
 
   if (!stats) {
     return (
-      <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+      <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
         Impossible de charger les statistiques
       </div>
     );
@@ -165,17 +165,17 @@ function OverviewTab({ darkMode }: { darkMode: boolean }) {
         {statCards.map((card, index) => (
           <div
             key={index}
-            className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}
+            className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}
           >
             <div className="flex items-center justify-between mb-4">
               <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center text-white`}>
                 {card.icon}
               </div>
             </div>
-            <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <p className={`text-3xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               {card.value}
             </p>
-            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               {card.label}
             </p>
           </div>
@@ -195,7 +195,7 @@ function UsersTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
@@ -217,27 +217,27 @@ function UsersTab({ darkMode }: { darkMode: boolean }) {
     <>
       {confirmDelete && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 max-w-md w-full shadow-2xl`}>
+          <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 max-w-md w-full shadow-2xl`}>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                 <AlertTriangle className="text-red-500" size={24} />
               </div>
               <div>
-                <h3 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                <h3 className={`text-lg font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   Confirmer la suppression
                 </h3>
-                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                   Cette action est irreversible
                 </p>
               </div>
             </div>
-            <p className={`mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            <p className={`mb-6 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
               Voulez-vous vraiment supprimer cet utilisateur ? Toutes ses donnees seront perdues.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setConfirmDelete(null)}
-                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
               >
                 Annuler
               </button>
@@ -260,82 +260,82 @@ function UsersTab({ darkMode }: { darkMode: boolean }) {
         </div>
       )}
 
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
-        <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
+        <div className={`p-4 border-b ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'}`}>
+          <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             Liste des utilisateurs ({users.length})
           </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className={darkMode ? 'bg-gray-700' : 'bg-gray-50'}>
+            <thead className={darkMode ? 'bg-ink' : 'bg-parchment-dim'}>
               <tr>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Utilisateur
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Eglise
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Age
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Points
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Statut
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Inscription
                 </th>
-                <th className={`text-right px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-right px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+            <tbody className={`divide-y ${darkMode ? 'divide-gold/10' : 'divide-gold-dim/15'}`}>
               {users.map((user) => (
-                <tr key={user.id} className={`${darkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'} ${user.is_blocked ? 'opacity-60' : ''}`}>
+                <tr key={user.id} className={`${darkMode ? 'hover:bg-ink/40' : 'hover:bg-parchment-dim'} ${user.is_blocked ? 'opacity-60' : ''}`}>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full ${user.is_blocked ? 'bg-gray-400' : 'bg-gradient-to-br from-blue-500 to-teal-500'} flex items-center justify-center text-white font-bold`}>
+                      <div className={`w-10 h-10 rounded-full ${user.is_blocked ? 'bg-gray-400' : 'bg-gradient-to-br from-lapis to-gold'} flex items-center justify-center text-white font-bold`}>
                         {(user.username || 'U')[0].toUpperCase()}
                       </div>
                       <div>
-                        <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                        <span className={`font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                           {user.username || 'Sans nom'}
                         </span>
                         {user.email && (
-                          <span className={`block text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          <span className={`block text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                             {user.email}
                           </span>
                         )}
                       </div>
                     </div>
                   </td>
-                  <td className={`px-6 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <td className={`px-6 py-4 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                     {user.church_name || '-'}
                   </td>
-                  <td className={`px-6 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <td className={`px-6 py-4 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       user.age_group === 'child'
                         ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
                         : user.age_group === 'teen'
-                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                          ? 'bg-blue-100 text-lapis-dim dark:bg-blue-900/30 dark:text-lapis-bright'
                           : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
                     }`}>
                       {user.age_group === 'child' ? 'Enfant' : user.age_group === 'teen' ? 'Ado' : 'Adulte'}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-1 text-amber-500">
+                    <div className="flex items-center gap-1 text-gold">
                       <Trophy size={16} />
                       <span className="font-semibold">{user.total_points}</span>
                     </div>
                   </td>
                   <td className={`px-6 py-4`}>
                     {user.is_admin ? (
-                      <span className="flex items-center gap-1 text-amber-500">
+                      <span className="flex items-center gap-1 text-gold">
                         <Shield size={16} />
                         Admin
                       </span>
@@ -348,7 +348,7 @@ function UsersTab({ darkMode }: { darkMode: boolean }) {
                       <span className={`${darkMode ? 'text-green-400' : 'text-green-600'}`}>Actif</span>
                     )}
                   </td>
-                  <td className={`px-6 py-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <td className={`px-6 py-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                     {new Date(user.created_at).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'short',
@@ -412,46 +412,46 @@ function ScoresTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
 
   return (
-    <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
-      <div className="p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'}">
-        <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+    <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
+      <div className="p-4 border-b ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'}">
+        <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
           100 derniers scores
         </h3>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className={darkMode ? 'bg-gray-700' : 'bg-gray-50'}>
+          <thead className={darkMode ? 'bg-ink' : 'bg-parchment-dim'}>
             <tr>
-              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                 Joueur
               </th>
-              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                 Jeu
               </th>
-              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                 Score
               </th>
-              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                 Difficulte
               </th>
-              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                 Date
               </th>
             </tr>
           </thead>
-          <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+          <tbody className={`divide-y ${darkMode ? 'divide-gold/10' : 'divide-gold-dim/15'}`}>
             {scores.map((score) => (
-              <tr key={score.id} className={darkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'}>
-                <td className={`px-6 py-4 font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+              <tr key={score.id} className={darkMode ? 'hover:bg-ink/40' : 'hover:bg-parchment-dim'}>
+                <td className={`px-6 py-4 font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                   {score.username}
                 </td>
-                <td className={`px-6 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <td className={`px-6 py-4 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   {score.game_name}
                 </td>
                 <td className="px-6 py-4">
@@ -459,13 +459,13 @@ function ScoresTab({ darkMode }: { darkMode: boolean }) {
                     score.score / score.max_score >= 0.8
                       ? 'text-green-500'
                       : score.score / score.max_score >= 0.5
-                        ? 'text-amber-500'
+                        ? 'text-gold'
                         : 'text-red-500'
                   }`}>
                     {score.score}/{score.max_score}
                   </span>
                 </td>
-                <td className={`px-6 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <td className={`px-6 py-4 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   <span className={`px-2 py-1 text-xs rounded-full ${
                     score.difficulty === 'easy'
                       ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
@@ -476,7 +476,7 @@ function ScoresTab({ darkMode }: { darkMode: boolean }) {
                     {score.difficulty === 'easy' ? 'Facile' : score.difficulty === 'medium' ? 'Moyen' : 'Difficile'}
                   </span>
                 </td>
-                <td className={`px-6 py-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                <td className={`px-6 py-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                   {new Date(score.created_at).toLocaleDateString('fr-FR', {
                     day: 'numeric',
                     month: 'short',
@@ -499,7 +499,7 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
@@ -509,24 +509,24 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
       {gameStats.map(({ game, total_plays, avg_score }) => (
         <div
           key={game.id}
-          className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}
+          className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}
         >
-          <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+          <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             {game.name}
           </h3>
-          <p className={`text-sm mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+          <p className={`text-sm mb-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
             {game.description}
           </p>
 
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Parties jouees</span>
-              <span className={`font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{total_plays}</span>
+              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Parties jouees</span>
+              <span className={`font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{total_plays}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Score moyen</span>
+              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Score moyen</span>
               <span className={`font-bold ${
-                avg_score >= 80 ? 'text-green-500' : avg_score >= 50 ? 'text-amber-500' : 'text-red-500'
+                avg_score >= 80 ? 'text-green-500' : avg_score >= 50 ? 'text-gold' : 'text-red-500'
               }`}>
                 {avg_score}%
               </span>
@@ -552,7 +552,7 @@ function MarketingTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
@@ -560,40 +560,40 @@ function MarketingTab({ darkMode }: { darkMode: boolean }) {
   return (
     <div className="space-y-6">
       <div className="grid sm:grid-cols-3 gap-4">
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
               <Users size={20} />
             </div>
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Total utilisateurs</span>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>Total utilisateurs</span>
           </div>
-          <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{stats.total}</p>
+          <p className={`text-3xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{stats.total}</p>
         </div>
 
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-white">
               <Bell size={20} />
             </div>
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Newsletter</span>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>Newsletter</span>
           </div>
-          <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{stats.withNewsletter}</p>
+          <p className={`text-3xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{stats.withNewsletter}</p>
         </div>
 
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center text-white">
               <Megaphone size={20} />
             </div>
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Marketing</span>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>Marketing</span>
           </div>
-          <p className={`text-3xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{stats.withMarketing}</p>
+          <p className={`text-3xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{stats.withMarketing}</p>
         </div>
       </div>
 
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
-        <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between`}>
-          <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
+        <div className={`p-4 border-b ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'} flex items-center justify-between`}>
+          <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             Liste des contacts ({users.filter(u => u.newsletter_consent || u.marketing_consent).length} avec consentement)
           </h3>
           <button
@@ -606,41 +606,41 @@ function MarketingTab({ darkMode }: { darkMode: boolean }) {
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className={darkMode ? 'bg-gray-700' : 'bg-gray-50'}>
+            <thead className={darkMode ? 'bg-ink' : 'bg-parchment-dim'}>
               <tr>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Utilisateur
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Email
                 </th>
-                <th className={`text-center px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-center px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Newsletter
                 </th>
-                <th className={`text-center px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-center px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Marketing
                 </th>
-                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <th className={`text-left px-6 py-3 text-xs font-semibold uppercase tracking-wider ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                   Inscription
                 </th>
               </tr>
             </thead>
-            <tbody className={`divide-y ${darkMode ? 'divide-gray-700' : 'divide-gray-200'}`}>
+            <tbody className={`divide-y ${darkMode ? 'divide-gold/10' : 'divide-gold-dim/15'}`}>
               {users.map((user) => (
-                <tr key={user.id} className={darkMode ? 'hover:bg-gray-700/50' : 'hover:bg-gray-50'}>
+                <tr key={user.id} className={darkMode ? 'hover:bg-ink/40' : 'hover:bg-parchment-dim'}>
                   <td className="px-6 py-4">
                     <div>
-                      <span className={`font-medium ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                      <span className={`font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                         {user.full_name || user.username || 'Sans nom'}
                       </span>
                       {user.full_name && user.username && (
-                        <span className={`block text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <span className={`block text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                           @{user.username}
                         </span>
                       )}
                     </div>
                   </td>
-                  <td className={`px-6 py-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  <td className={`px-6 py-4 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
                     <div className="flex items-center gap-2">
                       <Mail size={14} className="opacity-50" />
                       {user.email || '-'}
@@ -668,7 +668,7 @@ function MarketingTab({ darkMode }: { darkMode: boolean }) {
                       </span>
                     )}
                   </td>
-                  <td className={`px-6 py-4 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <td className={`px-6 py-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                     {new Date(user.created_at).toLocaleDateString('fr-FR', {
                       day: 'numeric',
                       month: 'short',
@@ -854,7 +854,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
@@ -919,17 +919,17 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h3 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
           Bannieres publicitaires ({banners.length})
         </h3>
         <div className="flex items-center gap-3">
-          <div className={`flex rounded-xl overflow-hidden ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
+          <div className={`flex rounded-xl overflow-hidden ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
             <button
               onClick={() => setViewMode('list')}
               className={`flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors ${
                 viewMode === 'list'
                   ? 'bg-amber-500 text-white'
-                  : darkMode ? 'text-gray-300 hover:bg-gray-600' : 'text-gray-600 hover:bg-gray-200'
+                  : darkMode ? 'text-parchment/80 hover:bg-ink/60' : 'text-ink/70 hover:bg-parchment-dim/70'
               }`}
             >
               <List size={16} />
@@ -940,7 +940,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
               className={`flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors ${
                 viewMode === 'calendar'
                   ? 'bg-amber-500 text-white'
-                  : darkMode ? 'text-gray-300 hover:bg-gray-600' : 'text-gray-600 hover:bg-gray-200'
+                  : darkMode ? 'text-parchment/80 hover:bg-ink/60' : 'text-ink/70 hover:bg-parchment-dim/70'
               }`}
             >
               <CalendarDays size={16} />
@@ -961,41 +961,41 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       </div>
 
       {showForm && (
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
-          <h4 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+          <h4 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             {editingBanner ? 'Modifier la banniere' : 'Nouvelle banniere'}
           </h4>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                   Titre
                 </label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                  className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   placeholder="Titre de la banniere"
                   required
                 />
               </div>
               <div>
-                <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                   Ordre d'affichage
                 </label>
                 <input
                   type="number"
                   value={formData.display_order}
                   onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
-                  className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                  className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   min={0}
                 />
               </div>
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                 Image de la banniere
               </label>
 
@@ -1035,13 +1035,13 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                     accept="image/jpeg,image/jpg,image/png"
                     onChange={handleFileUpload}
                     disabled={uploading}
-                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-amber-500 file:text-white hover:file:bg-amber-600 file:cursor-pointer disabled:opacity-50`}
+                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-amber-500 file:text-white hover:file:bg-amber-600 file:cursor-pointer disabled:opacity-50`}
                   />
-                  <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                     JPG ou PNG, max 5 MB. Format recommande: 1200x400 pixels (ratio 3:1)
                   </p>
                   {uploading && (
-                    <div className="flex items-center gap-2 mt-2 text-amber-500">
+                    <div className="flex items-center gap-2 mt-2 text-gold">
                       <Loader2 className="animate-spin" size={16} />
                       <span className="text-sm">Upload en cours...</span>
                     </div>
@@ -1053,11 +1053,11 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                     type="url"
                     value={formData.image_url}
                     onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                     placeholder="https://exemple.com/image.jpg"
                     required
                   />
-                  <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                     Format recommande: 1200x400 pixels (ratio 3:1)
                   </p>
                 </div>
@@ -1078,67 +1078,67 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
             )}
 
             <div>
-              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                 Lien (optionnel)
               </label>
               <input
                 type="url"
                 value={formData.link_url}
                 onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
-                className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                 placeholder="https://exemple.com/page"
               />
             </div>
 
             <div>
-              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                 Duree d'affichage (secondes)
               </label>
               <input
                 type="number"
                 value={formData.duration_seconds}
                 onChange={(e) => setFormData({ ...formData, duration_seconds: parseInt(e.target.value) || 5 })}
-                className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                 min={1}
                 max={60}
                 required
               />
-              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                 Entre 1 et 60 secondes
               </p>
             </div>
 
             <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-blue-50'} rounded-xl p-4`}>
               <div className="flex items-center gap-2 mb-3">
-                <Calendar size={18} className={darkMode ? 'text-blue-400' : 'text-blue-600'} />
-                <h5 className={`text-sm font-semibold ${darkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+                <Calendar size={18} className={darkMode ? 'text-lapis-bright' : 'text-lapis'} />
+                <h5 className={`text-sm font-semibold ${darkMode ? 'text-lapis-bright' : 'text-lapis-dim'}`}>
                   Plage horaire de diffusion
                 </h5>
               </div>
-              <p className={`text-xs mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-xs mb-4 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
                 Definissez la periode pendant laquelle cette banniere sera affichee. Laissez vide pour aucune restriction.
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                     Date de debut
                   </label>
                   <input
                     type="datetime-local"
                     value={formData.start_date}
                     onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   />
                 </div>
                 <div>
-                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                     Date de fin
                   </label>
                   <input
                     type="datetime-local"
                     value={formData.end_date}
                     onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-800'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
+                    className={`w-full px-4 py-2 rounded-xl border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'} focus:ring-2 focus:ring-amber-500 focus:border-transparent`}
                   />
                 </div>
               </div>
@@ -1150,9 +1150,9 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                 id="is_active"
                 checked={formData.is_active}
                 onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500"
+                className="w-4 h-4 rounded text-gold focus:ring-amber-500"
               />
-              <label htmlFor="is_active" className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label htmlFor="is_active" className={`text-sm ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
                 Banniere active
               </label>
             </div>
@@ -1161,7 +1161,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
               <button
                 type="button"
                 onClick={resetForm}
-                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} transition-colors`}
+                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
               >
                 Annuler
               </button>
@@ -1184,20 +1184,20 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       )}
 
       {viewMode === 'calendar' && (
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
-          <div className={`p-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex items-center justify-between`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-lg overflow-hidden`}>
+          <div className={`p-4 border-b ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'} flex items-center justify-between`}>
             <button
               onClick={prevMonth}
-              className={`p-2 rounded-lg ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-600'} transition-colors`}
+              className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/80' : 'hover:bg-parchment-dim text-ink/70'} transition-colors`}
             >
               <ChevronLeft size={20} />
             </button>
-            <h4 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <h4 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               {monthNames[calendarMonth.getMonth()]} {calendarMonth.getFullYear()}
             </h4>
             <button
               onClick={nextMonth}
-              className={`p-2 rounded-lg ${darkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-600'} transition-colors`}
+              className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/80' : 'hover:bg-parchment-dim text-ink/70'} transition-colors`}
             >
               <ChevronRight size={20} />
             </button>
@@ -1208,7 +1208,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
               {dayNames.map((day) => (
                 <div
                   key={day}
-                  className={`text-center text-xs font-semibold py-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}
+                  className={`text-center text-xs font-semibold py-2 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}
                 >
                   {day}
                 </div>
@@ -1240,7 +1240,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                     <div className={`text-xs font-medium mb-1 ${
                       isToday
                         ? 'text-amber-600 dark:text-amber-400'
-                        : darkMode ? 'text-gray-300' : 'text-gray-700'
+                        : darkMode ? 'text-parchment/80' : 'text-ink/80'
                     }`}>
                       {day.getDate()}
                     </div>
@@ -1262,7 +1262,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                         ) : (
                           <>
                             <div className="h-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500" />
-                            <div className={`text-[10px] ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                            <div className={`text-[10px] ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                               +{dayBanners.length - 1}
                             </div>
                           </>
@@ -1272,16 +1272,16 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
 
                     {dayBanners.length > 0 && (
                       <div className={`absolute left-full top-0 ml-2 z-50 w-48 p-2 rounded-lg shadow-xl ${
-                        darkMode ? 'bg-gray-700 border border-gray-600' : 'bg-white border border-gray-200'
+                        darkMode ? 'bg-ink border border-gold/15' : 'bg-white border border-gold-dim/15'
                       } opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all pointer-events-none`}>
-                        <div className={`text-xs font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                        <div className={`text-xs font-semibold mb-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                           {day.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })}
                         </div>
                         <div className="space-y-1.5">
                           {dayBanners.map((banner) => (
                             <div
                               key={banner.id}
-                              className={`flex items-center gap-2 text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}
+                              className={`flex items-center gap-2 text-xs ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}
                             >
                               <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
                                 !banner.start_date && !banner.end_date
@@ -1299,14 +1299,14 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
               })}
             </div>
 
-            <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} flex items-center gap-6 text-xs`}>
+            <div className={`mt-4 pt-4 border-t ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'} flex items-center gap-6 text-xs`}>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500" />
-                <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Banniere programmee</span>
+                <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Banniere programmee</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-gray-400 dark:bg-gray-500" />
-                <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Banniere permanente</span>
+                <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Banniere permanente</span>
               </div>
             </div>
           </div>
@@ -1316,9 +1316,9 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       {viewMode === 'list' && (
         <div className="grid gap-4">
           {banners.length === 0 ? (
-            <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-8 text-center shadow-lg`}>
-              <Image className={`mx-auto mb-4 ${darkMode ? 'text-gray-600' : 'text-gray-400'}`} size={48} />
-              <p className={darkMode ? 'text-gray-400' : 'text-gray-500'}>
+            <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-8 text-center shadow-lg`}>
+              <Image className={`mx-auto mb-4 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`} size={48} />
+              <p className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>
                 Aucune banniere configuree
               </p>
             </div>
@@ -1326,7 +1326,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
             banners.map((banner) => (
               <div
                 key={banner.id}
-                className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg ${!banner.is_active ? 'opacity-60' : ''}`}
+                className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg ${!banner.is_active ? 'opacity-60' : ''}`}
               >
                 <div className="flex flex-col sm:flex-row">
                   <div className="sm:w-64 h-32 sm:h-auto flex-shrink-0">
@@ -1342,8 +1342,8 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                 <div className="flex-1 p-4 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <GripVertical className={darkMode ? 'text-gray-600' : 'text-gray-400'} size={16} />
-                      <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <GripVertical className={darkMode ? 'text-parchment/50' : 'text-ink/40'} size={16} />
+                      <span className={`text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         Position: {banner.display_order}
                       </span>
                       {!banner.is_active && (
@@ -1358,7 +1358,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
 
                         if (startDate && now < startDate) {
                           return (
-                            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400">
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-lapis dark:text-lapis-bright">
                               Programmee
                             </span>
                           );
@@ -1378,16 +1378,16 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                         return null;
                       })()}
                     </div>
-                    <h4 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+                    <h4 className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                       {banner.title}
                     </h4>
                     {banner.link_url && (
-                      <p className={`text-xs truncate mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <p className={`text-xs truncate mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         {banner.link_url}
                       </p>
                     )}
                     {(banner.start_date || banner.end_date) && (
-                      <div className={`flex items-center gap-1 mt-2 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <div className={`flex items-center gap-1 mt-2 text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         <Calendar size={12} />
                         <span>
                           {banner.start_date
@@ -1430,7 +1430,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                     </button>
                     <button
                       onClick={() => handleEdit(banner)}
-                      className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:opacity-80 transition-colors"
+                      className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-lapis dark:text-lapis-bright hover:opacity-80 transition-colors"
                       title="Modifier"
                     >
                       <Pencil size={18} />
@@ -1508,23 +1508,23 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="animate-spin text-amber-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="flex items-center gap-3 mb-6">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white">
             <Code size={24} />
           </div>
           <div>
-            <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <h3 className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
               Integration iframe de donation
             </h3>
-            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Configurez l'iframe qui sera affiche sur la page "Faire un don"
             </p>
           </div>
@@ -1532,7 +1532,7 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
               Code iframe complet
             </label>
             <textarea
@@ -1547,16 +1547,16 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
               rows={8}
               required
             />
-            <p className={`text-xs mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <p className={`text-xs mt-2 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Collez le code HTML complet de l'iframe fourni par votre plateforme de don (Paymattic, etc.)
             </p>
           </div>
 
           <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-blue-50'} rounded-xl p-4`}>
-            <h4 className={`text-sm font-semibold mb-2 ${darkMode ? 'text-blue-400' : 'text-blue-700'}`}>
+            <h4 className={`text-sm font-semibold mb-2 ${darkMode ? 'text-lapis-bright' : 'text-lapis-dim'}`}>
               Exemple de code iframe :
             </h4>
-            <pre className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'} overflow-x-auto`}>
+            <pre className={`text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/70'} overflow-x-auto`}>
 {`<iframe
   src="https://votre-plateforme.com/donation"
   width="100%"
@@ -1573,19 +1573,19 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
               id="is_active_donation"
               checked={formData.is_active}
               onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-              className="w-5 h-5 rounded text-blue-500 focus:ring-blue-500"
+              className="w-5 h-5 rounded text-lapis focus:ring-blue-500"
             />
             <label
               htmlFor="is_active_donation"
-              className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
+              className={`text-sm font-medium ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}
             >
               Activer l'iframe sur la page de donation
             </label>
           </div>
 
           {formData.iframe_code && formData.is_active && (
-            <div className={`${darkMode ? 'bg-gray-900/50' : 'bg-gray-50'} rounded-xl p-4`}>
-              <h4 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+            <div className={`${darkMode ? 'bg-ink-dark/50' : 'bg-parchment-dim'} rounded-xl p-4`}>
+              <h4 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                 Apercu de l'iframe :
               </h4>
               <div
@@ -1618,20 +1618,20 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
       </div>
 
       {settings && (
-        <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
-          <h4 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+          <h4 className={`text-sm font-semibold mb-3 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             Informations
           </h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
-              <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Statut :</span>
+              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Statut :</span>
               <span className={`font-medium ${settings.is_active ? 'text-green-500' : 'text-gray-500'}`}>
                 {settings.is_active ? 'Active' : 'Inactive'}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className={darkMode ? 'text-gray-400' : 'text-gray-500'}>Derniere modification :</span>
-              <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>
+              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Derniere modification :</span>
+              <span className={darkMode ? 'text-parchment/80' : 'text-ink/80'}>
                 {new Date(settings.updated_at).toLocaleDateString('fr-FR', {
                   day: 'numeric',
                   month: 'long',

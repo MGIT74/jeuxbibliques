@@ -1,4 +1,4 @@
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { GameCard } from '../components/layout/GameCard';
 import { BannerSlider } from '../components/shared/BannerSlider';
 import { useGames } from '../hooks/useGameData';
@@ -17,7 +17,7 @@ export function HomePage({ onSelectGame, darkMode }: HomePageProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin text-blue-500" size={48} />
+        <Loader2 className="animate-spin text-gold" size={48} />
       </div>
     );
   }
@@ -27,14 +27,11 @@ export function HomePage({ onSelectGame, darkMode }: HomePageProps) {
       <BannerSlider />
 
       <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Sparkles className="text-amber-500" size={32} />
-          <h1 className={`text-3xl sm:text-4xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-            Bienvenue{profile?.username ? `, ${profile.username}` : ''} !
-          </h1>
-          <Sparkles className="text-amber-500" size={32} />
-        </div>
-        <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'} max-w-2xl mx-auto`}>
+        <p className="eyebrow mb-3">9 mini-jeux · un seul livre</p>
+        <h1 className={`font-display text-3xl sm:text-4xl font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+          Bienvenue{profile?.username ? `, ${profile.username}` : ''}
+        </h1>
+        <p className={`text-lg mt-3 ${darkMode ? 'text-parchment/60' : 'text-ink/60'} max-w-2xl mx-auto`}>
           Decouvre la Bible en t'amusant avec nos 9 mini-jeux educatifs.
           Choisis ton jeu prefere et commence l'aventure !
         </p>
@@ -51,7 +48,7 @@ export function HomePage({ onSelectGame, darkMode }: HomePageProps) {
         ))}
       </div>
 
-      <div className={`mt-12 text-center ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+      <div className={`mt-12 text-center ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
         <p className="text-sm">
           Connecte-toi pour sauvegarder ta progression et gagner des points !
         </p>

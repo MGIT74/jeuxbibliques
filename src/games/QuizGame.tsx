@@ -74,7 +74,7 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="animate-spin text-blue-500" size={48} />
+        <Loader2 className="animate-spin text-lapis" size={48} />
       </div>
     );
   }
@@ -115,7 +115,7 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
         onRestart={initGame}
         darkMode={darkMode}
       >
-        <div className={`text-center py-12 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className={`text-center py-12 ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
           Aucune question disponible pour ce niveau.
         </div>
       </GameWrapper>
@@ -133,25 +133,25 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
               Question {currentIndex + 1}/{gameQuestions.length}
             </span>
-            <span className={`text-sm px-3 py-1 rounded-full ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`}>
+            <span className={`text-sm px-3 py-1 rounded-full ${darkMode ? 'bg-ink text-parchment/80' : 'bg-parchment-dim text-ink/70'}`}>
               {currentQuestion.category}
             </span>
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-500 to-teal-500 transition-all duration-300"
+              className="h-full bg-gradient-to-r from-lapis to-gold transition-all duration-300"
               style={{ width: `${((currentIndex + 1) / gameQuestions.length) * 100}%` }}
             />
           </div>
         </div>
 
-        <h3 className={`text-xl font-semibold mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+        <h3 className={`text-xl font-semibold mb-6 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
           {currentQuestion.question}
         </h3>
 
@@ -168,7 +168,7 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
               } else if (isSelected) {
                 buttonClass += 'border-red-500 bg-red-50 dark:bg-red-900/20';
               } else {
-                buttonClass += darkMode ? 'border-gray-700 bg-gray-700/50' : 'border-gray-200 bg-gray-50';
+                buttonClass += darkMode ? 'border-gold/10 bg-ink/40' : 'border-gold-dim/15 bg-parchment-dim';
               }
             } else {
               buttonClass += darkMode
@@ -184,7 +184,7 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
                 className={buttonClass}
               >
                 <div className="flex items-center justify-between">
-                  <span className={darkMode ? 'text-white' : 'text-gray-800'}>{answer}</span>
+                  <span className={darkMode ? 'text-parchment' : 'text-ink'}>{answer}</span>
                   {showResult && isCorrect && <Check className="text-green-500" size={24} />}
                   {showResult && isSelected && !isCorrect && <X className="text-red-500" size={24} />}
                 </div>
@@ -195,11 +195,11 @@ export function QuizGame({ onBack, darkMode }: QuizGameProps) {
 
         {showResult && currentQuestion.explanation && (
           <div className={`mt-6 p-4 rounded-xl ${darkMode ? 'bg-blue-900/20 border-blue-800' : 'bg-blue-50 border-blue-200'} border`}>
-            <p className={`text-sm ${darkMode ? 'text-blue-300' : 'text-blue-800'}`}>
+            <p className={`text-sm ${darkMode ? 'text-lapis-bright' : 'text-lapis-dim'}`}>
               {currentQuestion.explanation}
             </p>
             {currentQuestion.verse_reference && (
-              <p className={`text-xs mt-2 ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+              <p className={`text-xs mt-2 ${darkMode ? 'text-lapis-bright' : 'text-lapis'}`}>
                 {currentQuestion.verse_reference}
               </p>
             )}

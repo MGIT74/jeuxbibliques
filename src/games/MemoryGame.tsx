@@ -179,17 +179,17 @@ export function MemoryGame({ onBack, darkMode }: MemoryGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="flex justify-between items-center mb-6">
-          <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
             Coups : <span className="font-bold">{moves}</span>
           </div>
-          <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
             Paires trouvees : <span className="font-bold text-sky-500">{matchedPairs}/{pairCount}</span>
           </div>
         </div>
 
-        <p className={`text-center mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        <p className={`text-center mb-6 ${darkMode ? 'text-parchment/80' : 'text-ink/70'}`}>
           Trouve les paires mot / definition
         </p>
 
