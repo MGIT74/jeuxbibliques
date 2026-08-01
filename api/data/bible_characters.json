@@ -1,0 +1,282 @@
+[
+  {
+    "name": "Noé",
+    "story_title": "L'Arche et le Déluge",
+    "story_description": "Il a construit une arche pour sauver sa famille et les animaux du déluge.",
+    "book": "Genèse",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Moïse",
+    "story_title": "L'Exode d'Égypte",
+    "story_description": "Il a guidé le peuple d'Israël hors d'Égypte et reçu les dix commandements.",
+    "book": "Exode",
+    "difficulty": "easy"
+  },
+  {
+    "name": "David",
+    "story_title": "David et Goliath",
+    "story_description": "Jeune berger qui a vaincu le géant Goliath et est devenu roi.",
+    "book": "1 Samuel",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Daniel",
+    "story_title": "La Fosse aux Lions",
+    "story_description": "Il a survécu dans une fosse aux lions grâce à sa foi.",
+    "book": "Daniel",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Jonas",
+    "story_title": "Jonas et le Grand Poisson",
+    "story_description": "Il a été avalé par un grand poisson après avoir fui Dieu.",
+    "book": "Jonas",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Abraham",
+    "story_title": "Le Père des Croyants",
+    "story_description": "Père de la foi qui a quitté son pays sur l'ordre de Dieu.",
+    "book": "Genèse",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Joseph",
+    "story_title": "Les Rêves en Égypte",
+    "story_description": "Vendu par ses frères, il est devenu le second d'Égypte.",
+    "book": "Genèse",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Samson",
+    "story_title": "La Force Divine",
+    "story_description": "Juge d'Israël doté d'une force surhumaine.",
+    "book": "Juges",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Ruth",
+    "story_title": "La Moabite Fidèle",
+    "story_description": "Elle a suivi sa belle-mère Naomi et est devenue l'ancêtre de David.",
+    "book": "Ruth",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Esther",
+    "story_title": "La Reine Courageuse",
+    "story_description": "Elle a sauvé son peuple de l'extermination.",
+    "book": "Esther",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Pierre",
+    "story_title": "Le Roc de l'Église",
+    "story_description": "Pêcheur devenu apôtre et leader de l'Église primitive.",
+    "book": "Évangiles",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Paul",
+    "story_title": "L'Apôtre des Nations",
+    "story_description": "Persécuteur converti devenu le plus grand missionnaire.",
+    "book": "Actes",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Marie",
+    "story_title": "La Mère de Jésus",
+    "story_description": "Vierge choisie pour porter le Fils de Dieu.",
+    "book": "Évangiles",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Jean-Baptiste",
+    "story_title": "Le Précurseur",
+    "story_description": "Il a préparé le chemin pour Jésus et l'a baptisé.",
+    "book": "Évangiles",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Élie",
+    "story_title": "Le Prophète de Feu",
+    "story_description": "Prophète qui a affronté les prophètes de Baal sur le mont Carmel.",
+    "book": "1 Rois",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Salomon",
+    "story_title": "Le Roi Sage",
+    "story_description": "Fils de David connu pour sa sagesse légendaire.",
+    "book": "1 Rois",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Jacob",
+    "story_title": "Le Père des 12 Tribus",
+    "story_description": "Il a lutté avec l'ange et a reçu le nom d'Israël.",
+    "book": "Genèse",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Gédéon",
+    "story_title": "Le Juge Victorieux",
+    "story_description": "Il a vaincu les Madianites avec seulement 300 hommes.",
+    "book": "Juges",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Isaac",
+    "story_title": "Le Fils de la Promesse",
+    "story_description": "Fils d'Abraham, il faillit etre sacrifie mais Dieu fournit un belier.",
+    "book": "Genese",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Rebecca",
+    "story_title": "L'Epouse Choisie",
+    "story_description": "Elle fut choisie par le serviteur d'Abraham pour etre la femme d'Isaac.",
+    "book": "Genese",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Lea",
+    "story_title": "La Premiere Epouse",
+    "story_description": "Premiere femme de Jacob, mere de six fils d'Israel.",
+    "book": "Genese",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Rachel",
+    "story_title": "La Bien-Aimee",
+    "story_description": "Femme preferee de Jacob, mere de Joseph et Benjamin.",
+    "book": "Genese",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Josue",
+    "story_title": "Le Conquerant de Canaan",
+    "story_description": "Il succeda a Moise et fit tomber les murs de Jericho.",
+    "book": "Josue",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Debora",
+    "story_title": "La Juge Prophetesse",
+    "story_description": "Seule femme juge d'Israel, elle guida Barak a la victoire.",
+    "book": "Juges",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Samuel",
+    "story_title": "Le Dernier Juge",
+    "story_description": "Prophete qui oignit les premiers rois d'Israel, Saul et David.",
+    "book": "1 Samuel",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Saul",
+    "story_title": "Le Premier Roi",
+    "story_description": "Premier roi d'Israel, il desobeit a Dieu et perdit le royaume.",
+    "book": "1 Samuel",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Jonathan",
+    "story_title": "L'Ami Fidele",
+    "story_description": "Fils de Saul et meilleur ami de David.",
+    "book": "1 Samuel",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Nathan",
+    "story_title": "Le Prophete Courageux",
+    "story_description": "Il confronta David apres son peche avec Bath-Scheba.",
+    "book": "2 Samuel",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Absalom",
+    "story_title": "Le Fils Rebelle",
+    "story_description": "Fils de David qui se revolta contre son pere.",
+    "book": "2 Samuel",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Elisee",
+    "story_title": "Le Successeur d'Elie",
+    "story_description": "Prophete qui recut le double de l'esprit d'Elie.",
+    "book": "2 Rois",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Nehemie",
+    "story_title": "Le Batisseur des Murs",
+    "story_description": "Il reconstruisit les murailles de Jerusalem.",
+    "book": "Nehemie",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Esdras",
+    "story_title": "Le Scribe de la Loi",
+    "story_description": "Il restaura le culte et enseigna la Loi au peuple.",
+    "book": "Esdras",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Job",
+    "story_title": "L'Homme Patient",
+    "story_description": "Il souffrit enormement mais resta fidele a Dieu.",
+    "book": "Job",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Zachee",
+    "story_title": "Le Collecteur Repentant",
+    "story_description": "Petit de taille, il monta dans un arbre pour voir Jesus.",
+    "book": "Luc",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Nicodeme",
+    "story_title": "Le Pharisien Curieux",
+    "story_description": "Il vint voir Jesus de nuit pour l'interroger.",
+    "book": "Jean",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Lazare",
+    "story_title": "Le Ressuscite",
+    "story_description": "Ami de Jesus qu'il ressuscita apres quatre jours.",
+    "book": "Jean",
+    "difficulty": "easy"
+  },
+  {
+    "name": "Marthe",
+    "story_title": "La Servante Active",
+    "story_description": "Soeur de Marie et Lazare, elle s'affairait a servir.",
+    "book": "Luc",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Barnabas",
+    "story_title": "Le Fils d'Encouragement",
+    "story_description": "Compagnon de Paul dans ses premiers voyages missionnaires.",
+    "book": "Actes",
+    "difficulty": "hard"
+  },
+  {
+    "name": "Timothee",
+    "story_title": "Le Jeune Disciple",
+    "story_description": "Collaborateur fidele de Paul a qui il adressa deux lettres.",
+    "book": "Actes",
+    "difficulty": "medium"
+  },
+  {
+    "name": "Lydie",
+    "story_title": "La Marchande de Pourpre",
+    "story_description": "Premiere convertie en Europe, a Philippes.",
+    "book": "Actes",
+    "difficulty": "hard"
+  }
+]

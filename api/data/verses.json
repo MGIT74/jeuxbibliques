@@ -1,0 +1,623 @@
+[
+  {
+    "reference": "Jean 3:16",
+    "text": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.",
+    "book": "Jean",
+    "chapter": 3,
+    "verse_number": 16,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Psaume 23:1",
+    "text": "L'Éternel est mon berger: je ne manquerai de rien.",
+    "book": "Psaumes",
+    "chapter": 23,
+    "verse_number": 1,
+    "difficulty": "easy",
+    "speaker": "David"
+  },
+  {
+    "reference": "Proverbes 3:5",
+    "text": "Confie-toi en l'Éternel de tout ton cœur, et ne t'appuie pas sur ta sagesse.",
+    "book": "Proverbes",
+    "chapter": 3,
+    "verse_number": 5,
+    "difficulty": "easy",
+    "speaker": "Salomon"
+  },
+  {
+    "reference": "Matthieu 28:19",
+    "text": "Allez, faites de toutes les nations des disciples, les baptisant au nom du Père, du Fils et du Saint-Esprit.",
+    "book": "Matthieu",
+    "chapter": 28,
+    "verse_number": 19,
+    "difficulty": "medium",
+    "speaker": "Jésus"
+  },
+  {
+    "reference": "Romains 8:28",
+    "text": "Nous savons, du reste, que toutes choses concourent au bien de ceux qui aiment Dieu.",
+    "book": "Romains",
+    "chapter": 8,
+    "verse_number": 28,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Philippiens 4:13",
+    "text": "Je puis tout par celui qui me fortifie.",
+    "book": "Philippiens",
+    "chapter": 4,
+    "verse_number": 13,
+    "difficulty": "easy",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Genèse 1:1",
+    "text": "Au commencement, Dieu créa les cieux et la terre.",
+    "book": "Genèse",
+    "chapter": 1,
+    "verse_number": 1,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Josué 1:9",
+    "text": "Ne t'ai-je pas donné cet ordre: Fortifie-toi et prends courage? Ne t'effraie point et ne t'épouvante point, car l'Éternel, ton Dieu, est avec toi partout où tu iras.",
+    "book": "Josué",
+    "chapter": 1,
+    "verse_number": 9,
+    "difficulty": "medium",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Esaïe 41:10",
+    "text": "Ne crains rien, car je suis avec toi; ne promène pas des regards inquiets, car je suis ton Dieu.",
+    "book": "Esaïe",
+    "chapter": 41,
+    "verse_number": 10,
+    "difficulty": "medium",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Jérémie 29:11",
+    "text": "Car je connais les projets que j'ai formés sur vous, dit l'Éternel, projets de paix et non de malheur, afin de vous donner un avenir et de l'espérance.",
+    "book": "Jérémie",
+    "chapter": 29,
+    "verse_number": 11,
+    "difficulty": "medium",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "1 Corinthiens 13:4",
+    "text": "L'amour est patient, il est plein de bonté; l'amour n'est point envieux; l'amour ne se vante point.",
+    "book": "1 Corinthiens",
+    "chapter": 13,
+    "verse_number": 4,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Hébreux 11:1",
+    "text": "Or la foi est une ferme assurance des choses qu'on espère, une démonstration de celles qu'on ne voit pas.",
+    "book": "Hébreux",
+    "chapter": 11,
+    "verse_number": 1,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Jacques 1:2",
+    "text": "Mes frères, regardez comme un sujet de joie complète les diverses épreuves auxquelles vous pouvez être exposés.",
+    "book": "Jacques",
+    "chapter": 1,
+    "verse_number": 2,
+    "difficulty": "hard",
+    "speaker": "Jacques"
+  },
+  {
+    "reference": "Apocalypse 21:4",
+    "text": "Il essuiera toute larme de leurs yeux, et la mort ne sera plus, et il n'y aura plus ni deuil, ni cri, ni douleur.",
+    "book": "Apocalypse",
+    "chapter": 21,
+    "verse_number": 4,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Exode 20:12",
+    "text": "Honore ton père et ta mère, afin que tes jours se prolongent dans le pays que l'Éternel, ton Dieu, te donne.",
+    "book": "Exode",
+    "chapter": 20,
+    "verse_number": 12,
+    "difficulty": "easy",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Matthieu 5:44",
+    "text": "Mais moi, je vous dis: Aimez vos ennemis, bénissez ceux qui vous maudissent.",
+    "book": "Matthieu",
+    "chapter": 5,
+    "verse_number": 44,
+    "difficulty": "medium",
+    "speaker": "Jésus"
+  },
+  {
+    "reference": "Jean 14:6",
+    "text": "Jésus lui dit: Je suis le chemin, la vérité, et la vie. Nul ne vient au Père que par moi.",
+    "book": "Jean",
+    "chapter": 14,
+    "verse_number": 6,
+    "difficulty": "easy",
+    "speaker": "Jésus"
+  },
+  {
+    "reference": "Galates 5:22",
+    "text": "Mais le fruit de l'Esprit, c'est l'amour, la joie, la paix, la patience, la bonté, la bénignité, la fidélité.",
+    "book": "Galates",
+    "chapter": 5,
+    "verse_number": 22,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "1 Jean 4:8",
+    "text": "Celui qui n'aime pas n'a pas connu Dieu, car Dieu est amour.",
+    "book": "1 Jean",
+    "chapter": 4,
+    "verse_number": 8,
+    "difficulty": "easy",
+    "speaker": "Jean"
+  },
+  {
+    "reference": "Matthieu 6:33",
+    "text": "Cherchez premièrement le royaume et la justice de Dieu; et toutes ces choses vous seront données par-dessus.",
+    "book": "Matthieu",
+    "chapter": 6,
+    "verse_number": 33,
+    "difficulty": "medium",
+    "speaker": "Jésus"
+  },
+  {
+    "reference": "Psaume 119:105",
+    "text": "Ta parole est une lampe a mes pieds, et une lumiere sur mon sentier.",
+    "book": "Psaumes",
+    "chapter": 119,
+    "verse_number": 105,
+    "difficulty": "easy",
+    "speaker": "David"
+  },
+  {
+    "reference": "Proverbes 22:6",
+    "text": "Instruis l'enfant selon la voie qu'il doit suivre; et quand il sera vieux, il ne s'en detournera pas.",
+    "book": "Proverbes",
+    "chapter": 22,
+    "verse_number": 6,
+    "difficulty": "easy",
+    "speaker": "Salomon"
+  },
+  {
+    "reference": "Matthieu 7:7",
+    "text": "Demandez, et l'on vous donnera; cherchez, et vous trouverez; frappez, et l'on vous ouvrira.",
+    "book": "Matthieu",
+    "chapter": 7,
+    "verse_number": 7,
+    "difficulty": "easy",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Psaume 100:5",
+    "text": "Car l'Eternel est bon; sa bonte dure toujours, et sa fidelite de generation en generation.",
+    "book": "Psaumes",
+    "chapter": 100,
+    "verse_number": 5,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Jean 1:1",
+    "text": "Au commencement etait la Parole, et la Parole etait avec Dieu, et la Parole etait Dieu.",
+    "book": "Jean",
+    "chapter": 1,
+    "verse_number": 1,
+    "difficulty": "easy",
+    "speaker": "Jean"
+  },
+  {
+    "reference": "Matthieu 11:28",
+    "text": "Venez a moi, vous tous qui etes fatigues et charges, et je vous donnerai du repos.",
+    "book": "Matthieu",
+    "chapter": 11,
+    "verse_number": 28,
+    "difficulty": "easy",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Psaume 27:1",
+    "text": "L'Eternel est ma lumiere et mon salut: de qui aurais-je crainte?",
+    "book": "Psaumes",
+    "chapter": 27,
+    "verse_number": 1,
+    "difficulty": "easy",
+    "speaker": "David"
+  },
+  {
+    "reference": "Jean 11:35",
+    "text": "Jesus pleura.",
+    "book": "Jean",
+    "chapter": 11,
+    "verse_number": 35,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Psaume 46:1",
+    "text": "Dieu est pour nous un refuge et un appui, un secours qui ne manque jamais dans la detresse.",
+    "book": "Psaumes",
+    "chapter": 46,
+    "verse_number": 1,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Marc 10:14",
+    "text": "Laissez venir a moi les petits enfants, et ne les en empechez pas; car le royaume de Dieu est pour ceux qui leur ressemblent.",
+    "book": "Marc",
+    "chapter": 10,
+    "verse_number": 14,
+    "difficulty": "easy",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Psaume 118:24",
+    "text": "C'est ici la journee que l'Eternel a faite: qu'elle soit pour nous un sujet d'allegresse et de joie!",
+    "book": "Psaumes",
+    "chapter": 118,
+    "verse_number": 24,
+    "difficulty": "easy",
+    "speaker": null
+  },
+  {
+    "reference": "Proverbes 17:22",
+    "text": "Un coeur joyeux est un bon remede, mais un esprit abattu desseche les os.",
+    "book": "Proverbes",
+    "chapter": 17,
+    "verse_number": 22,
+    "difficulty": "easy",
+    "speaker": "Salomon"
+  },
+  {
+    "reference": "1 Jean 4:19",
+    "text": "Pour nous, nous l'aimons, parce qu'il nous a aimes le premier.",
+    "book": "1 Jean",
+    "chapter": 4,
+    "verse_number": 19,
+    "difficulty": "easy",
+    "speaker": "Jean"
+  },
+  {
+    "reference": "Colossiens 3:23",
+    "text": "Tout ce que vous faites, faites-le de bon coeur, comme pour le Seigneur et non pour des hommes.",
+    "book": "Colossiens",
+    "chapter": 3,
+    "verse_number": 23,
+    "difficulty": "easy",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Psaume 34:8",
+    "text": "Sentez et voyez combien l'Eternel est bon! Heureux l'homme qui cherche en lui son refuge!",
+    "book": "Psaumes",
+    "chapter": 34,
+    "verse_number": 8,
+    "difficulty": "easy",
+    "speaker": "David"
+  },
+  {
+    "reference": "Esaie 40:31",
+    "text": "Mais ceux qui se confient en l'Eternel renouvellent leur force. Ils prennent leur vol comme les aigles.",
+    "book": "Esaie",
+    "chapter": 40,
+    "verse_number": 31,
+    "difficulty": "medium",
+    "speaker": null
+  },
+  {
+    "reference": "2 Timothee 1:7",
+    "text": "Car ce n'est pas un esprit de timidite que Dieu nous a donne, mais un esprit de force, d'amour et de sagesse.",
+    "book": "2 Timothee",
+    "chapter": 1,
+    "verse_number": 7,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Romains 12:2",
+    "text": "Ne vous conformez pas au siecle present, mais soyez transformes par le renouvellement de l'intelligence.",
+    "book": "Romains",
+    "chapter": 12,
+    "verse_number": 2,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "1 Pierre 5:7",
+    "text": "Decharges-vous sur lui de tous vos soucis, car lui-meme prend soin de vous.",
+    "book": "1 Pierre",
+    "chapter": 5,
+    "verse_number": 7,
+    "difficulty": "medium",
+    "speaker": "Pierre"
+  },
+  {
+    "reference": "Ephesiens 2:8",
+    "text": "Car c'est par la grace que vous etes sauves, par le moyen de la foi. Et cela ne vient pas de vous, c'est le don de Dieu.",
+    "book": "Ephesiens",
+    "chapter": 2,
+    "verse_number": 8,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Jacques 1:5",
+    "text": "Si quelqu'un d'entre vous manque de sagesse, qu'il la demande a Dieu, qui donne a tous simplement et sans reproche.",
+    "book": "Jacques",
+    "chapter": 1,
+    "verse_number": 5,
+    "difficulty": "medium",
+    "speaker": "Jacques"
+  },
+  {
+    "reference": "Romains 5:8",
+    "text": "Mais Dieu prouve son amour envers nous, en ce que, lorsque nous etions encore des pecheurs, Christ est mort pour nous.",
+    "book": "Romains",
+    "chapter": 5,
+    "verse_number": 8,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "2 Corinthiens 5:17",
+    "text": "Si quelqu'un est en Christ, il est une nouvelle creature. Les choses anciennes sont passees; voici, toutes choses sont devenues nouvelles.",
+    "book": "2 Corinthiens",
+    "chapter": 5,
+    "verse_number": 17,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Psaume 37:4",
+    "text": "Fais de l'Eternel tes delices, et il te donnera ce que ton coeur desire.",
+    "book": "Psaumes",
+    "chapter": 37,
+    "verse_number": 4,
+    "difficulty": "medium",
+    "speaker": "David"
+  },
+  {
+    "reference": "Proverbes 16:3",
+    "text": "Recommande a l'Eternel tes oeuvres, et tes projets reussiront.",
+    "book": "Proverbes",
+    "chapter": 16,
+    "verse_number": 3,
+    "difficulty": "medium",
+    "speaker": "Salomon"
+  },
+  {
+    "reference": "Matthieu 5:16",
+    "text": "Que votre lumiere luise ainsi devant les hommes, afin qu'ils voient vos bonnes oeuvres, et qu'ils glorifient votre Pere qui est dans les cieux.",
+    "book": "Matthieu",
+    "chapter": 5,
+    "verse_number": 16,
+    "difficulty": "medium",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "1 Thessaloniciens 5:16-18",
+    "text": "Soyez toujours joyeux. Priez sans cesse. Rendez graces en toutes choses.",
+    "book": "1 Thessaloniciens",
+    "chapter": 5,
+    "verse_number": 16,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Luc 6:31",
+    "text": "Ce que vous voulez que les hommes fassent pour vous, faites-le de meme pour eux.",
+    "book": "Luc",
+    "chapter": 6,
+    "verse_number": 31,
+    "difficulty": "medium",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Galates 6:9",
+    "text": "Ne nous lassons pas de faire le bien; car nous moissonnerons au temps convenable, si nous ne nous relachons pas.",
+    "book": "Galates",
+    "chapter": 6,
+    "verse_number": 9,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Proverbes 4:23",
+    "text": "Garde ton coeur plus que toute autre chose, car de lui viennent les sources de la vie.",
+    "book": "Proverbes",
+    "chapter": 4,
+    "verse_number": 23,
+    "difficulty": "medium",
+    "speaker": "Salomon"
+  },
+  {
+    "reference": "Matthieu 6:34",
+    "text": "Ne vous inquietez donc pas du lendemain; car le lendemain aura soin de lui-meme. A chaque jour suffit sa peine.",
+    "book": "Matthieu",
+    "chapter": 6,
+    "verse_number": 34,
+    "difficulty": "medium",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Jean 8:32",
+    "text": "Vous connaitrez la verite, et la verite vous affranchira.",
+    "book": "Jean",
+    "chapter": 8,
+    "verse_number": 32,
+    "difficulty": "medium",
+    "speaker": "Jesus"
+  },
+  {
+    "reference": "Romains 15:13",
+    "text": "Que le Dieu de l'esperance vous remplisse de toute joie et de toute paix dans la foi.",
+    "book": "Romains",
+    "chapter": 15,
+    "verse_number": 13,
+    "difficulty": "medium",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Psaume 139:14",
+    "text": "Je te loue de ce que je suis une creature si merveilleuse. Tes oeuvres sont admirables.",
+    "book": "Psaumes",
+    "chapter": 139,
+    "verse_number": 14,
+    "difficulty": "medium",
+    "speaker": "David"
+  },
+  {
+    "reference": "Hebreux 12:2",
+    "text": "Ayant les regards sur Jesus, le chef et le consommateur de la foi, qui, en vue de la joie qui lui etait reservee, a souffert la croix.",
+    "book": "Hebreux",
+    "chapter": 12,
+    "verse_number": 2,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Romains 8:38-39",
+    "text": "Car j'ai l'assurance que ni la mort ni la vie, ni les anges ni les dominations, ne pourra nous separer de l'amour de Dieu.",
+    "book": "Romains",
+    "chapter": 8,
+    "verse_number": 38,
+    "difficulty": "hard",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Ephesiens 6:11",
+    "text": "Revetez-vous de toutes les armes de Dieu, afin de pouvoir tenir ferme contre les ruses du diable.",
+    "book": "Ephesiens",
+    "chapter": 6,
+    "verse_number": 11,
+    "difficulty": "hard",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "2 Corinthiens 12:9",
+    "text": "Ma grace te suffit, car ma puissance s'accomplit dans la faiblesse.",
+    "book": "2 Corinthiens",
+    "chapter": 12,
+    "verse_number": 9,
+    "difficulty": "hard",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Colossiens 3:2",
+    "text": "Affectionnez-vous aux choses d'en haut, et non a celles qui sont sur la terre.",
+    "book": "Colossiens",
+    "chapter": 3,
+    "verse_number": 2,
+    "difficulty": "hard",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "1 Corinthiens 10:13",
+    "text": "Aucune tentation ne vous est survenue qui n'ait ete humaine, et Dieu, qui est fidele, ne permettra pas que vous soyez tentes au-dela de vos forces.",
+    "book": "1 Corinthiens",
+    "chapter": 10,
+    "verse_number": 13,
+    "difficulty": "hard",
+    "speaker": "Paul"
+  },
+  {
+    "reference": "Michee 6:8",
+    "text": "On t'a fait connaitre, o homme, ce qui est bien; et ce que l'Eternel demande de toi, c'est que tu pratiques la justice, que tu aimes la misericorde.",
+    "book": "Michee",
+    "chapter": 6,
+    "verse_number": 8,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Esaie 53:5",
+    "text": "Mais il etait blesse pour nos peches, brise pour nos iniquites; le chatiment qui nous donne la paix est tombe sur lui.",
+    "book": "Esaie",
+    "chapter": 53,
+    "verse_number": 5,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Proverbes 31:30",
+    "text": "La grace est trompeuse, et la beaute est vaine; la femme qui craint l'Eternel est celle qui sera louee.",
+    "book": "Proverbes",
+    "chapter": 31,
+    "verse_number": 30,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Deuteronome 6:5",
+    "text": "Tu aimeras l'Eternel, ton Dieu, de tout ton coeur, de toute ton ame et de toute ta force.",
+    "book": "Deuteronome",
+    "chapter": 6,
+    "verse_number": 5,
+    "difficulty": "hard",
+    "speaker": "Moise"
+  },
+  {
+    "reference": "Osee 6:6",
+    "text": "Car j'aime la piete et non les sacrifices, et la connaissance de Dieu plus que les holocaustes.",
+    "book": "Osee",
+    "chapter": 6,
+    "verse_number": 6,
+    "difficulty": "hard",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Habakuk 2:4",
+    "text": "Voici, son ame s'est enflée, elle n'est pas droite en lui; mais le juste vivra par sa foi.",
+    "book": "Habakuk",
+    "chapter": 2,
+    "verse_number": 4,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Sophonie 3:17",
+    "text": "L'Eternel, ton Dieu, est au milieu de toi, comme un heros qui sauve; il fera de toi sa plus grande joie.",
+    "book": "Sophonie",
+    "chapter": 3,
+    "verse_number": 17,
+    "difficulty": "hard",
+    "speaker": null
+  },
+  {
+    "reference": "Zacharie 4:6",
+    "text": "Ce n'est ni par la puissance ni par la force, mais c'est par mon Esprit, dit l'Eternel des armees.",
+    "book": "Zacharie",
+    "chapter": 4,
+    "verse_number": 6,
+    "difficulty": "hard",
+    "speaker": "Dieu"
+  },
+  {
+    "reference": "Malachie 3:10",
+    "text": "Apportez a la maison du tresor toutes les dimes, afin qu'il y ait de la nourriture dans ma maison.",
+    "book": "Malachie",
+    "chapter": 3,
+    "verse_number": 10,
+    "difficulty": "hard",
+    "speaker": "Dieu"
+  }
+]

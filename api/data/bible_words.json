@@ -1,0 +1,386 @@
+[
+  {
+    "word": "AMOUR",
+    "hint": "Le plus grand des commandements",
+    "category": "Vertus",
+    "difficulty": "easy"
+  },
+  {
+    "word": "FOI",
+    "hint": "Croire sans voir",
+    "category": "Vertus",
+    "difficulty": "easy"
+  },
+  {
+    "word": "PAIX",
+    "hint": "Fruit de l'Esprit",
+    "category": "Vertus",
+    "difficulty": "easy"
+  },
+  {
+    "word": "JESUS",
+    "hint": "Le Fils de Dieu",
+    "category": "Personnages",
+    "difficulty": "easy"
+  },
+  {
+    "word": "DAVID",
+    "hint": "Roi berger",
+    "category": "Personnages",
+    "difficulty": "easy"
+  },
+  {
+    "word": "ANGE",
+    "hint": "Messager céleste",
+    "category": "Êtres",
+    "difficulty": "easy"
+  },
+  {
+    "word": "CROIX",
+    "hint": "Symbole du sacrifice",
+    "category": "Objets",
+    "difficulty": "easy"
+  },
+  {
+    "word": "ARCHE",
+    "hint": "Bateau de Noé",
+    "category": "Objets",
+    "difficulty": "easy"
+  },
+  {
+    "word": "PRIERE",
+    "hint": "Communication avec Dieu",
+    "category": "Actions",
+    "difficulty": "medium"
+  },
+  {
+    "word": "GRACE",
+    "hint": "Don immérité de Dieu",
+    "category": "Concepts",
+    "difficulty": "medium"
+  },
+  {
+    "word": "ESPERANCE",
+    "hint": "Attente confiante",
+    "category": "Vertus",
+    "difficulty": "medium"
+  },
+  {
+    "word": "RESURRECTION",
+    "hint": "Retour à la vie",
+    "category": "Concepts",
+    "difficulty": "medium"
+  },
+  {
+    "word": "BAPTEME",
+    "hint": "Sacrement d'entrée",
+    "category": "Sacrements",
+    "difficulty": "medium"
+  },
+  {
+    "word": "EVANGILE",
+    "hint": "Bonne nouvelle",
+    "category": "Livres",
+    "difficulty": "medium"
+  },
+  {
+    "word": "JERUSALEM",
+    "hint": "Ville sainte",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "BETHLEHEM",
+    "hint": "Lieu de naissance de Jésus",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "APOCALYPSE",
+    "hint": "Dernier livre de la Bible",
+    "category": "Livres",
+    "difficulty": "hard"
+  },
+  {
+    "word": "REDEMPTION",
+    "hint": "Rachat des péchés",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "SANCTIFICATION",
+    "hint": "Processus de sainteté",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "TRANSFIGURATION",
+    "hint": "Transformation de Jésus sur la montagne",
+    "category": "Événements",
+    "difficulty": "hard"
+  },
+  {
+    "word": "BIBLE",
+    "hint": "Le livre sacre",
+    "category": "Livres",
+    "difficulty": "easy"
+  },
+  {
+    "word": "DIEU",
+    "hint": "Le Createur",
+    "category": "Concepts",
+    "difficulty": "easy"
+  },
+  {
+    "word": "CIEL",
+    "hint": "Le royaume eternel",
+    "category": "Lieux",
+    "difficulty": "easy"
+  },
+  {
+    "word": "PAIN",
+    "hint": "Nourriture multipliee",
+    "category": "Objets",
+    "difficulty": "easy"
+  },
+  {
+    "word": "MERE",
+    "hint": "Marie pour Jesus",
+    "category": "Famille",
+    "difficulty": "easy"
+  },
+  {
+    "word": "PERE",
+    "hint": "Dieu pour nous",
+    "category": "Famille",
+    "difficulty": "easy"
+  },
+  {
+    "word": "FILS",
+    "hint": "Jesus pour Dieu",
+    "category": "Famille",
+    "difficulty": "easy"
+  },
+  {
+    "word": "SANG",
+    "hint": "Alliance nouvelle",
+    "category": "Concepts",
+    "difficulty": "easy"
+  },
+  {
+    "word": "MIEL",
+    "hint": "Douceur promise",
+    "category": "Nourriture",
+    "difficulty": "easy"
+  },
+  {
+    "word": "LAIT",
+    "hint": "Terre de lait et...",
+    "category": "Nourriture",
+    "difficulty": "easy"
+  },
+  {
+    "word": "BIEN",
+    "hint": "Oppose au mal",
+    "category": "Vertus",
+    "difficulty": "easy"
+  },
+  {
+    "word": "JOIE",
+    "hint": "Fruit de l'Esprit",
+    "category": "Vertus",
+    "difficulty": "easy"
+  },
+  {
+    "word": "NOEL",
+    "hint": "Fete de la naissance",
+    "category": "Fetes",
+    "difficulty": "easy"
+  },
+  {
+    "word": "PAQUE",
+    "hint": "Fete de la liberation",
+    "category": "Fetes",
+    "difficulty": "easy"
+  },
+  {
+    "word": "ALLIANCE",
+    "hint": "Promesse divine",
+    "category": "Concepts",
+    "difficulty": "medium"
+  },
+  {
+    "word": "PROPHETIE",
+    "hint": "Message divin",
+    "category": "Concepts",
+    "difficulty": "medium"
+  },
+  {
+    "word": "MIRACLE",
+    "hint": "Acte surnaturel",
+    "category": "Concepts",
+    "difficulty": "medium"
+  },
+  {
+    "word": "DISCIPLE",
+    "hint": "Suiveur de Jesus",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "APOTRE",
+    "hint": "Envoye de Christ",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "PHARISIEN",
+    "hint": "Groupe religieux",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "TABERNACLE",
+    "hint": "Tente sacree",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "GALILEE",
+    "hint": "Region de Jesus",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "NAZARETH",
+    "hint": "Ville de l'enfance",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "SAMARITAIN",
+    "hint": "Voisin compatissant",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "CENTURION",
+    "hint": "Officier romain",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "LEPREUX",
+    "hint": "Malade gueri",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "AVEUGLE",
+    "hint": "Guerison miraculeuse",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "PARALYTIQUE",
+    "hint": "Descendu par le toit",
+    "category": "Personnes",
+    "difficulty": "medium"
+  },
+  {
+    "word": "SYNAGOGUE",
+    "hint": "Lieu de culte juif",
+    "category": "Lieux",
+    "difficulty": "medium"
+  },
+  {
+    "word": "SACRIFIER",
+    "hint": "Offrir a Dieu",
+    "category": "Actions",
+    "difficulty": "medium"
+  },
+  {
+    "word": "RESURRECTION",
+    "hint": "Retour a la vie",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "CRUCIFIXION",
+    "hint": "Mort sur la croix",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "BENEDICTION",
+    "hint": "Parole de bien",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "MALEDICTION",
+    "hint": "Parole de mal",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "PERSECUTION",
+    "hint": "Souffrance pour la foi",
+    "category": "Concepts",
+    "difficulty": "hard"
+  },
+  {
+    "word": "SANCTUAIRE",
+    "hint": "Lieu tres saint",
+    "category": "Lieux",
+    "difficulty": "hard"
+  },
+  {
+    "word": "ARMAGEDDON",
+    "hint": "Bataille finale",
+    "category": "Lieux",
+    "difficulty": "hard"
+  },
+  {
+    "word": "GETHSEMANE",
+    "hint": "Jardin de priere",
+    "category": "Lieux",
+    "difficulty": "hard"
+  },
+  {
+    "word": "GOLGOTHA",
+    "hint": "Lieu du crane",
+    "category": "Lieux",
+    "difficulty": "hard"
+  },
+  {
+    "word": "CHERUBINS",
+    "hint": "Anges gardiens",
+    "category": "Etres",
+    "difficulty": "hard"
+  },
+  {
+    "word": "SERAPHINS",
+    "hint": "Anges de louange",
+    "category": "Etres",
+    "difficulty": "hard"
+  },
+  {
+    "word": "PENTECOTE",
+    "hint": "Venue de l'Esprit",
+    "category": "Fetes",
+    "difficulty": "hard"
+  },
+  {
+    "word": "ASCENSION",
+    "hint": "Montee au ciel",
+    "category": "Evenements",
+    "difficulty": "hard"
+  },
+  {
+    "word": "EUCHARISTIE",
+    "hint": "Repas du Seigneur",
+    "category": "Sacrements",
+    "difficulty": "hard"
+  }
+]

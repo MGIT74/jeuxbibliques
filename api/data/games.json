@@ -1,0 +1,119 @@
+[
+  {
+    "slug": "word-search",
+    "name": "Mots Mêlés Bibliques",
+    "description": "Trouve les mots cachés dans la grille",
+    "icon": "Search",
+    "color": "emerald",
+    "min_age": 6,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "guess-word",
+    "name": "Devine le Mot",
+    "description": "Devine le mot de la Bible lettre par lettre",
+    "icon": "HelpCircle",
+    "color": "blue",
+    "min_age": 8,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "quiz",
+    "name": "Quiz Biblique",
+    "description": "Teste tes connaissances bibliques",
+    "icon": "BookOpen",
+    "color": "amber",
+    "min_age": 10,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "who-said",
+    "name": "Qui a Dit ?",
+    "description": "Trouve qui a prononcé ce verset",
+    "icon": "MessageCircle",
+    "color": "rose",
+    "min_age": 12,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "true-false",
+    "name": "Vrai ou Faux",
+    "description": "Distingue le vrai du faux dans la Bible",
+    "icon": "CheckCircle",
+    "color": "teal",
+    "min_age": 8,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "verse-order",
+    "name": "Remets dans l'Ordre",
+    "description": "Reconstitue le verset dans le bon ordre",
+    "icon": "ArrowUpDown",
+    "color": "orange",
+    "min_age": 10,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "memory",
+    "name": "Memory Chrétien",
+    "description": "Trouve les paires de cartes",
+    "icon": "Grid3x3",
+    "color": "sky",
+    "min_age": 5,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "character-match",
+    "name": "Associe le Personnage",
+    "description": "Relie chaque personnage à son histoire",
+    "icon": "Users",
+    "color": "cyan",
+    "min_age": 8,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  },
+  {
+    "slug": "complete-verse",
+    "name": "Complète le Verset",
+    "description": "Trouve les mots manquants",
+    "icon": "PenTool",
+    "color": "lime",
+    "min_age": 10,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
+  }
+]
