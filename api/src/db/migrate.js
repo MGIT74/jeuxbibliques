@@ -53,7 +53,7 @@ async function migrate() {
   // banners.image_url : passe de VARCHAR(500) a LONGTEXT pour stocker les
   // images directement en base64 (simplifie l'upload : plus de fichiers,
   // plus de dossier /uploads, plus de dependance a multer).
-  await ensureColumnType(connection, 'banners', 'image_url', 'longtext', 'image_url LONGTEXT NOT NULL');
+  await ensureColumnType(connection, 'banners', 'image_url', 'longtext', 'LONGTEXT NOT NULL');
 
   console.log('Migrations complete.');
 
