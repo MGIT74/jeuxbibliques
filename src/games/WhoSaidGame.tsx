@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Loader2, Check, X, Quote } from 'lucide-react';
 import { GameWrapper } from '../components/shared/GameWrapper';
 import { GameComplete } from '../components/shared/GameComplete';
@@ -66,10 +66,18 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
   }
 
   function getShuffledAnswers() {
-    if (!currentQuestion) return [];
-    const answers = [currentQuestion.correct_answer, ...currentQuestion.wrong_answers];
-    return shuffleArray(answers);
+    return shuffledAnswers;
   }
+
+  // Les reponses melangees sont figees pour la question courante :
+  // recalculees uniquement quand la question change (par son id), jamais
+  // a chaque re-rendu. Ca evite tout risque de decalage entre la citation
+  // affichee et les options proposees.
+  const shuffledAnswers = useMemo(() => {
+    if (!currentQuestion) return [];
+    return shuffleArray([currentQuestion.correct_answer, ...currentQuestion.wrong_answers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion?.id ?? currentIndex]);
 
   if (loading) {
     return (
@@ -133,7 +141,7 @@ export function WhoSaidGame({ onBack, darkMode }: WhoSaidGameProps) {
       onRestart={initGame}
       darkMode={darkMode}
     >
-      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+      <div key={currentQuestion.id ?? currentIndex} className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
             <span className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>

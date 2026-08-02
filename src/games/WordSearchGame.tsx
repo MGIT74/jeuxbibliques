@@ -228,6 +228,35 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
     setSelectedCells([]);
   }
 
+  // --- Support tactile (mobile / tablette) ---
+  // Sur mobile, "touchmove" ne se declenche que sur l'element ou le doigt
+  // a pose (pas sur celui survole), contrairement a "mouseenter" sur
+  // desktop. On retrouve donc la cellule sous le doigt via elementFromPoint
+  // a chaque mouvement, en s'appuyant sur les attributs data-row/data-col.
+  function getCellFromTouch(touch: React.Touch): { row: number; col: number } | null {
+    const el = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement | null;
+    const cellEl = el?.closest('[data-row]') as HTMLElement | null;
+    if (!cellEl) return null;
+    const row = Number(cellEl.dataset.row);
+    const col = Number(cellEl.dataset.col);
+    if (Number.isNaN(row) || Number.isNaN(col)) return null;
+    return { row, col };
+  }
+
+  function handleGridTouchStart(e: React.TouchEvent) {
+    const cell = getCellFromTouch(e.touches[0]);
+    if (cell) handleCellMouseDown(cell.row, cell.col);
+  }
+
+  function handleGridTouchMove(e: React.TouchEvent) {
+    const cell = getCellFromTouch(e.touches[0]);
+    if (cell) handleCellMouseEnter(cell.row, cell.col);
+  }
+
+  function handleGridTouchEnd() {
+    handleCellMouseUp();
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -295,12 +324,17 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
         </div>
 
         <div
-          className="inline-block mx-auto select-none"
+          className="inline-block mx-auto select-none touch-none"
+          style={{ touchAction: 'none' }}
           onMouseLeave={() => {
             if (isSelecting) {
               handleCellMouseUp();
             }
           }}
+          onTouchStart={handleGridTouchStart}
+          onTouchMove={handleGridTouchMove}
+          onTouchEnd={handleGridTouchEnd}
+          onTouchCancel={handleGridTouchEnd}
         >
           <div
             className="grid gap-1"
@@ -310,6 +344,8 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
               row.map((cell, ci) => (
                   <button
                     key={`${ri}-${ci}`}
+                    data-row={ri}
+                    data-col={ci}
                     onMouseDown={() => handleCellMouseDown(ri, ci)}
                     onMouseEnter={() => handleCellMouseEnter(ri, ci)}
                     onMouseUp={handleCellMouseUp}
@@ -331,7 +367,7 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
         </div>
 
         <p className={`text-center mt-6 text-sm ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
-          Clique et glisse pour selectionner un mot
+          Clique (ou touche) et glisse pour sélectionner un mot
         </p>
       </div>
     </GameWrapper>
