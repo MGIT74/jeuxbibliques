@@ -760,7 +760,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       body.append('file', file);
 
       const { url } = await api.post<{ path: string; url: string }>('/admin/banners/upload', body);
-      setFormData({ ...formData, image_url: url });
+      setFormData((prev) => ({ ...prev, image_url: url }));
     } catch (err) {
       console.error('Error uploading banner image:', err);
       alert('Erreur lors du telechargement de l\'image');
@@ -824,6 +824,8 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       resetForm();
     } catch (err) {
       console.error('Error saving banner:', err);
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      alert(`Erreur lors de l'enregistrement de la bannière : ${message}`);
     }
 
     setActionLoading(null);
@@ -835,6 +837,7 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
       await api.post(`/admin/banners/${banner.id}/toggle`);
     } catch (err) {
       console.error('Error toggling banner:', err);
+      alert('Erreur : impossible de changer le statut de la bannière.');
     }
     await fetchBanners();
     setActionLoading(null);

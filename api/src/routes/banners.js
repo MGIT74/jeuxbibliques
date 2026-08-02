@@ -43,11 +43,16 @@ function fixBannerUrl(banner, req) {
 
 // GET /banners — bannières actives, dans leur fenêtre de diffusion (public)
 router.get('/banners', async (req, res) => {
+  // UTC_TIMESTAMP() plutot que NOW() : le frontend envoie des dates
+  // converties en UTC (toISOString()), donc la comparaison doit se faire
+  // en UTC des deux cotes, independamment du fuseau horaire configure sur
+  // le serveur MySQL (sinon une banniere programmee peut apparaitre/
+  // disparaitre avec plusieurs heures de decalage, voire jamais).
   const [rows] = await pool.query(
     `SELECT * FROM banners
      WHERE is_active = 1
-       AND (start_date IS NULL OR start_date <= NOW())
-       AND (end_date IS NULL OR end_date >= NOW())
+       AND (start_date IS NULL OR start_date <= UTC_TIMESTAMP())
+       AND (end_date IS NULL OR end_date >= UTC_TIMESTAMP())
      ORDER BY display_order ASC`
   );
   res.json(rows.map(r => fixBannerUrl(r, req)));
