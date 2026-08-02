@@ -5,6 +5,31 @@ const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Attribue retroactivement une carte a tous les joueurs qui ont deja assez de
+// points, mais ne l'ont pas encore (ex : un joueur ancien qui avait deja
+// 150 points quand la carte "100 points" a ete creee). Sans ca, ces joueurs
+// ne recevraient la carte qu'a leur PROCHAINE partie.
+async function backfillCard(card) {
+  if (!card || !card.is_active) return 0;
+
+  const [eligible] = await pool.query(
+    `SELECT u.id FROM users u
+     WHERE u.total_points >= ?
+       AND NOT EXISTS (SELECT 1 FROM user_cards uc WHERE uc.user_id = u.id AND uc.card_id = ?)`,
+    [card.points_threshold, card.id]
+  );
+
+  for (const user of eligible) {
+    await pool.query(
+      'INSERT INTO user_cards (id, user_id, card_id, seen) VALUES (?, ?, ?, 0)',
+      [uuidv4(), user.id, card.id]
+    );
+    await pool.query('UPDATE users SET hearts = hearts + ? WHERE id = ?', [card.hearts_reward, user.id]);
+  }
+
+  return eligible.length;
+}
+
 // GET /cards — catalogue public des cartes actives (nom/description/image),
 // sans info de possession : sert a afficher les cartes pas encore debloquees
 // (silhouette) meme a un visiteur non connecte, comme un teaser de collection.
@@ -74,7 +99,8 @@ router.post('/admin/cards', requireAuth, requireAdmin, async (req, res) => {
   );
 
   const [rows] = await pool.query('SELECT * FROM cards WHERE id = ?', [id]);
-  res.status(201).json(rows[0]);
+  const granted = await backfillCard(rows[0]);
+  res.status(201).json({ ...rows[0], backfilled_users: granted });
 });
 
 router.put('/admin/cards/:id', requireAuth, requireAdmin, async (req, res) => {
@@ -99,14 +125,16 @@ router.put('/admin/cards/:id', requireAuth, requireAdmin, async (req, res) => {
 
   const [rows] = await pool.query('SELECT * FROM cards WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Carte introuvable.' });
-  res.json(rows[0]);
+  const granted = await backfillCard(rows[0]);
+  res.json({ ...rows[0], backfilled_users: granted });
 });
 
 router.post('/admin/cards/:id/toggle', requireAuth, requireAdmin, async (req, res) => {
   await pool.query('UPDATE cards SET is_active = NOT is_active WHERE id = ?', [req.params.id]);
   const [rows] = await pool.query('SELECT * FROM cards WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Carte introuvable.' });
-  res.json(rows[0]);
+  const granted = await backfillCard(rows[0]);
+  res.json({ ...rows[0], backfilled_users: granted });
 });
 
 router.delete('/admin/cards/:id', requireAuth, requireAdmin, async (req, res) => {
