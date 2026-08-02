@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Ban } from 'lucide-react';
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Ban, Loader2 } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { OnlineUsersProvider } from './contexts/OnlineUsersContext';
 import { Header } from './components/layout/Header';
@@ -10,6 +11,7 @@ import { VerifyEmailPage } from './pages/VerifyEmailPage';
 import { ProfileSettings } from './components/profile/ProfileSettings';
 import { AuthModal } from './components/auth/AuthModal';
 import { FreeTrialGate } from './components/shared/FreeTrialGate';
+import { useGames } from './hooks/useGameData';
 import { WordSearchGame } from './games/WordSearchGame';
 import { GuessWordGame } from './games/GuessWordGame';
 import { QuizGame } from './games/QuizGame';
@@ -31,8 +33,6 @@ type GameSlug =
   | 'memory'
   | 'character-match'
   | 'complete-verse';
-
-type View = 'home' | 'game' | 'admin' | 'donation' | 'verify-email';
 
 function BlockedBanner({ darkMode, onDismiss }: { darkMode: boolean; onDismiss: () => void }) {
   return (
@@ -58,21 +58,75 @@ function BlockedBanner({ darkMode, onDismiss }: { darkMode: boolean; onDismiss: 
   );
 }
 
+// Page d'un jeu : /jeux/:slug — chaque jeu a maintenant sa propre URL
+// partageable, et le bouton "precedent" du navigateur fonctionne normalement.
+function GamePage({ darkMode, onRequestAuth }: { darkMode: boolean; onRequestAuth: () => void }) {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const { games, loading } = useGames();
+
+  const selectedGame: Game | undefined = games.find((g) => g.slug === slug);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <Loader2 className="animate-spin text-gold" size={48} />
+      </div>
+    );
+  }
+
+  if (!selectedGame) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+        <p className={darkMode ? 'text-parchment/70' : 'text-ink/60'}>Jeu introuvable.</p>
+        <button onClick={() => navigate('/')} className="btn-primary mt-6">
+          Retour à l'accueil
+        </button>
+      </div>
+    );
+  }
+
+  const gameProps = {
+    onBack: () => navigate('/'),
+    darkMode,
+  };
+
+  const gameComponents: Record<GameSlug, JSX.Element> = {
+    'word-search': <WordSearchGame {...gameProps} />,
+    'guess-word': <GuessWordGame {...gameProps} />,
+    'quiz': <QuizGame {...gameProps} />,
+    'who-said': <WhoSaidGame {...gameProps} />,
+    'true-false': <TrueFalseGame {...gameProps} />,
+    'verse-order': <VerseOrderGame {...gameProps} />,
+    'memory': <MemoryGame {...gameProps} />,
+    'character-match': <CharacterMatchGame {...gameProps} />,
+    'complete-verse': <CompleteVerseGame {...gameProps} />,
+  };
+
+  const gameComponent = gameComponents[selectedGame.slug as GameSlug];
+
+  return (
+    <FreeTrialGate
+      gameId={selectedGame.id}
+      gameName={selectedGame.name}
+      darkMode={darkMode}
+      onBack={() => navigate('/')}
+      onRequestAuth={onRequestAuth}
+    >
+      {gameComponent}
+    </FreeTrialGate>
+  );
+}
+
 function AppContent() {
   const { isBlocked } = useAuth();
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('darkMode') === 'true';
     }
     return false;
   });
-  const [currentView, setCurrentView] = useState<View>(() => {
-    if (typeof window !== 'undefined' && window.location.pathname === '/verifier-email') {
-      return 'verify-email';
-    }
-    return 'home';
-  });
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showBlockedBanner, setShowBlockedBanner] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -93,74 +147,7 @@ function AppContent() {
   }, [darkMode]);
 
   function handleSelectGame(game: Game) {
-    setSelectedGame(game);
-    setCurrentView('game');
-  }
-
-  function handleBackToHome() {
-    setSelectedGame(null);
-    setCurrentView('home');
-    if (window.location.pathname !== '/') {
-      window.history.replaceState({}, '', '/');
-    }
-  }
-
-  function handleOpenAdmin() {
-    setCurrentView('admin');
-  }
-
-  function handleOpenDonation() {
-    setCurrentView('donation');
-  }
-
-  function renderGame() {
-    if (!selectedGame) return null;
-
-    const gameProps = {
-      onBack: handleBackToHome,
-      darkMode,
-    };
-
-    const gameComponents: Record<GameSlug, JSX.Element> = {
-      'word-search': <WordSearchGame {...gameProps} />,
-      'guess-word': <GuessWordGame {...gameProps} />,
-      'quiz': <QuizGame {...gameProps} />,
-      'who-said': <WhoSaidGame {...gameProps} />,
-      'true-false': <TrueFalseGame {...gameProps} />,
-      'verse-order': <VerseOrderGame {...gameProps} />,
-      'memory': <MemoryGame {...gameProps} />,
-      'character-match': <CharacterMatchGame {...gameProps} />,
-      'complete-verse': <CompleteVerseGame {...gameProps} />,
-    };
-
-    const gameComponent = gameComponents[selectedGame.slug as GameSlug];
-
-    return (
-      <FreeTrialGate
-        gameId={selectedGame.id}
-        gameName={selectedGame.name}
-        darkMode={darkMode}
-        onBack={handleBackToHome}
-        onRequestAuth={() => setShowAuthModal(true)}
-      >
-        {gameComponent}
-      </FreeTrialGate>
-    );
-  }
-
-  function renderContent() {
-    switch (currentView) {
-      case 'admin':
-        return <AdminDashboard onBack={handleBackToHome} darkMode={darkMode} />;
-      case 'donation':
-        return <DonationPage onBack={handleBackToHome} darkMode={darkMode} />;
-      case 'verify-email':
-        return <VerifyEmailPage onBack={handleBackToHome} darkMode={darkMode} />;
-      case 'game':
-        return renderGame();
-      default:
-        return <HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />;
-    }
+    navigate(`/jeux/${game.slug}`);
   }
 
   return (
@@ -168,11 +155,23 @@ function AppContent() {
       <Header
         darkMode={darkMode}
         onToggleDarkMode={() => setDarkMode(!darkMode)}
-        onOpenAdmin={handleOpenAdmin}
+        onOpenAdmin={() => navigate('/admin')}
         onOpenProfile={() => setShowProfileSettings(true)}
-        onOpenDonation={handleOpenDonation}
+        onOpenDonation={() => navigate('/don')}
       />
-      {renderContent()}
+
+      <Routes>
+        <Route path="/" element={<HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />} />
+        <Route
+          path="/jeux/:slug"
+          element={<GamePage darkMode={darkMode} onRequestAuth={() => setShowAuthModal(true)} />}
+        />
+        <Route path="/admin" element={<AdminDashboard onBack={() => navigate('/')} darkMode={darkMode} />} />
+        <Route path="/don" element={<DonationPage onBack={() => navigate('/')} darkMode={darkMode} />} />
+        <Route path="/verifier-email" element={<VerifyEmailPage onBack={() => navigate('/')} darkMode={darkMode} />} />
+        <Route path="*" element={<HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />} />
+      </Routes>
+
       <ProfileSettings
         isOpen={showProfileSettings}
         onClose={() => setShowProfileSettings(false)}
