@@ -13,6 +13,7 @@
 
   body {
     @apply text-ink bg-parchment;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .dark body {

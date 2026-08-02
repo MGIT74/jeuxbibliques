@@ -81,7 +81,10 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
 
   return (
     <>
-      <header className={`${darkMode ? 'bg-ink border-gold/10' : 'bg-parchment border-gold-dim/20'} border-b sticky top-0 z-40 backdrop-blur transition-colors`}>
+      <header
+        className={`${darkMode ? 'bg-ink border-gold/10' : 'bg-parchment border-gold-dim/20'} border-b sticky top-0 z-40 backdrop-blur transition-colors`}
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <a href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
