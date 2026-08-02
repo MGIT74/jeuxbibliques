@@ -4,7 +4,7 @@ import {
   ArrowLeft, Loader2, Shield, BarChart3, Clock, Mail, Download,
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
   Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
-  ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon
+  ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon, Menu
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
@@ -22,6 +22,7 @@ type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' |
 export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   const { profile } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>('overview');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (!profile?.is_admin) {
     return (
@@ -46,51 +47,107 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
     { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
   ];
 
+  function selectTab(id: Tab) {
+    setActiveTab(id);
+    setMobileMenuOpen(false);
+  }
+
+  const navItems = (
+    <nav className="flex-1 overflow-y-auto p-3 space-y-1">
+      {tabs.map((tab) => (
+        <button
+          key={tab.id}
+          onClick={() => selectTab(tab.id)}
+          className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium text-left transition-all ${
+            activeTab === tab.id
+              ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
+              : darkMode
+                ? 'text-parchment/70 hover:bg-ink/60'
+                : 'text-ink/70 hover:bg-parchment-dim'
+          }`}
+        >
+          {tab.icon}
+          {tab.label}
+        </button>
+      ))}
+    </nav>
+  );
+
   return (
-    <div className="min-h-screen">
-      <div className={`${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'} border-b sticky top-16 z-30`}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={onBack}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
-            >
-              <ArrowLeft size={20} />
-              Retour
-            </button>
-
-            <div className="flex items-center gap-2">
-              <Shield className="text-gold" size={24} />
-              <h2 className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
-                Administration
-              </h2>
-            </div>
-
-            <div className="w-24" />
+    <div className="min-h-screen flex">
+      {/* Sidebar desktop */}
+      <aside
+        className={`hidden md:flex md:flex-col w-64 flex-shrink-0 border-r sticky top-16 h-[calc(100vh-4rem)] ${
+          darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'
+        }`}
+      >
+        <div className={`p-4 border-b ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'}`}>
+          <button
+            onClick={onBack}
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl w-full ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
+          >
+            <ArrowLeft size={18} />
+            Retour
+          </button>
+          <div className="flex items-center gap-2 mt-4">
+            <Shield className="text-gold" size={22} />
+            <h2 className={`text-lg font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+              Administration
+            </h2>
           </div>
+        </div>
+        {navItems}
+      </aside>
 
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium whitespace-nowrap transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
-                    : darkMode
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {tab.icon}
-                {tab.label}
-              </button>
-            ))}
+      {/* Barre mobile avec menu deroulant */}
+      <div className={`md:hidden fixed top-16 left-0 right-0 z-30 border-b ${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'}`}>
+        <div className="flex items-center justify-between px-4 py-3">
+          <button
+            onClick={onBack}
+            className={`flex items-center gap-2 px-3 py-2 rounded-xl ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
+          >
+            <ArrowLeft size={18} />
+          </button>
+          <div className="flex items-center gap-2">
+            <Shield className="text-gold" size={20} />
+            <h2 className={`text-base font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+              Administration
+            </h2>
           </div>
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className={`p-2 rounded-xl ${darkMode ? 'bg-ink text-parchment' : 'bg-parchment-dim text-ink'}`}
+          >
+            <Menu size={20} />
+          </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          <div className="flex-1 bg-black/50" onClick={() => setMobileMenuOpen(false)} />
+          <div className={`w-72 flex flex-col ${darkMode ? 'bg-ink-light' : 'bg-white'}`}>
+            <div className={`p-4 border-b flex items-center justify-between ${darkMode ? 'border-gold/10' : 'border-gold-dim/15'}`}>
+              <div className="flex items-center gap-2">
+                <Shield className="text-gold" size={20} />
+                <h2 className={`text-base font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                  Administration
+                </h2>
+              </div>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className={darkMode ? 'text-parchment/70' : 'text-ink/60'}
+              >
+                <X size={22} />
+              </button>
+            </div>
+            {navItems}
+          </div>
+        </div>
+      )}
+
+      {/* Contenu principal */}
+      <div className="flex-1 min-w-0 px-4 py-8 mt-16 md:mt-0 max-w-6xl mx-auto w-full">
         {activeTab === 'overview' && <OverviewTab darkMode={darkMode} />}
         {activeTab === 'users' && <UsersTab darkMode={darkMode} />}
         {activeTab === 'scores' && <ScoresTab darkMode={darkMode} />}
