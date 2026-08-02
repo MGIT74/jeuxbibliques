@@ -372,6 +372,19 @@ export type BibleCharacter = Database['public']['Tables']['bible_characters']['R
 export type Banner = Database['public']['Tables']['banners']['Row'];
 export type DonationSettings = Database['public']['Tables']['donation_settings']['Row'];
 
+export interface SmtpSettings {
+  id?: string;
+  host: string | null;
+  port: number | null;
+  secure: boolean;
+  username: string | null;
+  from_email: string | null;
+  from_name: string | null;
+  is_active: boolean;
+  require_email_verification: boolean;
+  has_password: boolean;
+}
+
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface AdminStats {

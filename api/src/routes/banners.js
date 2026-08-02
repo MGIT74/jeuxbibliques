@@ -30,6 +30,17 @@ const upload = multer({
   },
 });
 
+// Certaines bannières existantes peuvent avoir ete enregistrees avec
+// "undefined/uploads/..." a cause de l'ancien bug (APP_URL absent).
+// On corrige l'URL a la volee, sans avoir besoin de toucher la base.
+function fixBannerUrl(banner, req) {
+  if (banner && typeof banner.image_url === 'string' && banner.image_url.startsWith('undefined/uploads/')) {
+    const base = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+    banner.image_url = banner.image_url.replace(/^undefined/, base);
+  }
+  return banner;
+}
+
 // GET /banners — bannières actives, dans leur fenêtre de diffusion (public)
 router.get('/banners', async (req, res) => {
   const [rows] = await pool.query(
@@ -39,14 +50,14 @@ router.get('/banners', async (req, res) => {
        AND (end_date IS NULL OR end_date >= NOW())
      ORDER BY display_order ASC`
   );
-  res.json(rows);
+  res.json(rows.map(r => fixBannerUrl(r, req)));
 });
 
 // --- Admin ---
 
 router.get('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   const [rows] = await pool.query('SELECT * FROM banners ORDER BY display_order ASC');
-  res.json(rows);
+  res.json(rows.map(r => fixBannerUrl(r, req)));
 });
 
 router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
@@ -106,7 +117,12 @@ router.delete('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) 
 router.post('/admin/banners/upload', requireAuth, requireAdmin, upload.single('file'), (req, res) => {
   if (!req.file) return res.status(422).json({ message: 'Aucun fichier reçu.' });
 
-  const url = `${process.env.APP_URL}/uploads/banners/${req.file.filename}`;
+  // On reconstruit l'URL depuis la requête elle-même plutot que depuis
+  // process.env.APP_URL : cette variable peut manquer en prod (elle
+  // manquait effectivement), et donnait une image_url du style
+  // "undefined/uploads/banners/xxx.jpg" — cassant l'affichage du slide.
+  const base = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+  const url = `${base}/uploads/banners/${req.file.filename}`;
   res.json({ path: `uploads/banners/${req.file.filename}`, url });
 });
 

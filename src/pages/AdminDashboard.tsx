@@ -3,13 +3,13 @@ import {
   Users, Trophy, Gamepad2, TrendingUp, Calendar,
   ArrowLeft, Loader2, Shield, BarChart3, Clock, Mail, Download,
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
-  Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code,
+  Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
   ChevronLeft, ChevronRight, List, CalendarDays
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
-import type { Banner, DonationSettings } from '../types/database';
+import type { Banner, DonationSettings, SmtpSettings } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
 interface AdminDashboardProps {
@@ -17,7 +17,7 @@ interface AdminDashboardProps {
   darkMode: boolean;
 }
 
-type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration';
+type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email';
 
 export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   const { profile } = useAuth();
@@ -42,6 +42,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
     { id: 'marketing', label: 'Marketing', icon: <Mail size={18} /> },
     { id: 'banners', label: 'Bannieres', icon: <Image size={18} /> },
     { id: 'integration', label: 'Integration', icon: <Code size={18} /> },
+    { id: 'email', label: 'Email (SMTP)', icon: <Send size={18} /> },
   ];
 
   return (
@@ -96,6 +97,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
         {activeTab === 'marketing' && <MarketingTab darkMode={darkMode} />}
         {activeTab === 'banners' && <BannersTab darkMode={darkMode} />}
         {activeTab === 'integration' && <IntegrationTab darkMode={darkMode} />}
+        {activeTab === 'email' && <EmailSettingsTab darkMode={darkMode} />}
       </div>
     </div>
   );
@@ -1644,6 +1646,266 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function EmailSettingsTab({ darkMode }: { darkMode: boolean }) {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [testing, setTesting] = useState(false);
+  const [testMessage, setTestMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [formData, setFormData] = useState({
+    host: '',
+    port: 587,
+    secure: false,
+    username: '',
+    password: '',
+    from_email: '',
+    from_name: 'Jeux Bibliques',
+    is_active: false,
+    require_email_verification: false,
+  });
+  const [hasExistingPassword, setHasExistingPassword] = useState(false);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  async function fetchSettings() {
+    try {
+      const data = await api.get<SmtpSettings | null>('/admin/smtp-settings');
+      if (data) {
+        setFormData({
+          host: data.host || '',
+          port: data.port || 587,
+          secure: !!data.secure,
+          username: data.username || '',
+          password: '',
+          from_email: data.from_email || '',
+          from_name: data.from_name || 'Jeux Bibliques',
+          is_active: !!data.is_active,
+          require_email_verification: !!data.require_email_verification,
+        });
+        setHasExistingPassword(!!data.has_password);
+      }
+    } catch (err) {
+      console.error('Error fetching SMTP settings:', err);
+    }
+    setLoading(false);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    setTestMessage(null);
+
+    try {
+      await api.put('/admin/smtp-settings', formData);
+      await fetchSettings();
+      alert('Parametres SMTP sauvegardes avec succes !');
+    } catch (err) {
+      console.error('Error saving SMTP settings:', err);
+      alert('Erreur lors de la sauvegarde');
+    }
+
+    setSaving(false);
+  }
+
+  async function handleTest() {
+    setTesting(true);
+    setTestMessage(null);
+    try {
+      const result = await api.post<{ message: string }>('/admin/smtp-settings/test', {});
+      setTestMessage({ type: 'success', text: result.message });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Echec du test SMTP.';
+      setTestMessage({ type: 'error', text: message });
+    }
+    setTesting(false);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="animate-spin text-gold" size={48} />
+      </div>
+    );
+  }
+
+  const inputClass = `w-full px-4 py-3 rounded-xl border ${
+    darkMode
+      ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40'
+      : 'bg-white border-gold-dim/25 text-ink placeholder-ink/40'
+  } focus:ring-2 focus:ring-gold focus:border-transparent`;
+
+  const labelClass = `block text-sm font-medium mb-2 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`;
+
+  return (
+    <div className="space-y-6">
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="seal w-12 h-12">
+            <Send size={22} />
+          </div>
+          <div>
+            <h3 className={`text-xl font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+              Serveur email (SMTP)
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+              Utilisé pour l'email de bienvenue et la vérification de compte des utilisateurs
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
+              <label className={labelClass}>Serveur SMTP (hôte)</label>
+              <input
+                type="text"
+                value={formData.host}
+                onChange={(e) => setFormData({ ...formData, host: e.target.value })}
+                className={inputClass}
+                placeholder="smtp.hostinger.com"
+                required
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Port</label>
+              <input
+                type="number"
+                value={formData.port}
+                onChange={(e) => setFormData({ ...formData, port: Number(e.target.value) })}
+                className={inputClass}
+                placeholder="465"
+                required
+              />
+            </div>
+
+            <div className="flex items-end pb-3">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={formData.secure}
+                  onChange={(e) => setFormData({ ...formData, secure: e.target.checked })}
+                  className="w-4 h-4 rounded border-gold-dim/40 text-lapis focus:ring-lapis"
+                />
+                <span className={darkMode ? 'text-parchment/80' : 'text-ink/80'}>
+                  Connexion SSL/TLS (port 465)
+                </span>
+              </label>
+            </div>
+
+            <div>
+              <label className={labelClass}>Identifiant SMTP (adresse email complète)</label>
+              <input
+                type="email"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                className={inputClass}
+                placeholder="contact@jeuxbibliques.org"
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>
+                Mot de passe SMTP {hasExistingPassword && <span className="text-xs opacity-60">(laisser vide pour garder l'actuel)</span>}
+              </label>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className={inputClass}
+                placeholder={hasExistingPassword ? '••••••••' : ''}
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Email expéditeur</label>
+              <input
+                type="email"
+                value={formData.from_email}
+                onChange={(e) => setFormData({ ...formData, from_email: e.target.value })}
+                className={inputClass}
+                placeholder="contact@jeuxbibliques.org"
+              />
+            </div>
+
+            <div>
+              <label className={labelClass}>Nom expéditeur</label>
+              <input
+                type="text"
+                value={formData.from_name}
+                onChange={(e) => setFormData({ ...formData, from_name: e.target.value })}
+                className={inputClass}
+                placeholder="Jeux Bibliques"
+              />
+            </div>
+          </div>
+
+          <div className={`${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'} rounded-xl p-4 space-y-3`}>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.is_active}
+                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                className="w-4 h-4 rounded border-gold-dim/40 text-lapis focus:ring-lapis"
+              />
+              <span className={`font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                Activer l'envoi d'emails
+              </span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.require_email_verification}
+                onChange={(e) => setFormData({ ...formData, require_email_verification: e.target.checked })}
+                className="w-4 h-4 rounded border-gold-dim/40 text-lapis focus:ring-lapis"
+              />
+              <span className={darkMode ? 'text-parchment/80' : 'text-ink/80'}>
+                Envoyer un email de vérification à l'inscription
+              </span>
+            </label>
+            <p className={`text-xs ${darkMode ? 'text-parchment/50' : 'text-ink/50'}`}>
+              Note : le compte reste utilisable même si l'email n'est pas encore vérifié — aucun utilisateur n'est bloqué par cette option.
+            </p>
+          </div>
+
+          {testMessage && (
+            <div className={`rounded-xl p-4 text-sm ${
+              testMessage.type === 'success'
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                : 'bg-coral/10 text-coral'
+            }`}>
+              {testMessage.text}
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-3">
+            <button type="submit" disabled={saving} className="btn-primary disabled:opacity-50">
+              {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+            </button>
+            <button
+              type="button"
+              onClick={handleTest}
+              disabled={testing}
+              className={`px-6 py-3 rounded-full font-semibold border-2 transition-all disabled:opacity-50 ${
+                darkMode ? 'border-gold/30 text-parchment hover:bg-ink' : 'border-gold-dim/40 text-ink hover:bg-parchment-dim'
+              }`}
+            >
+              {testing ? 'Envoi...' : 'Envoyer un email de test'}
+            </button>
+          </div>
+        </form>
+
+        <div className={`mt-6 rounded-xl p-4 text-sm ${darkMode ? 'bg-ink/40 text-parchment/70' : 'bg-parchment-dim text-ink/70'}`}>
+          <p className="font-semibold mb-1">Paramètres Hostinger typiques :</p>
+          <p>Hôte : <code>smtp.hostinger.com</code> — Port : <code>465</code> (SSL activé) ou <code>587</code> (SSL désactivé)</p>
+          <p>Identifiant : ton adresse email complète — Mot de passe : celui de cette boîte mail</p>
+        </div>
+      </div>
     </div>
   );
 }

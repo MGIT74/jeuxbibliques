@@ -6,6 +6,7 @@ import { Header } from './components/layout/Header';
 import { HomePage } from './pages/HomePage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { DonationPage } from './pages/DonationPage';
+import { VerifyEmailPage } from './pages/VerifyEmailPage';
 import { ProfileSettings } from './components/profile/ProfileSettings';
 import { AuthModal } from './components/auth/AuthModal';
 import { FreeTrialGate } from './components/shared/FreeTrialGate';
@@ -31,7 +32,7 @@ type GameSlug =
   | 'character-match'
   | 'complete-verse';
 
-type View = 'home' | 'game' | 'admin' | 'donation';
+type View = 'home' | 'game' | 'admin' | 'donation' | 'verify-email';
 
 function BlockedBanner({ darkMode, onDismiss }: { darkMode: boolean; onDismiss: () => void }) {
   return (
@@ -65,7 +66,12 @@ function AppContent() {
     }
     return false;
   });
-  const [currentView, setCurrentView] = useState<View>('home');
+  const [currentView, setCurrentView] = useState<View>(() => {
+    if (typeof window !== 'undefined' && window.location.pathname === '/verifier-email') {
+      return 'verify-email';
+    }
+    return 'home';
+  });
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showBlockedBanner, setShowBlockedBanner] = useState(false);
@@ -94,6 +100,9 @@ function AppContent() {
   function handleBackToHome() {
     setSelectedGame(null);
     setCurrentView('home');
+    if (window.location.pathname !== '/') {
+      window.history.replaceState({}, '', '/');
+    }
   }
 
   function handleOpenAdmin() {
@@ -145,6 +154,8 @@ function AppContent() {
         return <AdminDashboard onBack={handleBackToHome} darkMode={darkMode} />;
       case 'donation':
         return <DonationPage onBack={handleBackToHome} darkMode={darkMode} />;
+      case 'verify-email':
+        return <VerifyEmailPage onBack={handleBackToHome} darkMode={darkMode} />;
       case 'game':
         return renderGame();
       default:

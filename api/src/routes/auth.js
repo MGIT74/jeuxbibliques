@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth, JWT_SECRET } = require('../middleware/auth');
+const { sendMail, getSmtpSettings } = require('../lib/mailer');
 
 const router = express.Router();
 
@@ -36,15 +37,35 @@ router.post('/register', async (req, res) => {
 
   const id = uuidv4();
   const passwordHash = await bcrypt.hash(password, 10);
+  const verificationToken = uuidv4();
+  const verificationExpires = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48h
 
   await pool.query(
-    `INSERT INTO users (id, email, password, username, church_name, age_group, total_points, is_admin, newsletter_consent, marketing_consent, is_blocked)
-     VALUES (?, ?, ?, ?, ?, 'adult', 0, 0, 0, 0, 0)`,
-    [id, normalizedEmail, passwordHash, username.trim(), church_name ? church_name.trim() : null]
+    `INSERT INTO users (id, email, password, username, church_name, age_group, total_points, is_admin, newsletter_consent, marketing_consent, is_blocked, verification_token, verification_token_expires)
+     VALUES (?, ?, ?, ?, ?, 'adult', 0, 0, 0, 0, 0, ?, ?)`,
+    [id, normalizedEmail, passwordHash, username.trim(), church_name ? church_name.trim() : null, verificationToken, verificationExpires]
   );
 
   const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
   const token = signToken(id);
+
+  // Email de bienvenue / verification — n'empeche jamais l'inscription de
+  // reussir si le SMTP n'est pas configure ou echoue (voir sendMail).
+  const smtp = await getSmtpSettings();
+  if (smtp && smtp.is_active) {
+    const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+    const verifyLink = `${appUrl}/verifier-email?token=${verificationToken}`;
+    sendMail({
+      to: normalizedEmail,
+      subject: 'Bienvenue sur Jeux Bibliques — vérifie ton email',
+      html: `
+        <p>Bonjour ${username.trim()},</p>
+        <p>Merci de t'être inscrit(e) sur Jeux Bibliques !</p>
+        <p><a href="${verifyLink}">Clique ici pour vérifier ton adresse email</a> (lien valable 48h).</p>
+        <p>Si tu n'es pas à l'origine de cette inscription, tu peux ignorer ce message.</p>
+      `,
+    }).catch((err) => console.error('Erreur envoi email inscription:', err));
+  }
 
   res.status(201).json({ user: sanitize(rows[0]), token });
 });
@@ -70,6 +91,61 @@ router.post('/login', async (req, res) => {
 
   const token = signToken(user.id);
   res.json({ user: sanitize(user), token });
+});
+
+// GET /verify-email?token=... — appele par le lien envoye par email
+router.get('/verify-email', async (req, res) => {
+  const { token } = req.query;
+  if (!token) return res.status(422).json({ message: 'Token manquant.' });
+
+  const [rows] = await pool.query(
+    'SELECT id, verification_token_expires FROM users WHERE verification_token = ?',
+    [token]
+  );
+  const user = rows[0];
+
+  if (!user) {
+    return res.status(404).json({ message: 'Lien de vérification invalide.' });
+  }
+  if (user.verification_token_expires && new Date(user.verification_token_expires) < new Date()) {
+    return res.status(410).json({ message: 'Ce lien de vérification a expiré.' });
+  }
+
+  await pool.query(
+    'UPDATE users SET email_verified = 1, verification_token = NULL, verification_token_expires = NULL WHERE id = ?',
+    [user.id]
+  );
+
+  res.json({ message: 'Email vérifié avec succès.' });
+});
+
+// POST /resend-verification — renvoie un email de verification (utilisateur connecte)
+router.post('/resend-verification', requireAuth, async (req, res) => {
+  if (req.user.email_verified) {
+    return res.json({ message: 'Cet email est déjà vérifié.' });
+  }
+
+  const smtp = await getSmtpSettings();
+  if (!smtp || !smtp.is_active) {
+    return res.status(422).json({ message: "L'envoi d'email n'est pas configuré pour le moment." });
+  }
+
+  const verificationToken = uuidv4();
+  const verificationExpires = new Date(Date.now() + 48 * 60 * 60 * 1000);
+  await pool.query(
+    'UPDATE users SET verification_token = ?, verification_token_expires = ? WHERE id = ?',
+    [verificationToken, verificationExpires, req.user.id]
+  );
+
+  const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+  const verifyLink = `${appUrl}/verifier-email?token=${verificationToken}`;
+  await sendMail({
+    to: req.user.email,
+    subject: 'Vérifie ton email — Jeux Bibliques',
+    html: `<p><a href="${verifyLink}">Clique ici pour vérifier ton adresse email</a> (lien valable 48h).</p>`,
+  });
+
+  res.json({ message: 'Email de vérification renvoyé.' });
 });
 
 // POST /logout (côté JWT stateless : le client supprime juste son token)

@@ -15,7 +15,9 @@ const contentRoutes = require('./routes/content');
 const scoreRoutes = require('./routes/scores');
 const bannerRoutes = require('./routes/banners');
 const donationSettingsRoutes = require('./routes/donationSettings');
+const smtpSettingsRoutes = require('./routes/smtpSettings');
 const adminRoutes = require('./routes/admin');
+const { migrate } = require('./db/migrate');
 
 const app = express();
 
@@ -38,6 +40,7 @@ app.use('/api', contentRoutes);
 app.use('/api', scoreRoutes);
 app.use('/api', bannerRoutes);
 app.use('/api', donationSettingsRoutes);
+app.use('/api', smtpSettingsRoutes);
 app.use('/api', adminRoutes);
 
 // --- Frontend React (build Vite) servi depuis le même site, comme l'app "salon" ---
@@ -59,6 +62,22 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Jeux Bibliques API listening on port ${port}`);
-});
+
+// Migration automatique et idempotente au demarrage : cree/complete le
+// schema (nouvelles tables, nouvelles colonnes) sans intervention manuelle
+// a chaque deploiement. Sans danger a re-executer (CREATE TABLE IF NOT
+// EXISTS + verification d'existence des colonnes).
+migrate()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Jeux Bibliques API listening on port ${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Echec de la migration au demarrage:', err);
+    // On demarre quand meme le serveur : mieux vaut un site fonctionnel
+    // sans la derniere colonne qu'un site totalement hors ligne.
+    app.listen(port, () => {
+      console.log(`Jeux Bibliques API listening on port ${port} (sans migration)`);
+    });
+  });
