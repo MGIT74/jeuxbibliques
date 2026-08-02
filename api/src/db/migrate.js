@@ -15,6 +15,20 @@ async function ensureColumn(connection, table, column, definition) {
   }
 }
 
+// Elargit une colonne existante si son type ne correspond plus a ce qui est
+// attendu (ex : VARCHAR(500) -> LONGTEXT pour stocker des images en base64).
+async function ensureColumnType(connection, table, column, expectedType, alterDefinition) {
+  const [rows] = await connection.query(
+    `SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS
+     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?`,
+    [table, column]
+  );
+  if (rows.length > 0 && rows[0].DATA_TYPE !== expectedType) {
+    await connection.query(`ALTER TABLE ${table} MODIFY COLUMN ${column} ${alterDefinition}`);
+    console.log(`  colonne elargie : ${table}.${column} -> ${expectedType}`);
+  }
+}
+
 async function migrate() {
   const connection = await mysql.createConnection({
     host: process.env.DB_HOST || '127.0.0.1',
@@ -35,6 +49,11 @@ async function migrate() {
   await ensureColumn(connection, 'users', 'email_verified', "TINYINT(1) NOT NULL DEFAULT 0");
   await ensureColumn(connection, 'users', 'verification_token', "CHAR(36) NULL");
   await ensureColumn(connection, 'users', 'verification_token_expires', "DATETIME NULL");
+
+  // banners.image_url : passe de VARCHAR(500) a LONGTEXT pour stocker les
+  // images directement en base64 (simplifie l'upload : plus de fichiers,
+  // plus de dossier /uploads, plus de dependance a multer).
+  await ensureColumnType(connection, 'banners', 'image_url', 'longtext', 'image_url LONGTEXT NOT NULL');
 
   console.log('Migrations complete.');
 

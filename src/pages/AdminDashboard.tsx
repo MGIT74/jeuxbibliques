@@ -755,18 +755,19 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
 
     setUploading(true);
 
-    try {
-      const body = new FormData();
-      body.append('file', file);
-
-      const { url } = await api.post<{ path: string; url: string }>('/admin/banners/upload', body);
-      setFormData((prev) => ({ ...prev, image_url: url }));
-    } catch (err) {
-      console.error('Error uploading banner image:', err);
-      alert('Erreur lors du telechargement de l\'image');
-    } finally {
+    // Lecture directe en base64 dans le navigateur : aucun appel reseau
+    // separe, aucun fichier sur le serveur — le formulaire envoie
+    // directement l'image avec le reste des donnees a la sauvegarde.
+    const reader = new FileReader();
+    reader.onload = () => {
+      setFormData((prev) => ({ ...prev, image_url: reader.result as string }));
       setUploading(false);
-    }
+    };
+    reader.onerror = () => {
+      alert('Erreur lors de la lecture de l\'image');
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
   }
 
   function formatDateTimeLocal(isoString: string | null): string {

@@ -26,7 +26,7 @@ app.use(cors({
   origin: allowedOrigins.includes('*') ? true : allowedOrigins,
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // Fichiers uploadés (bannières) servis statiquement
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));

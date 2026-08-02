@@ -1,5 +1,4 @@
 const express = require('express');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
@@ -8,30 +7,13 @@ const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Anciennes bannieres uploadees sur disque (avant simplification) : encore
+// servies depuis /uploads pour ne pas casser les liens existants.
 const uploadDir = path.join(__dirname, '..', '..', 'uploads', 'banners');
 fs.mkdirSync(uploadDir, { recursive: true });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}-${uuidv4().slice(0, 8)}${ext}`);
-  },
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 Mo, comme côté frontend
-  fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith('image/')) {
-      return cb(new Error('Le fichier doit être une image.'));
-    }
-    cb(null, true);
-  },
-});
-
-// Certaines bannières existantes peuvent avoir ete enregistrees avec
-// "undefined/uploads/..." a cause de l'ancien bug (APP_URL absent).
+// Certaines bannieres tres anciennes peuvent avoir ete enregistrees avec
+// "undefined/uploads/..." a cause d'un bug depuis corrige (APP_URL absent).
 // On corrige l'URL a la volee, sans avoir besoin de toucher la base.
 function fixBannerUrl(banner, req) {
   if (banner && typeof banner.image_url === 'string' && banner.image_url.startsWith('undefined/uploads/')) {
@@ -46,8 +28,7 @@ router.get('/banners', async (req, res) => {
   // UTC_TIMESTAMP() plutot que NOW() : le frontend envoie des dates
   // converties en UTC (toISOString()), donc la comparaison doit se faire
   // en UTC des deux cotes, independamment du fuseau horaire configure sur
-  // le serveur MySQL (sinon une banniere programmee peut apparaitre/
-  // disparaitre avec plusieurs heures de decalage, voire jamais).
+  // le serveur MySQL.
   const [rows] = await pool.query(
     `SELECT * FROM banners
      WHERE is_active = 1
@@ -59,6 +40,9 @@ router.get('/banners', async (req, res) => {
 });
 
 // --- Admin ---
+// L'image est envoyee directement en base64 dans image_url (data:image/...)
+// depuis le navigateur : plus de fichier, plus d'upload separe, plus de
+// dependance a multer — le formulaire d'ajout/modification suffit.
 
 router.get('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   const [rows] = await pool.query('SELECT * FROM banners ORDER BY display_order ASC');
@@ -106,29 +90,8 @@ router.post('/admin/banners/:id/toggle', requireAuth, requireAdmin, async (req, 
 });
 
 router.delete('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => {
-  const [rows] = await pool.query('SELECT image_url FROM banners WHERE id = ?', [req.params.id]);
-  if (rows.length > 0) {
-    const imageUrl = rows[0].image_url;
-    if (imageUrl && imageUrl.includes('/uploads/banners/')) {
-      const filename = imageUrl.split('/uploads/banners/')[1];
-      const filePath = path.join(uploadDir, filename);
-      fs.unlink(filePath, () => {});
-    }
-  }
   await pool.query('DELETE FROM banners WHERE id = ?', [req.params.id]);
   res.json({ message: 'Bannière supprimée.' });
-});
-
-router.post('/admin/banners/upload', requireAuth, requireAdmin, upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(422).json({ message: 'Aucun fichier reçu.' });
-
-  // On reconstruit l'URL depuis la requête elle-même plutot que depuis
-  // process.env.APP_URL : cette variable peut manquer en prod (elle
-  // manquait effectivement), et donnait une image_url du style
-  // "undefined/uploads/banners/xxx.jpg" — cassant l'affichage du slide.
-  const base = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
-  const url = `${base}/uploads/banners/${req.file.filename}`;
-  res.json({ path: `uploads/banners/${req.file.filename}`, url });
 });
 
 module.exports = router;
