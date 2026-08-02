@@ -23,6 +23,28 @@ function fixBannerUrl(banner, req) {
   return banner;
 }
 
+// Le pool MySQL renvoie des chaines de date brutes (dateStrings:true) sans
+// fuseau horaire. On rajoute le "Z" pour que new Date(...) cote navigateur
+// interprete toujours ces valeurs comme des instants UTC (le badge
+// "Programmee/Expiree" de l'admin compare ces dates a l'heure locale du
+// visiteur : sans ce "Z" chaque navigateur les lisait dans son propre
+// fuseau, causant un decalage).
+function toIsoUtc(mysqlDateString) {
+  if (!mysqlDateString) return mysqlDateString;
+  return mysqlDateString.replace(' ', 'T') + 'Z';
+}
+
+function withIsoDates(banner) {
+  if (!banner) return banner;
+  return {
+    ...banner,
+    start_date: toIsoUtc(banner.start_date),
+    end_date: toIsoUtc(banner.end_date),
+    created_at: toIsoUtc(banner.created_at),
+    updated_at: toIsoUtc(banner.updated_at),
+  };
+}
+
 // GET /banners — bannières actives, dans leur fenêtre de diffusion (public)
 router.get('/banners', async (req, res) => {
   // UTC_TIMESTAMP() plutot que NOW() : le frontend envoie des dates
@@ -36,7 +58,7 @@ router.get('/banners', async (req, res) => {
        AND (end_date IS NULL OR end_date >= UTC_TIMESTAMP())
      ORDER BY display_order ASC`
   );
-  res.json(rows.map(r => fixBannerUrl(r, req)));
+  res.json(rows.map(r => withIsoDates(fixBannerUrl(r, req))));
 });
 
 // --- Admin ---
@@ -46,7 +68,7 @@ router.get('/banners', async (req, res) => {
 
 router.get('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   const [rows] = await pool.query('SELECT * FROM banners ORDER BY display_order ASC');
-  res.json(rows.map(r => fixBannerUrl(r, req)));
+  res.json(rows.map(r => withIsoDates(fixBannerUrl(r, req))));
 });
 
 router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
@@ -64,7 +86,7 @@ router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   );
 
   const [rows] = await pool.query('SELECT * FROM banners WHERE id = ?', [id]);
-  res.status(201).json(rows[0]);
+  res.status(201).json(withIsoDates(rows[0]));
 });
 
 router.put('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => {
@@ -79,14 +101,14 @@ router.put('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => 
 
   const [rows] = await pool.query('SELECT * FROM banners WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Bannière introuvable.' });
-  res.json(rows[0]);
+  res.json(withIsoDates(rows[0]));
 });
 
 router.post('/admin/banners/:id/toggle', requireAuth, requireAdmin, async (req, res) => {
   await pool.query('UPDATE banners SET is_active = NOT is_active WHERE id = ?', [req.params.id]);
   const [rows] = await pool.query('SELECT * FROM banners WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Bannière introuvable.' });
-  res.json(rows[0]);
+  res.json(withIsoDates(rows[0]));
 });
 
 router.delete('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => {
