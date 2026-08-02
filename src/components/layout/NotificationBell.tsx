@@ -83,50 +83,64 @@ export function NotificationBell({ darkMode }: { darkMode: boolean }) {
       >
         <Bell size={20} />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-coral text-white text-[10px] font-bold flex items-center justify-center">
-            {unreadCount > 9 ? '9+' : unreadCount}
+          <span className="absolute -top-1 -right-1 flex">
+            <span className="absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75 animate-ping" />
+            <span className="relative min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center ring-2 ring-white dark:ring-ink-light">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
           </span>
         )}
       </button>
 
       {showPanel && (
-        <div className={`absolute right-0 top-full mt-2 w-80 max-h-[70vh] overflow-y-auto ${darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'} rounded-tile border shadow-tile py-2 z-50`}>
-          <div className={`px-4 py-2 font-display font-semibold border-b ${darkMode ? 'border-gold/10 text-parchment' : 'border-gold-dim/15 text-ink'}`}>
-            Notifications
-          </div>
-
-          {notifications.length === 0 ? (
-            <div className={`px-4 py-8 text-center text-sm ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>
-              Aucune notification pour le moment.
+        <>
+          {/* Fond assombri : mobile uniquement, pour un panneau centre type modale */}
+          <div
+            className="fixed inset-0 bg-black/40 z-40 sm:hidden"
+            onClick={() => setShowPanel(false)}
+          />
+          <div
+            className={`fixed inset-x-4 top-24 z-50 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80 max-h-[70vh] overflow-y-auto ${
+              darkMode ? 'bg-ink-light border-gold/10' : 'bg-white border-gold-dim/15'
+            } rounded-tile border shadow-tile py-2`}
+          >
+            <div className={`px-4 py-2 font-display font-semibold border-b ${darkMode ? 'border-gold/10 text-parchment' : 'border-gold-dim/15 text-ink'}`}>
+              Notifications
             </div>
-          ) : (
-            notifications.map((n) => {
-              const config = typeConfig[n.type] || typeConfig.info;
-              const Icon = config.icon;
-              return (
-                <div
-                  key={n.id}
-                  className={`px-4 py-3 flex gap-3 border-b last:border-b-0 ${darkMode ? 'border-gold/5' : 'border-gold-dim/10'}`}
-                >
-                  <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${config.bg}`}>
-                    <Icon size={16} className={config.color} />
+
+            {notifications.length === 0 ? (
+              <div className={`px-4 py-8 text-center text-sm ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>
+                Aucune notification pour le moment.
+              </div>
+            ) : (
+              notifications.map((n) => {
+                const config = typeConfig[n.type] || typeConfig.info;
+                const Icon = config.icon;
+                return (
+                  <div
+                    key={n.id}
+                    className={`px-4 py-3 flex gap-3 border-b last:border-b-0 ${darkMode ? 'border-gold/5' : 'border-gold-dim/10'}`}
+                  >
+                    <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${config.bg}`}>
+                      <Icon size={16} className={config.color} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className={`text-sm font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                        {n.title}
+                      </p>
+                      <p className={`text-sm mt-0.5 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>
+                        {n.message}
+                      </p>
+                      <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
+                        {timeAgo(n.created_at)}
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className={`text-sm font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
-                      {n.title}
-                    </p>
-                    <p className={`text-sm mt-0.5 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>
-                      {n.message}
-                    </p>
-                    <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
-                      {timeAgo(n.created_at)}
-                    </p>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
+                );
+              })
+            )}
+          </div>
+        </>
       )}
     </div>
   );
