@@ -55,6 +55,10 @@ async function migrate() {
   // plus de dossier /uploads, plus de dependance a multer).
   await ensureColumnType(connection, 'banners', 'image_url', 'longtext', 'LONGTEXT NOT NULL');
 
+  // games.cover_image_url : image de couverture carree (design "vrai jeu"),
+  // uploadee par l'admin en base64, en complement de l'icone existante.
+  await ensureColumn(connection, 'games', 'cover_image_url', 'LONGTEXT NULL');
+
   console.log('Migrations complete.');
 
   await connection.end();

@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS games (
   description TEXT NULL,
   icon VARCHAR(100) NULL,
   color VARCHAR(50) NULL,
+  cover_image_url LONGTEXT NULL,
   min_age INT UNSIGNED NOT NULL DEFAULT 0,
   difficulty_levels JSON NULL,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP

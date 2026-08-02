@@ -41,6 +41,41 @@ export function GameCard({ game, onClick, darkMode }: GameCardProps) {
   const colors = colorMap[game.color || 'blue'] || colorMap.blue;
   const IconComponent = iconMap[game.icon || 'Star'] || Star;
 
+  if (game.cover_image_url) {
+    return (
+      <button
+        onClick={onClick}
+        className="card-hover group relative w-full aspect-square rounded-tile overflow-hidden shadow-tile text-left"
+      >
+        <img
+          src={game.cover_image_url}
+          alt={game.name}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        {/* Voile degrade pour garder le titre lisible sur n'importe quelle image */}
+        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent opacity-90" />
+
+        <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+          <span className={`text-xs font-semibold px-2.5 py-1 rounded-full text-parchment ${colors.badge} shadow-tile`}>
+            {game.min_age}+ ans
+          </span>
+          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-ink-dark/80 text-gold shadow-tile">
+            {game.difficulty_levels.length} niveaux
+          </span>
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 p-4">
+          <h3 className="font-display text-xl font-semibold text-parchment drop-shadow-lg">
+            {game.name}
+          </h3>
+          <p className="text-sm text-parchment/80 mt-1 line-clamp-2 drop-shadow">
+            {game.description}
+          </p>
+        </div>
+      </button>
+    );
+  }
+
   return (
     <button
       onClick={onClick}

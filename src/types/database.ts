@@ -68,6 +68,7 @@ export interface Database {
           description: string | null;
           icon: string | null;
           color: string | null;
+          cover_image_url: string | null;
           min_age: number;
           difficulty_levels: string[];
           created_at: string;

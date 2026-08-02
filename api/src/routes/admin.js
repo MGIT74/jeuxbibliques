@@ -122,4 +122,27 @@ router.get('/admin/stats/recent-scores', requireAuth, requireAdmin, async (req, 
   res.json(rows);
 });
 
+// --- Edition des jeux (nom, description, image de couverture) ---
+
+router.put('/admin/games/:id', requireAuth, requireAdmin, async (req, res) => {
+  const { name, description, cover_image_url } = req.body;
+
+  const fields = [];
+  const values = [];
+  if (name !== undefined) { fields.push('name = ?'); values.push(name); }
+  if (description !== undefined) { fields.push('description = ?'); values.push(description); }
+  if (cover_image_url !== undefined) { fields.push('cover_image_url = ?'); values.push(cover_image_url || null); }
+
+  if (fields.length === 0) {
+    return res.status(422).json({ message: 'Aucun champ à mettre à jour.' });
+  }
+
+  values.push(req.params.id);
+  await pool.query(`UPDATE games SET ${fields.join(', ')} WHERE id = ?`, values);
+
+  const [rows] = await pool.query('SELECT * FROM games WHERE id = ?', [req.params.id]);
+  if (rows.length === 0) return res.status(404).json({ message: 'Jeu introuvable.' });
+  res.json(rows[0]);
+});
+
 module.exports = router;

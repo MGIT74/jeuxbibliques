@@ -10,7 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
 import { sanitizeIframeHtml } from '../lib/sanitize';
-import type { Banner, DonationSettings, SmtpSettings, AppNotification } from '../types/database';
+import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
 interface AdminDashboardProps {
@@ -557,6 +557,68 @@ function ScoresTab({ darkMode }: { darkMode: boolean }) {
 
 function GamesTab({ darkMode }: { darkMode: boolean }) {
   const { gameStats, loading } = useGameStats();
+  const [games, setGames] = useState<typeof gameStats>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({ name: '', description: '', cover_image_url: '' });
+
+  useEffect(() => {
+    setGames(gameStats);
+  }, [gameStats]);
+
+  function startEdit(game: Game) {
+    setFormData({
+      name: game.name,
+      description: game.description || '',
+      cover_image_url: game.cover_image_url || '',
+    });
+    setEditingId(game.id);
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+    setUploading(false);
+  }
+
+  function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner une image (JPG ou PNG)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert("L'image ne doit pas dépasser 5 MB");
+      return;
+    }
+
+    setUploading(true);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setFormData((prev) => ({ ...prev, cover_image_url: reader.result as string }));
+      setUploading(false);
+    };
+    reader.onerror = () => {
+      alert("Erreur lors de la lecture de l'image");
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function handleSave(id: string) {
+    setSaving(true);
+    try {
+      const updated = await api.put<Game>(`/admin/games/${id}`, formData);
+      setGames((prev) => prev.map((g) => (g.game.id === id ? { ...g, game: updated } : g)));
+      setEditingId(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      alert(`Erreur lors de l'enregistrement : ${message}`);
+    }
+    setSaving(false);
+  }
 
   if (loading) {
     return (
@@ -566,42 +628,130 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
     );
   }
 
+  const inputClass = `w-full px-3 py-2 rounded-xl border text-sm ${
+    darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'
+  } focus:ring-2 focus:ring-gold focus:border-transparent`;
+
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {gameStats.map(({ game, total_plays, avg_score }) => (
+      {games.map(({ game, total_plays, avg_score }) => (
         <div
           key={game.id}
-          className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}
+          className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg`}
         >
-          <h3 className={`text-lg font-bold mb-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
-            {game.name}
-          </h3>
-          <p className={`text-sm mb-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
-            {game.description}
-          </p>
+          {editingId === game.id ? (
+            <div className="p-5 space-y-3">
+              <div>
+                <label className={`block text-xs font-medium mb-1 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>
+                  Nom du jeu
+                </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={`block text-xs font-medium mb-1 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>
+                  Description
+                </label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows={2}
+                  className={inputClass}
+                />
+              </div>
+              <div>
+                <label className={`block text-xs font-medium mb-1 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>
+                  Image de couverture (carrée, ex : 512x512)
+                </label>
+                {formData.cover_image_url && (
+                  <img
+                    src={formData.cover_image_url}
+                    alt="Aperçu"
+                    className="w-full aspect-square object-cover rounded-xl mb-2 border border-gold/15"
+                  />
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png"
+                  onChange={handleCoverUpload}
+                  disabled={uploading}
+                  className={`w-full text-xs ${darkMode ? 'text-parchment/70' : 'text-ink/60'} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-amber-500 file:text-white hover:file:bg-amber-600 file:cursor-pointer disabled:opacity-50`}
+                />
+                {uploading && (
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>Lecture de l'image...</p>
+                )}
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button
+                  onClick={cancelEdit}
+                  className={`flex-1 px-3 py-2 rounded-xl text-sm font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
+                >
+                  Annuler
+                </button>
+                <button
+                  onClick={() => handleSave(game.id)}
+                  disabled={saving || uploading}
+                  className="flex-1 btn-primary text-sm py-2 disabled:opacity-50"
+                >
+                  {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              {game.cover_image_url ? (
+                <img src={game.cover_image_url} alt={game.name} className="w-full aspect-square object-cover" />
+              ) : (
+                <div className={`w-full aspect-square flex items-center justify-center ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+                  <Gamepad2 size={40} className={darkMode ? 'text-parchment/30' : 'text-ink/20'} />
+                </div>
+              )}
+              <div className="p-5">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h3 className={`text-lg font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                    {game.name}
+                  </h3>
+                  <button
+                    onClick={() => startEdit(game)}
+                    className={`flex-shrink-0 p-1.5 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                    title="Modifier"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                </div>
+                <p className={`text-sm mb-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+                  {game.description}
+                </p>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Parties jouees</span>
-              <span className={`font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{total_plays}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Score moyen</span>
-              <span className={`font-bold ${
-                avg_score >= 80 ? 'text-green-500' : avg_score >= 50 ? 'text-gold' : 'text-red-500'
-              }`}>
-                {avg_score}%
-              </span>
-            </div>
-            <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full ${
-                  avg_score >= 80 ? 'bg-green-500' : avg_score >= 50 ? 'bg-amber-500' : 'bg-red-500'
-                }`}
-                style={{ width: `${avg_score}%` }}
-              />
-            </div>
-          </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Parties jouees</span>
+                    <span className={`font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{total_plays}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Score moyen</span>
+                    <span className={`font-bold ${
+                      avg_score >= 80 ? 'text-green-500' : avg_score >= 50 ? 'text-gold' : 'text-red-500'
+                    }`}>
+                      {avg_score}%
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full ${
+                        avg_score >= 80 ? 'bg-green-500' : avg_score >= 50 ? 'bg-amber-500' : 'bg-red-500'
+                      }`}
+                      style={{ width: `${avg_score}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>
