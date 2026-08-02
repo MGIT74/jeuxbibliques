@@ -143,9 +143,7 @@
     "game_type": "true_false",
     "question": "Jonas a été avalé par un requin.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jonas a été avalé par un grand poisson, pas un requin.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -155,9 +153,7 @@
     "game_type": "true_false",
     "question": "Jésus a transformé l'eau en vin.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "C'était le premier miracle de Jésus aux noces de Cana.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -167,9 +163,7 @@
     "game_type": "true_false",
     "question": "Moïse a reçu les 10 commandements sur le mont Sinaï.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Dieu a donné les dix commandements à Moïse sur le mont Sinaï.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -179,9 +173,7 @@
     "game_type": "true_false",
     "question": "Pierre a marché sur l'eau avec Jésus.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Pierre a marché sur l'eau vers Jésus avant de couler.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -191,9 +183,7 @@
     "game_type": "true_false",
     "question": "Abraham avait 3 fils.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Abraham avait 2 fils principaux: Ismaël et Isaac.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -203,9 +193,7 @@
     "game_type": "true_false",
     "question": "Le serpent a tenté Ève avec une pomme.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "La Bible parle d'un \"fruit\" sans préciser que c'était une pomme.",
     "difficulty": "hard",
     "category": "Ancien Testament",
@@ -215,9 +203,7 @@
     "game_type": "true_false",
     "question": "Paul s'appelait Saul avant sa conversion.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Paul portait le nom hébraïque Saul avant sa conversion.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -227,9 +213,7 @@
     "game_type": "true_false",
     "question": "Lazare a été ressuscité par Jésus après 4 jours.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus a ressuscité Lazare qui était mort depuis 4 jours.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -366,11 +350,11 @@
     "question": "Qui était le frère de Moïse?",
     "correct_answer": "Aaron",
     "wrong_answers": [
-      "Josue",
+      "Josué",
       "Caleb",
       "Samuel"
     ],
-    "explanation": "Aaron était le frère aîné de Moïse et le premier grand pretre.",
+    "explanation": "Aaron était le frère aîné de Moïse et le premier grand prêtre.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Exode 4:14"
@@ -382,7 +366,7 @@
     "wrong_answers": [
       "La mer Morte",
       "La mer Mediterranee",
-      "Le lac de Galilee"
+      "Le lac de Galilée"
     ],
     "explanation": "Dieu a ouvert la mer Rouge pour laisser passer son peuple.",
     "difficulty": "easy",
@@ -552,7 +536,7 @@
       "Simeon",
       "Eli"
     ],
-    "explanation": "Zacharie était pretre et père de Jean-Baptiste.",
+    "explanation": "Zacharie était prêtre et père de Jean-Baptiste.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 1:13"
@@ -578,9 +562,9 @@
     "wrong_answers": [
       "Charpentier",
       "Berger",
-      "Collecteur d'impots"
+      "Collecteur d'impôts"
     ],
-    "explanation": "Pierre et André étaient pecheurs sur le lac de Galilee.",
+    "explanation": "Pierre et André étaient pêcheurs sur le lac de Galilée.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 4:18"
@@ -602,7 +586,7 @@
   {
     "game_type": "quiz",
     "question": "Qui était Melchisedek?",
-    "correct_answer": "Roi de Salem et pretre du Dieu Tres-Haut",
+    "correct_answer": "Roi de Salem et prêtre du Dieu Tres-Haut",
     "wrong_answers": [
       "Un prophète",
       "Un juge d'Israël",
@@ -672,13 +656,13 @@
   {
     "game_type": "quiz",
     "question": "Qui a succédé à Moïse pour diriger Israël ?",
-    "correct_answer": "Josue",
+    "correct_answer": "Josué",
     "wrong_answers": [
       "Aaron",
       "Caleb",
       "Eleazar"
     ],
-    "explanation": "Josue fut choisi pour faire entrer le peuple en Canaan.",
+    "explanation": "Josué fut choisi pour faire entrer le peuple en Canaan.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "Deuteronome 31:7"
@@ -689,7 +673,7 @@
     "correct_answer": "Medecin",
     "wrong_answers": [
       "Pecheur",
-      "Collecteur d'impots",
+      "Collecteur d'impôts",
       "Tentier"
     ],
     "explanation": "Paul appelle Luc le medecin bien-aime.",
@@ -729,9 +713,7 @@
     "game_type": "true_false",
     "question": "David a tué Goliath avec une épée.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "David a tué Goliath avec une fronde et une pierre.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -741,9 +723,7 @@
     "game_type": "true_false",
     "question": "Jésus est né à Nazareth.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus est né à Bethléem mais a grandi à Nazareth.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -753,9 +733,7 @@
     "game_type": "true_false",
     "question": "Moïse a écrit les cinq premiers livres de la Bible.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Moïse est traditionnellement considéré comme l'auteur du Pentateuque.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -765,9 +743,7 @@
     "game_type": "true_false",
     "question": "Jésus avait 10 apôtres.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus a choisi 12 apôtres.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -777,9 +753,7 @@
     "game_type": "true_false",
     "question": "Le premier miracle de Jésus fut la multiplication des pains.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Le premier miracle fut de changer l'eau en vin à Cana.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -789,9 +763,7 @@
     "game_type": "true_false",
     "question": "Noé avait trois fils.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Noé avait Sem, Cham et Japhet.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -801,9 +773,7 @@
     "game_type": "true_false",
     "question": "Jean-Baptiste était le cousin de Jésus.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Marie et Élisabeth étaient parentes.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -813,9 +783,7 @@
     "game_type": "true_false",
     "question": "Les dix commandements ont été donnes sur le mont Sion.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Ils ont été donnes sur le mont Sinaï.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -825,9 +793,7 @@
     "game_type": "true_false",
     "question": "Jésus a ressuscité le troisième jour.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus est ressuscité le troisième jour selon les Écritures.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
@@ -837,9 +803,7 @@
     "game_type": "true_false",
     "question": "Abraham était le père d'Isaac.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Isaac naquit d'Abraham et Sara.",
     "difficulty": "easy",
     "category": "Ancien Testament",
@@ -849,9 +813,7 @@
     "game_type": "true_false",
     "question": "Judas s'est pendu après avoir trahi Jésus.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Judas, pris de remords, alla se pendre.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -861,9 +823,7 @@
     "game_type": "true_false",
     "question": "Joseph a été vendu par ses frères pour 30 pièces d'argent.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Joseph fut vendu pour 20 pieces d'argent.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -873,9 +833,7 @@
     "game_type": "true_false",
     "question": "Ruth était une Moabite.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Ruth était originaire de Moab.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -885,9 +843,7 @@
     "game_type": "true_false",
     "question": "Le livre des Psaumes contient 100 psaumes.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Le livre des Psaumes contient 150 psaumes.",
     "difficulty": "medium",
     "category": "Général",
@@ -897,9 +853,7 @@
     "game_type": "true_false",
     "question": "Paul a écrit l'Épître aux Hébreux.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "L'auteur de l'Épître aux Hébreux est inconnu.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -909,9 +863,7 @@
     "game_type": "true_false",
     "question": "Salomon a eu 700 femmes.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Salomon eut 700 princesses et 300 concubines.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -921,9 +873,7 @@
     "game_type": "true_false",
     "question": "Marie-Madeleine fut la première à voir Jésus ressuscité.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus apparut d'abord à Marie de Magdala.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -933,9 +883,7 @@
     "game_type": "true_false",
     "question": "Josué a fait tomber les murs de Jérusalem.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Josué a fait tomber les murs de Jéricho.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -945,9 +893,7 @@
     "game_type": "true_false",
     "question": "Le Jourdain est le fleuve où Jésus a été baptisé.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jean baptisait dans le fleuve Jourdain.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
@@ -957,9 +903,7 @@
     "game_type": "true_false",
     "question": "Samson a perdu sa force quand on lui a coupé les cheveux.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Dalila fit couper les sept tresses de Samson.",
     "difficulty": "medium",
     "category": "Ancien Testament",
@@ -969,9 +913,7 @@
     "game_type": "true_false",
     "question": "Methuselah est l'homme qui a vécu le plus longtemps selon la Bible.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Methuselah vécut 969 ans.",
     "difficulty": "hard",
     "category": "Ancien Testament",
@@ -981,9 +923,7 @@
     "game_type": "true_false",
     "question": "Le mot \"Bible\" apparaît dans la Bible.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Le mot Bible vient du grec biblia (livres) et n'apparaît pas dans le texte.",
     "difficulty": "hard",
     "category": "Général",
@@ -993,9 +933,7 @@
     "game_type": "true_false",
     "question": "Jésus a été crucifié un vendredi.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Jésus fut crucifie le jour de la Préparation, avant le sabbat.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
@@ -1005,9 +943,7 @@
     "game_type": "true_false",
     "question": "L'arche d'alliance contenait trois objets.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Les tables de la loi, la manne et le baton d'Aaron.",
     "difficulty": "hard",
     "category": "Ancien Testament",
@@ -1017,9 +953,7 @@
     "game_type": "true_false",
     "question": "Enoch n'est pas mort mais a été enlevé par Dieu.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Enoch marcha avec Dieu puis disparut car Dieu le prit.",
     "difficulty": "hard",
     "category": "Ancien Testament",
@@ -1027,12 +961,10 @@
   },
   {
     "game_type": "true_false",
-    "question": "La Pentecote est arrivée 40 jours après Paques.",
+    "question": "La Pentecôte est arrivée 40 jours après Pâques.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
-    "explanation": "La Pentecote est arrivée 50 jours après Paques.",
+    "wrong_answers": [],
+    "explanation": "La Pentecôte est arrivée 50 jours après Pâques.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Actes 2:1"
@@ -1041,9 +973,7 @@
     "game_type": "true_false",
     "question": "Le livre le plus court de la Bible est 3 Jean.",
     "correct_answer": "Faux",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Le livre le plus court est 2 Jean avec 13 versets.",
     "difficulty": "hard",
     "category": "Général",
@@ -1053,9 +983,7 @@
     "game_type": "true_false",
     "question": "Jésus a chassé les marchands du Temple deux fois.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Une fois au début de son ministère (Jean) et une fois à la fin (Synoptiques).",
     "difficulty": "hard",
     "category": "Nouveau Testament",
@@ -1065,9 +993,7 @@
     "game_type": "true_false",
     "question": "Le dernier livre de l'Ancien Testament est Malachie.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Malachie cloture l'Ancien Testament.",
     "difficulty": "hard",
     "category": "Général",
@@ -1077,9 +1003,7 @@
     "game_type": "true_false",
     "question": "Jésus a été tenté trois fois par Satan dans le désert.",
     "correct_answer": "Vrai",
-    "wrong_answers": [
-      "]::text["
-    ],
+    "wrong_answers": [],
     "explanation": "Satan tenta Jésus trois fois différentes.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
@@ -1164,7 +1088,7 @@
       "Caiphe",
       "Herode"
     ],
-    "explanation": "Judas demanda cela aux chefs des pretres.",
+    "explanation": "Judas demanda cela aux chefs des prêtres.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 26:15"

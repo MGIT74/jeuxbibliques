@@ -19,6 +19,7 @@ const smtpSettingsRoutes = require('./routes/smtpSettings');
 const notificationsRoutes = require('./routes/notifications');
 const adminRoutes = require('./routes/admin');
 const { migrate } = require('./db/migrate');
+const { seed } = require('./db/seed');
 
 const app = express();
 
@@ -85,16 +86,17 @@ const port = process.env.PORT || 3000;
 // a chaque deploiement. Sans danger a re-executer (CREATE TABLE IF NOT
 // EXISTS + verification d'existence des colonnes).
 migrate()
+  .then(() => seed())
   .then(() => {
     app.listen(port, () => {
       console.log(`Jeux Bibliques API listening on port ${port}`);
     });
   })
   .catch((err) => {
-    console.error('Echec de la migration au demarrage:', err);
+    console.error('Echec de la migration/synchronisation au demarrage:', err);
     // On demarre quand meme le serveur : mieux vaut un site fonctionnel
-    // sans la derniere colonne qu'un site totalement hors ligne.
+    // sans la derniere mise a jour de contenu qu'un site totalement hors ligne.
     app.listen(port, () => {
-      console.log(`Jeux Bibliques API listening on port ${port} (sans migration)`);
+      console.log(`Jeux Bibliques API listening on port ${port} (sans migration/sync)`);
     });
   });

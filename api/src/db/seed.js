@@ -26,6 +26,11 @@ async function seedGames(conn) {
 
 async function seedVerses(conn) {
   const verses = loadJson('verses');
+  // Ce contenu n'est reference par aucune autre table (pas de cle etrangere
+  // pointant vers verses.id) : on peut le remplacer entierement a chaque
+  // demarrage pour rester toujours synchronise avec le fichier JSON source
+  // (ex : corrections d'accents ou de contenu).
+  await conn.query('DELETE FROM verses');
   for (const v of verses) {
     await conn.query(
       `INSERT INTO verses (id, reference, text, book, chapter, verse_number, difficulty, speaker)
@@ -33,11 +38,12 @@ async function seedVerses(conn) {
       [uuidv4(), v.reference, v.text, v.book, v.chapter, v.verse_number, v.difficulty, v.speaker]
     );
   }
-  console.log(`  verses: ${verses.length}`);
+  console.log(`  verses: ${verses.length} (resynchronise)`);
 }
 
 async function seedQuizQuestions(conn) {
   const questions = loadJson('quiz_questions');
+  await conn.query('DELETE FROM quiz_questions');
   for (const q of questions) {
     await conn.query(
       `INSERT INTO quiz_questions (id, game_type, question, correct_answer, wrong_answers, explanation, difficulty, category, verse_reference)
@@ -49,22 +55,24 @@ async function seedQuizQuestions(conn) {
       ]
     );
   }
-  console.log(`  quiz_questions: ${questions.length}`);
+  console.log(`  quiz_questions: ${questions.length} (resynchronise)`);
 }
 
 async function seedBibleWords(conn) {
   const words = loadJson('bible_words');
+  await conn.query('DELETE FROM bible_words');
   for (const w of words) {
     await conn.query(
       `INSERT INTO bible_words (id, word, hint, category, difficulty) VALUES (?, ?, ?, ?, ?)`,
       [uuidv4(), w.word, w.hint, w.category, w.difficulty]
     );
   }
-  console.log(`  bible_words: ${words.length}`);
+  console.log(`  bible_words: ${words.length} (resynchronise)`);
 }
 
 async function seedBibleCharacters(conn) {
   const characters = loadJson('bible_characters');
+  await conn.query('DELETE FROM bible_characters');
   for (const c of characters) {
     await conn.query(
       `INSERT INTO bible_characters (id, name, story_title, story_description, book, difficulty)
@@ -72,7 +80,7 @@ async function seedBibleCharacters(conn) {
       [uuidv4(), c.name, c.story_title, c.story_description, c.book, c.difficulty]
     );
   }
-  console.log(`  bible_characters: ${characters.length}`);
+  console.log(`  bible_characters: ${characters.length} (resynchronise)`);
 }
 
 async function seedAdmin(conn) {
@@ -91,28 +99,27 @@ async function seedAdmin(conn) {
 async function seed() {
   const conn = await pool.getConnection();
   try {
-    const [[{ count }]] = await conn.query('SELECT COUNT(*) as count FROM games');
-
-    if (count === 0) {
-      console.log('Seeding content...');
-      await seedGames(conn);
-      await seedVerses(conn);
-      await seedQuizQuestions(conn);
-      await seedBibleWords(conn);
-      await seedBibleCharacters(conn);
-    } else {
-      console.log('Content already seeded, skipping (idempotent).');
-    }
+    console.log('Synchronisation du contenu (versets, quiz, mots, personnages)...');
+    await seedGames(conn);
+    await seedVerses(conn);
+    await seedQuizQuestions(conn);
+    await seedBibleWords(conn);
+    await seedBibleCharacters(conn);
 
     await seedAdmin(conn);
     console.log('Seeding complete.');
   } finally {
     conn.release();
-    await pool.end();
   }
 }
 
-seed().catch((err) => {
-  console.error('Seeding failed:', err);
-  process.exit(1);
-});
+module.exports = { seed };
+
+if (require.main === module) {
+  seed()
+    .then(() => pool.end())
+    .catch((err) => {
+      console.error('Seeding failed:', err);
+      process.exit(1);
+    });
+}
