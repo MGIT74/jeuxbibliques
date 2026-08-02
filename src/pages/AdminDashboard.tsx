@@ -668,11 +668,22 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
                   Image de couverture (carrée, ex : 512x512)
                 </label>
                 {formData.cover_image_url && (
-                  <img
-                    src={formData.cover_image_url}
-                    alt="Aperçu"
-                    className="w-full aspect-square object-cover rounded-xl mb-2 border border-gold/15"
-                  />
+                  <div className="relative mb-2">
+                    <img
+                      src={formData.cover_image_url}
+                      alt="Aperçu"
+                      className="w-full aspect-square object-cover rounded-xl border border-gold/15"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, cover_image_url: '' }))}
+                      className="absolute top-2 right-2 flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-ink-dark/80 text-coral text-xs font-medium hover:bg-ink-dark transition-colors"
+                      title="Supprimer l'image (revenir à l'icône par défaut)"
+                    >
+                      <Trash2 size={14} />
+                      Supprimer
+                    </button>
+                  </div>
                 )}
                 <input
                   type="file"
@@ -683,6 +694,11 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
                 />
                 {uploading && (
                   <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>Lecture de l'image...</p>
+                )}
+                {!formData.cover_image_url && (
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>
+                    Sans image, le jeu affiche son icône par défaut sur l'accueil.
+                  </p>
                 )}
               </div>
               <div className="flex gap-2 pt-1">
