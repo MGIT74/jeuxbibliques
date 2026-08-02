@@ -18,7 +18,7 @@
     "difficulty": "easy"
   },
   {
-    "word": "JESUS",
+    "word": "JÉSUS",
     "hint": "Le Fils de Dieu",
     "category": "Personnages",
     "difficulty": "easy"
@@ -48,7 +48,7 @@
     "difficulty": "easy"
   },
   {
-    "word": "PRIERE",
+    "word": "PRIÈRE",
     "hint": "Communication avec Dieu",
     "category": "Actions",
     "difficulty": "medium"
@@ -60,13 +60,13 @@
     "difficulty": "medium"
   },
   {
-    "word": "ESPERANCE",
+    "word": "ESPÉRANCE",
     "hint": "Attente confiante",
     "category": "Vertus",
     "difficulty": "medium"
   },
   {
-    "word": "RESURRECTION",
+    "word": "RÉSURRECTION",
     "hint": "Retour à la vie",
     "category": "Concepts",
     "difficulty": "medium"
@@ -84,7 +84,7 @@
     "difficulty": "medium"
   },
   {
-    "word": "JERUSALEM",
+    "word": "JÉRUSALEM",
     "hint": "Ville sainte",
     "category": "Lieux",
     "difficulty": "medium"
@@ -121,43 +121,43 @@
   },
   {
     "word": "BIBLE",
-    "hint": "Le livre sacre",
+    "hint": "Le livre sacré",
     "category": "Livres",
     "difficulty": "easy"
   },
   {
     "word": "DIEU",
-    "hint": "Le Createur",
+    "hint": "Le Créateur",
     "category": "Concepts",
     "difficulty": "easy"
   },
   {
     "word": "CIEL",
-    "hint": "Le royaume eternel",
+    "hint": "Le royaume éternel",
     "category": "Lieux",
     "difficulty": "easy"
   },
   {
     "word": "PAIN",
-    "hint": "Nourriture multipliee",
+    "hint": "Nourriture multipliée",
     "category": "Objets",
     "difficulty": "easy"
   },
   {
-    "word": "MERE",
-    "hint": "Marie pour Jesus",
+    "word": "MÈRE",
+    "hint": "Marie pour Jésus",
     "category": "Famille",
     "difficulty": "easy"
   },
   {
-    "word": "PERE",
+    "word": "PÈRE",
     "hint": "Dieu pour nous",
     "category": "Famille",
     "difficulty": "easy"
   },
   {
     "word": "FILS",
-    "hint": "Jesus pour Dieu",
+    "hint": "Jésus pour Dieu",
     "category": "Famille",
     "difficulty": "easy"
   },
@@ -194,13 +194,13 @@
   {
     "word": "NOEL",
     "hint": "Fete de la naissance",
-    "category": "Fetes",
+    "category": "Fêtes",
     "difficulty": "easy"
   },
   {
     "word": "PAQUE",
-    "hint": "Fete de la liberation",
-    "category": "Fetes",
+    "hint": "Fete de la libération",
+    "category": "Fêtes",
     "difficulty": "easy"
   },
   {
@@ -210,7 +210,7 @@
     "difficulty": "medium"
   },
   {
-    "word": "PROPHETIE",
+    "word": "PROPHÉTIE",
     "hint": "Message divin",
     "category": "Concepts",
     "difficulty": "medium"
@@ -223,13 +223,13 @@
   },
   {
     "word": "DISCIPLE",
-    "hint": "Suiveur de Jesus",
+    "hint": "Suiveur de Jésus",
     "category": "Personnes",
     "difficulty": "medium"
   },
   {
-    "word": "APOTRE",
-    "hint": "Envoye de Christ",
+    "word": "APÔTRE",
+    "hint": "Envoyé de Christ",
     "category": "Personnes",
     "difficulty": "medium"
   },
@@ -241,13 +241,13 @@
   },
   {
     "word": "TABERNACLE",
-    "hint": "Tente sacree",
+    "hint": "Tente sacrée",
     "category": "Lieux",
     "difficulty": "medium"
   },
   {
     "word": "GALILEE",
-    "hint": "Region de Jesus",
+    "hint": "Région de Jésus",
     "category": "Lieux",
     "difficulty": "medium"
   },
@@ -271,13 +271,13 @@
   },
   {
     "word": "LEPREUX",
-    "hint": "Malade gueri",
+    "hint": "Malade guéri",
     "category": "Personnes",
     "difficulty": "medium"
   },
   {
     "word": "AVEUGLE",
-    "hint": "Guerison miraculeuse",
+    "hint": "Guérison miraculeuse",
     "category": "Personnes",
     "difficulty": "medium"
   },
@@ -295,13 +295,13 @@
   },
   {
     "word": "SACRIFIER",
-    "hint": "Offrir a Dieu",
+    "hint": "Offrir à Dieu",
     "category": "Actions",
     "difficulty": "medium"
   },
   {
-    "word": "RESURRECTION",
-    "hint": "Retour a la vie",
+    "word": "RÉSURRECTION",
+    "hint": "Retour à la vie",
     "category": "Concepts",
     "difficulty": "hard"
   },
@@ -312,13 +312,13 @@
     "difficulty": "hard"
   },
   {
-    "word": "BENEDICTION",
+    "word": "BÉNÉDICTION",
     "hint": "Parole de bien",
     "category": "Concepts",
     "difficulty": "hard"
   },
   {
-    "word": "MALEDICTION",
+    "word": "MALÉDICTION",
     "hint": "Parole de mal",
     "category": "Concepts",
     "difficulty": "hard"
@@ -342,39 +342,39 @@
     "difficulty": "hard"
   },
   {
-    "word": "GETHSEMANE",
-    "hint": "Jardin de priere",
+    "word": "GETHSÉMANÉ",
+    "hint": "Jardin de prière",
     "category": "Lieux",
     "difficulty": "hard"
   },
   {
     "word": "GOLGOTHA",
-    "hint": "Lieu du crane",
+    "hint": "Lieu du crâne",
     "category": "Lieux",
     "difficulty": "hard"
   },
   {
     "word": "CHERUBINS",
     "hint": "Anges gardiens",
-    "category": "Etres",
+    "category": "Êtres",
     "difficulty": "hard"
   },
   {
     "word": "SERAPHINS",
     "hint": "Anges de louange",
-    "category": "Etres",
+    "category": "Êtres",
     "difficulty": "hard"
   },
   {
     "word": "PENTECOTE",
     "hint": "Venue de l'Esprit",
-    "category": "Fetes",
+    "category": "Fêtes",
     "difficulty": "hard"
   },
   {
     "word": "ASCENSION",
-    "hint": "Montee au ciel",
-    "category": "Evenements",
+    "hint": "Montée au ciel",
+    "category": "Événements",
     "difficulty": "hard"
   },
   {

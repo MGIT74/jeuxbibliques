@@ -128,92 +128,92 @@
   {
     "name": "Isaac",
     "story_title": "Le Fils de la Promesse",
-    "story_description": "Fils d'Abraham, il faillit etre sacrifie mais Dieu fournit un belier.",
-    "book": "Genese",
+    "story_description": "Fils d'Abraham, il faillit etre sacrifié mais Dieu fournit un belier.",
+    "book": "Genèse",
     "difficulty": "easy"
   },
   {
     "name": "Rebecca",
-    "story_title": "L'Epouse Choisie",
+    "story_title": "L'Épouse Choisie",
     "story_description": "Elle fut choisie par le serviteur d'Abraham pour etre la femme d'Isaac.",
-    "book": "Genese",
+    "book": "Genèse",
     "difficulty": "medium"
   },
   {
     "name": "Lea",
-    "story_title": "La Premiere Epouse",
-    "story_description": "Premiere femme de Jacob, mere de six fils d'Israel.",
-    "book": "Genese",
+    "story_title": "La Première Épouse",
+    "story_description": "Première femme de Jacob, mère de six fils d'Israël.",
+    "book": "Genèse",
     "difficulty": "medium"
   },
   {
     "name": "Rachel",
     "story_title": "La Bien-Aimee",
-    "story_description": "Femme preferee de Jacob, mere de Joseph et Benjamin.",
-    "book": "Genese",
+    "story_description": "Femme préférée de Jacob, mère de Joseph et Benjamin.",
+    "book": "Genèse",
     "difficulty": "medium"
   },
   {
     "name": "Josue",
-    "story_title": "Le Conquerant de Canaan",
-    "story_description": "Il succeda a Moise et fit tomber les murs de Jericho.",
-    "book": "Josue",
+    "story_title": "Le Conquérant de Canaan",
+    "story_description": "Il succéda à Moïse et fit tomber les murs de Jéricho.",
+    "book": "Josué",
     "difficulty": "easy"
   },
   {
     "name": "Debora",
-    "story_title": "La Juge Prophetesse",
-    "story_description": "Seule femme juge d'Israel, elle guida Barak a la victoire.",
+    "story_title": "La Juge Prophétesse",
+    "story_description": "Seule femme juge d'Israël, elle guida Barak à la victoire.",
     "book": "Juges",
     "difficulty": "hard"
   },
   {
     "name": "Samuel",
     "story_title": "Le Dernier Juge",
-    "story_description": "Prophete qui oignit les premiers rois d'Israel, Saul et David.",
+    "story_description": "Prophète qui oignit les premiers rois d'Israël, Saul et David.",
     "book": "1 Samuel",
     "difficulty": "medium"
   },
   {
     "name": "Saul",
     "story_title": "Le Premier Roi",
-    "story_description": "Premier roi d'Israel, il desobeit a Dieu et perdit le royaume.",
+    "story_description": "Premier roi d'Israël, il désobéit à Dieu et perdit le royaume.",
     "book": "1 Samuel",
     "difficulty": "medium"
   },
   {
     "name": "Jonathan",
-    "story_title": "L'Ami Fidele",
+    "story_title": "L'Ami Fidèle",
     "story_description": "Fils de Saul et meilleur ami de David.",
     "book": "1 Samuel",
     "difficulty": "medium"
   },
   {
     "name": "Nathan",
-    "story_title": "Le Prophete Courageux",
-    "story_description": "Il confronta David apres son peche avec Bath-Scheba.",
+    "story_title": "Le Prophète Courageux",
+    "story_description": "Il confronta David après son péché avec Bath-Shéba.",
     "book": "2 Samuel",
     "difficulty": "hard"
   },
   {
     "name": "Absalom",
     "story_title": "Le Fils Rebelle",
-    "story_description": "Fils de David qui se revolta contre son pere.",
+    "story_description": "Fils de David qui se révolta contre son père.",
     "book": "2 Samuel",
     "difficulty": "hard"
   },
   {
-    "name": "Elisee",
-    "story_title": "Le Successeur d'Elie",
-    "story_description": "Prophete qui recut le double de l'esprit d'Elie.",
+    "name": "Élisée",
+    "story_title": "Le Successeur d'Élie",
+    "story_description": "Prophète qui reçut le double de l'esprit d'Élie.",
     "book": "2 Rois",
     "difficulty": "medium"
   },
   {
     "name": "Nehemie",
-    "story_title": "Le Batisseur des Murs",
-    "story_description": "Il reconstruisit les murailles de Jerusalem.",
-    "book": "Nehemie",
+    "story_title": "Le Bâtisseur des Murs",
+    "story_description": "Il reconstruisit les murailles de Jérusalem.",
+    "book": "Néhémie",
     "difficulty": "hard"
   },
   {
@@ -226,35 +226,35 @@
   {
     "name": "Job",
     "story_title": "L'Homme Patient",
-    "story_description": "Il souffrit enormement mais resta fidele a Dieu.",
+    "story_description": "Il souffrit énormément mais resta fidèle à Dieu.",
     "book": "Job",
     "difficulty": "medium"
   },
   {
-    "name": "Zachee",
+    "name": "Zachée",
     "story_title": "Le Collecteur Repentant",
-    "story_description": "Petit de taille, il monta dans un arbre pour voir Jesus.",
+    "story_description": "Petit de taille, il monta dans un arbre pour voir Jésus.",
     "book": "Luc",
     "difficulty": "easy"
   },
   {
-    "name": "Nicodeme",
+    "name": "Nicodème",
     "story_title": "Le Pharisien Curieux",
-    "story_description": "Il vint voir Jesus de nuit pour l'interroger.",
+    "story_description": "Il vint voir Jésus de nuit pour l'interroger.",
     "book": "Jean",
     "difficulty": "medium"
   },
   {
     "name": "Lazare",
     "story_title": "Le Ressuscite",
-    "story_description": "Ami de Jesus qu'il ressuscita apres quatre jours.",
+    "story_description": "Ami de Jésus qu'il ressuscita après quatre jours.",
     "book": "Jean",
     "difficulty": "easy"
   },
   {
     "name": "Marthe",
     "story_title": "La Servante Active",
-    "story_description": "Soeur de Marie et Lazare, elle s'affairait a servir.",
+    "story_description": "Sœur de Marie et Lazare, elle s'affairait à servir.",
     "book": "Luc",
     "difficulty": "medium"
   },
@@ -266,16 +266,16 @@
     "difficulty": "hard"
   },
   {
-    "name": "Timothee",
+    "name": "Timothée",
     "story_title": "Le Jeune Disciple",
-    "story_description": "Collaborateur fidele de Paul a qui il adressa deux lettres.",
+    "story_description": "Collaborateur fidèle de Paul à qui il adressa deux lettres.",
     "book": "Actes",
     "difficulty": "medium"
   },
   {
     "name": "Lydie",
     "story_title": "La Marchande de Pourpre",
-    "story_description": "Premiere convertie en Europe, a Philippes.",
+    "story_description": "Première convertie en Europe, à Philippes.",
     "book": "Actes",
     "difficulty": "hard"
   }

@@ -307,14 +307,14 @@
   },
   {
     "game_type": "quiz",
-    "question": "Quel animal a parle a Balaam?",
+    "question": "Quel animal a parlé à Balaam ?",
     "correct_answer": "Une anesse",
     "wrong_answers": [
       "Un serpent",
       "Un lion",
       "Un corbeau"
     ],
-    "explanation": "L'anesse de Balaam a parle pour avertir le prophete de l'ange.",
+    "explanation": "L'ânesse de Balaam a parlé pour avertir le prophète de l'ange.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Nombres 22:28"
@@ -328,19 +328,19 @@
       "7",
       "14"
     ],
-    "explanation": "Jacob eut 12 fils qui formerent les 12 tribus d'Israel.",
+    "explanation": "Jacob eut 12 fils qui formerent les 12 tribus d'Israël.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Genese 35:22"
   },
   {
     "game_type": "quiz",
-    "question": "Quel disciple a doute de la resurrection de Jesus?",
+    "question": "Quel disciple a douté de la résurrection de Jésus ?",
     "correct_answer": "Thomas",
     "wrong_answers": [
       "Pierre",
       "Jean",
-      "Andre"
+      "André"
     ],
     "explanation": "Thomas voulait voir les marques des clous avant de croire.",
     "difficulty": "easy",
@@ -349,35 +349,35 @@
   },
   {
     "game_type": "quiz",
-    "question": "Quel fruit est mentionne dans le jardin d'Eden?",
+    "question": "Quel fruit est mentionné dans le jardin d'Eden?",
     "correct_answer": "Un fruit de l'arbre de la connaissance",
     "wrong_answers": [
       "Une pomme rouge",
       "Une orange",
       "Un raisin"
     ],
-    "explanation": "La Bible ne precise pas quel type de fruit c'etait.",
+    "explanation": "La Bible ne précise pas quel type de fruit c'était.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Genese 3:6"
   },
   {
     "game_type": "quiz",
-    "question": "Qui etait le frere de Moise?",
+    "question": "Qui était le frère de Moïse?",
     "correct_answer": "Aaron",
     "wrong_answers": [
       "Josue",
       "Caleb",
       "Samuel"
     ],
-    "explanation": "Aaron etait le frere aine de Moise et le premier grand pretre.",
+    "explanation": "Aaron était le frère aîné de Moïse et le premier grand pretre.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Exode 4:14"
   },
   {
     "game_type": "quiz",
-    "question": "Dans quelle mer les Israelites ont-ils traverse a pied sec?",
+    "question": "Dans quelle mer les Israélites ont-ils traversé à pied sec ?",
     "correct_answer": "La mer Rouge",
     "wrong_answers": [
       "La mer Morte",
@@ -391,11 +391,11 @@
   },
   {
     "game_type": "quiz",
-    "question": "Qui a ete jete dans la fosse aux lions?",
+    "question": "Qui a été jeté dans la fosse aux lions ?",
     "correct_answer": "Daniel",
     "wrong_answers": [
       "David",
-      "Elie",
+      "Élie",
       "Jonas"
     ],
     "explanation": "Daniel fut jete aux lions mais Dieu ferma leur gueule.",
@@ -414,40 +414,40 @@
     ],
     "explanation": "L'Evangile selon Matthieu ouvre le Nouveau Testament.",
     "difficulty": "easy",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "quiz",
-    "question": "Combien de pains Jesus a-t-il multiplies pour nourrir 5000 personnes?",
+    "question": "Combien de pains Jésus a-t-il multipliés pour nourrir 5000 personnes ?",
     "correct_answer": "5",
     "wrong_answers": [
       "7",
       "3",
       "2"
     ],
-    "explanation": "Jesus a pris 5 pains et 2 poissons pour ce miracle.",
+    "explanation": "Jésus a pris 5 pains et 2 poissons pour ce miracle.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 14:17"
   },
   {
     "game_type": "quiz",
-    "question": "Qui a baptise Jesus?",
+    "question": "Qui a baptisé Jésus ?",
     "correct_answer": "Jean-Baptiste",
     "wrong_answers": [
       "Pierre",
       "Paul",
-      "Andre"
+      "André"
     ],
-    "explanation": "Jean-Baptiste a baptise Jesus dans le Jourdain.",
+    "explanation": "Jean-Baptiste a baptisé Jésus dans le Jourdain.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 3:13"
   },
   {
     "game_type": "quiz",
-    "question": "Quel roi a demande la sagesse a Dieu?",
+    "question": "Quel roi a demandé la sagesse à Dieu ?",
     "correct_answer": "Salomon",
     "wrong_answers": [
       "David",
@@ -461,134 +461,134 @@
   },
   {
     "game_type": "quiz",
-    "question": "Combien de fois Pierre a-t-il renie Jesus?",
+    "question": "Combien de fois Pierre a-t-il renié Jésus ?",
     "correct_answer": "3 fois",
     "wrong_answers": [
       "2 fois",
       "4 fois",
       "1 fois"
     ],
-    "explanation": "Pierre renia Jesus trois fois avant le chant du coq.",
+    "explanation": "Pierre renia Jésus trois fois avant le chant du coq.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 26:34"
   },
   {
     "game_type": "quiz",
-    "question": "Quel prophete a ete enleve au ciel dans un char de feu?",
-    "correct_answer": "Elie",
+    "question": "Quel prophète a été enlevé au ciel dans un char de feu ?",
+    "correct_answer": "Élie",
     "wrong_answers": [
-      "Elisee",
+      "Élisée",
       "Enoch",
-      "Moise"
+      "Moïse"
     ],
-    "explanation": "Elie fut enleve au ciel dans un tourbillon avec un char de feu.",
+    "explanation": "Élie fut enleve au ciel dans un tourbillon avec un char de feu.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "2 Rois 2:11"
   },
   {
     "game_type": "quiz",
-    "question": "Quelle femme a cache les espions israelites a Jericho?",
+    "question": "Quelle femme a caché les espions israélites à Jéricho ?",
     "correct_answer": "Rahab",
     "wrong_answers": [
       "Ruth",
       "Debora",
       "Esther"
     ],
-    "explanation": "Rahab cacha les espions et fut epargnee lors de la chute de Jericho.",
+    "explanation": "Rahab cacha les espions et fut épargnée lors de la chute de Jéricho.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "Josue 2:4"
   },
   {
     "game_type": "quiz",
-    "question": "Combien de jours Lazare etait-il mort avant que Jesus le ressuscite?",
+    "question": "Combien de jours Lazare était-il mort avant que Jésus le ressuscite ?",
     "correct_answer": "4 jours",
     "wrong_answers": [
       "3 jours",
       "2 jours",
       "7 jours"
     ],
-    "explanation": "Lazare etait dans le tombeau depuis quatre jours.",
+    "explanation": "Lazare était dans le tombeau depuis quatre jours.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 11:39"
   },
   {
     "game_type": "quiz",
-    "question": "Quel apotre a ecrit le plus de lettres dans le Nouveau Testament?",
+    "question": "Quel apôtre a écrit le plus de lettres dans le Nouveau Testament ?",
     "correct_answer": "Paul",
     "wrong_answers": [
       "Pierre",
       "Jean",
       "Jacques"
     ],
-    "explanation": "Paul a ecrit 13 epitres du Nouveau Testament.",
+    "explanation": "Paul a écrit 13 épîtres du Nouveau Testament.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": null
   },
   {
     "game_type": "quiz",
-    "question": "Quelle ville etait la capitale du royaume du nord (Israel)?",
+    "question": "Quelle ville était la capitale du royaume du nord (Israël)?",
     "correct_answer": "Samarie",
     "wrong_answers": [
-      "Jerusalem",
+      "Jérusalem",
       "Bethel",
       "Dan"
     ],
-    "explanation": "Samarie devint la capitale d'Israel sous Omri.",
+    "explanation": "Samarie devint la capitale d'Israël sous Omri.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "1 Rois 16:24"
   },
   {
     "game_type": "quiz",
-    "question": "Qui etait le pere de Jean-Baptiste?",
+    "question": "Qui était le père de Jean-Baptiste?",
     "correct_answer": "Zacharie",
     "wrong_answers": [
       "Joseph",
       "Simeon",
       "Eli"
     ],
-    "explanation": "Zacharie etait pretre et pere de Jean-Baptiste.",
+    "explanation": "Zacharie était pretre et père de Jean-Baptiste.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 1:13"
   },
   {
     "game_type": "quiz",
-    "question": "Combien d'annees les Israelites ont-ils erre dans le desert?",
+    "question": "Combien d'années les Israélites ont-ils erré dans le désert ?",
     "correct_answer": "40 ans",
     "wrong_answers": [
       "20 ans",
       "30 ans",
       "50 ans"
     ],
-    "explanation": "A cause de leur incredulite, ils errerent 40 ans.",
+    "explanation": "A cause de leur incrédulité, ils errerent 40 ans.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "Nombres 14:33"
   },
   {
     "game_type": "quiz",
-    "question": "Quel etait le metier de Pierre avant de suivre Jesus?",
+    "question": "Quel était le métier de Pierre avant de suivre Jésus?",
     "correct_answer": "Pecheur",
     "wrong_answers": [
       "Charpentier",
       "Berger",
       "Collecteur d'impots"
     ],
-    "explanation": "Pierre et Andre etaient pecheurs sur le lac de Galilee.",
+    "explanation": "Pierre et André étaient pecheurs sur le lac de Galilee.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 4:18"
   },
   {
     "game_type": "quiz",
-    "question": "Quel est le verset le plus court de la Bible en francais?",
-    "correct_answer": "Jesus pleura (Jean 11:35)",
+    "question": "Quel est le verset le plus court de la Bible en français?",
+    "correct_answer": "Jésus pleura (Jean 11:35)",
     "wrong_answers": [
       "Priez sans cesse",
       "Dieu est amour",
@@ -596,68 +596,68 @@
     ],
     "explanation": "Jean 11:35 contient seulement deux mots.",
     "difficulty": "hard",
-    "category": "General",
+    "category": "Général",
     "verse_reference": "Jean 11:35"
   },
   {
     "game_type": "quiz",
-    "question": "Qui etait Melchisedek?",
+    "question": "Qui était Melchisedek?",
     "correct_answer": "Roi de Salem et pretre du Dieu Tres-Haut",
     "wrong_answers": [
-      "Un prophete",
-      "Un juge d'Israel",
-      "Un roi d'Egypte"
+      "Un prophète",
+      "Un juge d'Israël",
+      "Un roi d'Égypte"
     ],
-    "explanation": "Melchisedek benit Abraham et recut sa dime.",
+    "explanation": "Melchisedek bénit Abraham et reçut sa dime.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "Genese 14:18"
   },
   {
     "game_type": "quiz",
-    "question": "Combien de personnes etaient dans l'arche de Noe?",
+    "question": "Combien de personnes étaient dans l'arche de Noé?",
     "correct_answer": "8",
     "wrong_answers": [
       "6",
       "10",
       "12"
     ],
-    "explanation": "Noe, sa femme, leurs trois fils et leurs femmes.",
+    "explanation": "Noé, sa femme, leurs trois fils et leurs femmes.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "1 Pierre 3:20"
   },
   {
     "game_type": "quiz",
-    "question": "Quel roi a fait construire le premier Temple de Jerusalem?",
+    "question": "Quel roi a fait construire le premier Temple de Jérusalem ?",
     "correct_answer": "Salomon",
     "wrong_answers": [
       "David",
       "Ezechias",
       "Josias"
     ],
-    "explanation": "David prepara les materiaux, mais Salomon construisit le Temple.",
+    "explanation": "David prépara les materiaux, mais Salomon construisit le Temple.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "1 Rois 6:1"
   },
   {
     "game_type": "quiz",
-    "question": "Quel prophete a mange un rouleau?",
+    "question": "Quel prophète a mangé un rouleau ?",
     "correct_answer": "Ezechiel",
     "wrong_answers": [
       "Jeremie",
-      "Esaie",
+      "Ésaïe",
       "Daniel"
     ],
-    "explanation": "Dieu ordonna a Ezechiel de manger le rouleau qui etait doux.",
+    "explanation": "Dieu ordonna à Ézéchiel de manger le rouleau qui était doux.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "Ezechiel 3:3"
   },
   {
     "game_type": "quiz",
-    "question": "Combien de plaies Dieu a-t-il envoyees sur l'Egypte?",
+    "question": "Combien de plaies Dieu a-t-il envoyées sur l'Égypte ?",
     "correct_answer": "10",
     "wrong_answers": [
       "7",
@@ -671,7 +671,7 @@
   },
   {
     "game_type": "quiz",
-    "question": "Qui a succede a Moise pour diriger Israel?",
+    "question": "Qui a succédé à Moïse pour diriger Israël ?",
     "correct_answer": "Josue",
     "wrong_answers": [
       "Aaron",
@@ -685,7 +685,7 @@
   },
   {
     "game_type": "quiz",
-    "question": "Quelle etait la profession de Luc?",
+    "question": "Quelle était la profession de Luc?",
     "correct_answer": "Medecin",
     "wrong_answers": [
       "Pecheur",
@@ -699,14 +699,14 @@
   },
   {
     "game_type": "quiz",
-    "question": "Quel ange a annonce la naissance de Jesus a Marie?",
+    "question": "Quel ange a annoncé la naissance de Jésus à Marie ?",
     "correct_answer": "Gabriel",
     "wrong_answers": [
       "Michel",
       "Raphael",
       "Uriel"
     ],
-    "explanation": "L'ange Gabriel fut envoye a Nazareth vers Marie.",
+    "explanation": "L'ange Gabriel fut envoyé à Nazareth vers Marie.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 1:26"
@@ -722,120 +722,120 @@
     ],
     "explanation": "L'Ancien Testament protestant contient 39 livres.",
     "difficulty": "hard",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "David a tue Goliath avec une epee.",
+    "question": "David a tué Goliath avec une épée.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "David a tue Goliath avec une fronde et une pierre.",
+    "explanation": "David a tué Goliath avec une fronde et une pierre.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "1 Samuel 17:50"
   },
   {
     "game_type": "true_false",
-    "question": "Jesus est ne a Nazareth.",
+    "question": "Jésus est né à Nazareth.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Jesus est ne a Bethleem mais a grandi a Nazareth.",
+    "explanation": "Jésus est né à Bethléem mais a grandi à Nazareth.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 2:1"
   },
   {
     "game_type": "true_false",
-    "question": "Moise a ecrit les cinq premiers livres de la Bible.",
+    "question": "Moïse a écrit les cinq premiers livres de la Bible.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Moise est traditionnellement considere comme l'auteur du Pentateuque.",
+    "explanation": "Moïse est traditionnellement considéré comme l'auteur du Pentateuque.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "Jesus avait 10 apotres.",
+    "question": "Jésus avait 10 apôtres.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Jesus a choisi 12 apotres.",
+    "explanation": "Jésus a choisi 12 apôtres.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 10:1"
   },
   {
     "game_type": "true_false",
-    "question": "Le premier miracle de Jesus fut la multiplication des pains.",
+    "question": "Le premier miracle de Jésus fut la multiplication des pains.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Le premier miracle fut de changer l'eau en vin a Cana.",
+    "explanation": "Le premier miracle fut de changer l'eau en vin à Cana.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 2:11"
   },
   {
     "game_type": "true_false",
-    "question": "Noe avait trois fils.",
+    "question": "Noé avait trois fils.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Noe avait Sem, Cham et Japhet.",
+    "explanation": "Noé avait Sem, Cham et Japhet.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Genese 6:10"
   },
   {
     "game_type": "true_false",
-    "question": "Jean-Baptiste etait le cousin de Jesus.",
+    "question": "Jean-Baptiste était le cousin de Jésus.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Marie et Elisabeth etaient parentes.",
+    "explanation": "Marie et Élisabeth étaient parentes.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 1:36"
   },
   {
     "game_type": "true_false",
-    "question": "Les dix commandements ont ete donnes sur le mont Sion.",
+    "question": "Les dix commandements ont été donnes sur le mont Sion.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Ils ont ete donnes sur le mont Sinai.",
+    "explanation": "Ils ont été donnes sur le mont Sinaï.",
     "difficulty": "easy",
     "category": "Ancien Testament",
     "verse_reference": "Exode 19:20"
   },
   {
     "game_type": "true_false",
-    "question": "Jesus a ressuscite le troisieme jour.",
+    "question": "Jésus a ressuscité le troisième jour.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Jesus est ressuscite le troisieme jour selon les Ecritures.",
+    "explanation": "Jésus est ressuscité le troisième jour selon les Écritures.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "1 Corinthiens 15:4"
   },
   {
     "game_type": "true_false",
-    "question": "Abraham etait le pere d'Isaac.",
+    "question": "Abraham était le père d'Isaac.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
@@ -847,7 +847,7 @@
   },
   {
     "game_type": "true_false",
-    "question": "Judas s'est pendu apres avoir trahi Jesus.",
+    "question": "Judas s'est pendu après avoir trahi Jésus.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
@@ -859,7 +859,7 @@
   },
   {
     "game_type": "true_false",
-    "question": "Joseph a ete vendu par ses freres pour 30 pieces d'argent.",
+    "question": "Joseph a été vendu par ses frères pour 30 pièces d'argent.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
@@ -871,12 +871,12 @@
   },
   {
     "game_type": "true_false",
-    "question": "Ruth etait une Moabite.",
+    "question": "Ruth était une Moabite.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Ruth etait originaire de Moab.",
+    "explanation": "Ruth était originaire de Moab.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "Ruth 1:4"
@@ -890,17 +890,17 @@
     ],
     "explanation": "Le livre des Psaumes contient 150 psaumes.",
     "difficulty": "medium",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "Paul a ecrit l'Epitre aux Hebreux.",
+    "question": "Paul a écrit l'Épître aux Hébreux.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "L'auteur de l'Epitre aux Hebreux est inconnu.",
+    "explanation": "L'auteur de l'Épître aux Hébreux est inconnu.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": null
@@ -919,31 +919,31 @@
   },
   {
     "game_type": "true_false",
-    "question": "Marie-Madeleine fut la premiere a voir Jesus ressuscite.",
+    "question": "Marie-Madeleine fut la première à voir Jésus ressuscité.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Jesus apparut d'abord a Marie de Magdala.",
+    "explanation": "Jésus apparut d'abord à Marie de Magdala.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Marc 16:9"
   },
   {
     "game_type": "true_false",
-    "question": "Josue a fait tomber les murs de Jerusalem.",
+    "question": "Josué a fait tomber les murs de Jérusalem.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Josue a fait tomber les murs de Jericho.",
+    "explanation": "Josué a fait tomber les murs de Jéricho.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "Josue 6:20"
   },
   {
     "game_type": "true_false",
-    "question": "Le Jourdain est le fleuve ou Jesus a ete baptise.",
+    "question": "Le Jourdain est le fleuve où Jésus a été baptisé.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
@@ -955,7 +955,7 @@
   },
   {
     "game_type": "true_false",
-    "question": "Samson a perdu sa force quand on lui a coupe les cheveux.",
+    "question": "Samson a perdu sa force quand on lui a coupé les cheveux.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
@@ -967,36 +967,36 @@
   },
   {
     "game_type": "true_false",
-    "question": "Methuselah est l'homme qui a vecu le plus longtemps selon la Bible.",
+    "question": "Methuselah est l'homme qui a vécu le plus longtemps selon la Bible.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Methuselah vecut 969 ans.",
+    "explanation": "Methuselah vécut 969 ans.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "Genese 5:27"
   },
   {
     "game_type": "true_false",
-    "question": "Le mot \"Bible\" apparait dans la Bible.",
+    "question": "Le mot \"Bible\" apparaît dans la Bible.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Le mot Bible vient du grec biblia (livres) et n'apparait pas dans le texte.",
+    "explanation": "Le mot Bible vient du grec biblia (livres) et n'apparaît pas dans le texte.",
     "difficulty": "hard",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "Jesus a ete crucifie un vendredi.",
+    "question": "Jésus a été crucifié un vendredi.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Jesus fut crucifie le jour de la Preparation, avant le sabbat.",
+    "explanation": "Jésus fut crucifie le jour de la Préparation, avant le sabbat.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Marc 15:42"
@@ -1015,7 +1015,7 @@
   },
   {
     "game_type": "true_false",
-    "question": "Enoch n'est pas mort mais a ete enleve par Dieu.",
+    "question": "Enoch n'est pas mort mais a été enlevé par Dieu.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
@@ -1027,12 +1027,12 @@
   },
   {
     "game_type": "true_false",
-    "question": "La Pentecote est arrivee 40 jours apres Paques.",
+    "question": "La Pentecote est arrivée 40 jours après Paques.",
     "correct_answer": "Faux",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "La Pentecote est arrivee 50 jours apres Paques.",
+    "explanation": "La Pentecote est arrivée 50 jours après Paques.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Actes 2:1"
@@ -1046,17 +1046,17 @@
     ],
     "explanation": "Le livre le plus court est 2 Jean avec 13 versets.",
     "difficulty": "hard",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "Jesus a chasse les marchands du Temple deux fois.",
+    "question": "Jésus a chassé les marchands du Temple deux fois.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Une fois au debut de son ministere (Jean) et une fois a la fin (Synoptiques).",
+    "explanation": "Une fois au début de son ministère (Jean) et une fois à la fin (Synoptiques).",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 2:15"
@@ -1070,17 +1070,17 @@
     ],
     "explanation": "Malachie cloture l'Ancien Testament.",
     "difficulty": "hard",
-    "category": "General",
+    "category": "Général",
     "verse_reference": null
   },
   {
     "game_type": "true_false",
-    "question": "Jesus a ete tente trois fois par Satan dans le desert.",
+    "question": "Jésus a été tenté trois fois par Satan dans le désert.",
     "correct_answer": "Vrai",
     "wrong_answers": [
       "]::text["
     ],
-    "explanation": "Satan tenta Jesus trois fois differentes.",
+    "explanation": "Satan tenta Jésus trois fois différentes.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 4:1-11"
@@ -1090,67 +1090,67 @@
     "question": "Voici, je suis la servante du Seigneur; qu'il me soit fait selon ta parole.",
     "correct_answer": "Marie",
     "wrong_answers": [
-      "Elisabeth",
+      "Élisabeth",
       "Anne",
       "Ruth"
     ],
-    "explanation": "Marie repondit ainsi a l'ange Gabriel.",
+    "explanation": "Marie répondit ainsi à l'ange Gabriel.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 1:38"
   },
   {
     "game_type": "who_said",
-    "question": "Ne crains point, car je t'ai rachete, je t'ai appele par ton nom: tu es a moi!",
+    "question": "Ne crains point, car je t'ai racheté, je t'ai appelé par ton nom : tu es à moi !",
     "correct_answer": "Dieu",
     "wrong_answers": [
-      "Jesus",
-      "Moise",
+      "Jésus",
+      "Moïse",
       "David"
     ],
-    "explanation": "Dieu parle a son peuple par le prophete Esaie.",
+    "explanation": "Dieu parle à son peuple par le prophète Ésaïe.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "Esaie 43:1"
   },
   {
     "game_type": "who_said",
-    "question": "Qu'est-ce que la verite?",
+    "question": "Qu'est-ce que la vérité?",
     "correct_answer": "Pilate",
     "wrong_answers": [
       "Herode",
       "Caiphe",
       "Thomas"
     ],
-    "explanation": "Pilate posa cette question a Jesus lors de son proces.",
+    "explanation": "Pilate posa cette question à Jésus lors de son procès.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 18:38"
   },
   {
     "game_type": "who_said",
-    "question": "Femme, ou sont ceux qui t'accusaient? Personne ne t'a-t-il condamnee?",
-    "correct_answer": "Jesus",
+    "question": "Femme, où sont ceux qui t'accusaient ? Personne ne t'a-t-il condamnée ?",
+    "correct_answer": "Jésus",
     "wrong_answers": [
       "Pierre",
       "Jean",
       "Paul"
     ],
-    "explanation": "Jesus dit cela a la femme adultere apres avoir ecrit dans le sable.",
+    "explanation": "Jésus dit cela à la femme adultère après avoir écrit dans le sable.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 8:10"
   },
   {
     "game_type": "who_said",
-    "question": "Mon Dieu, mon Dieu, pourquoi m'as-tu abandonne?",
-    "correct_answer": "Jesus",
+    "question": "Mon Dieu, mon Dieu, pourquoi m'as-tu abandonné?",
+    "correct_answer": "Jésus",
     "wrong_answers": [
       "David",
       "Job",
       "Jeremie"
     ],
-    "explanation": "Jesus cria ces mots sur la croix.",
+    "explanation": "Jésus cria ces mots sur la croix.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 27:46"
@@ -1171,112 +1171,112 @@
   },
   {
     "game_type": "who_said",
-    "question": "Va, et ne peche plus.",
-    "correct_answer": "Jesus",
+    "question": "Va, et ne pèche plus.",
+    "correct_answer": "Jésus",
     "wrong_answers": [
       "Jean-Baptiste",
       "Pierre",
       "Paul"
     ],
-    "explanation": "Jesus dit cela a plusieurs personnes qu'il pardonna.",
+    "explanation": "Jésus dit cela à plusieurs personnes qu'il pardonna.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 8:11"
   },
   {
     "game_type": "who_said",
-    "question": "Meme si tous sont scandalises, moi je ne le serai pas!",
+    "question": "Même si tous sont scandalisés, moi je ne le serai pas!",
     "correct_answer": "Pierre",
     "wrong_answers": [
       "Jean",
       "Jacques",
       "Thomas"
     ],
-    "explanation": "Pierre affirma sa loyaute avant de renier Jesus.",
+    "explanation": "Pierre affirma sa loyauté avant de renier Jésus.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Marc 14:29"
   },
   {
     "game_type": "who_said",
-    "question": "Ou tu iras j'irai, ou tu demeureras je demeurerai.",
+    "question": "Où tu iras j'irai, où tu demeureras je demeurerai.",
     "correct_answer": "Ruth",
     "wrong_answers": [
       "Naomi",
       "Orpa",
       "Esther"
     ],
-    "explanation": "Ruth declara sa fidelite a sa belle-mere Naomi.",
+    "explanation": "Ruth déclara sa fidélité à sa belle-mère Naomi.",
     "difficulty": "hard",
     "category": "Ancien Testament",
     "verse_reference": "Ruth 1:16"
   },
   {
     "game_type": "who_said",
-    "question": "Parle, car ton serviteur ecoute.",
+    "question": "Parle, car ton serviteur écoute.",
     "correct_answer": "Samuel",
     "wrong_answers": [
       "David",
-      "Moise",
-      "Elie"
+      "Moïse",
+      "Élie"
     ],
-    "explanation": "Le jeune Samuel repondit ainsi a l'appel de Dieu.",
+    "explanation": "Le jeune Samuel répondit ainsi à l'appel de Dieu.",
     "difficulty": "medium",
     "category": "Ancien Testament",
     "verse_reference": "1 Samuel 3:10"
   },
   {
     "game_type": "who_said",
-    "question": "Vous etes le sel de la terre.",
-    "correct_answer": "Jesus",
+    "question": "Vous êtes le sel de la terre.",
+    "correct_answer": "Jésus",
     "wrong_answers": [
       "Paul",
       "Pierre",
       "Jacques"
     ],
-    "explanation": "Jesus enseigna cela dans le Sermon sur la Montagne.",
+    "explanation": "Jésus enseigna cela dans le Sermon sur la Montagne.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Matthieu 5:13"
   },
   {
     "game_type": "who_said",
-    "question": "Je crois! Viens au secours de mon incredulite!",
-    "correct_answer": "Le pere d'un enfant possede",
+    "question": "Je crois! Viens au secours de mon incrédulité!",
+    "correct_answer": "Le père d'un enfant possède",
     "wrong_answers": [
       "Thomas",
       "Pierre",
       "Zacharie"
     ],
-    "explanation": "Ce pere supplia Jesus de guerir son fils.",
+    "explanation": "Ce père supplia Jésus de guérir son fils.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Marc 9:24"
   },
   {
     "game_type": "who_said",
-    "question": "Celui qui n'a pas peche lui jette la premiere pierre.",
-    "correct_answer": "Jesus",
+    "question": "Celui qui n'a pas péché lui jette la première pierre.",
+    "correct_answer": "Jésus",
     "wrong_answers": [
       "Jean-Baptiste",
       "Paul",
-      "Moise"
+      "Moïse"
     ],
-    "explanation": "Jesus dit cela a ceux qui voulaient lapider la femme adultere.",
+    "explanation": "Jésus dit cela à ceux qui voulaient lapider la femme adultère.",
     "difficulty": "easy",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 8:7"
   },
   {
     "game_type": "who_said",
-    "question": "Seigneur, enseigne-nous a prier.",
+    "question": "Seigneur, enseigne-nous à prier.",
     "correct_answer": "Un des disciples",
     "wrong_answers": [
       "Pierre",
       "Jean",
       "Thomas"
     ],
-    "explanation": "Un disciple demanda cela a Jesus, qui enseigna le Notre Pere.",
+    "explanation": "Un disciple demanda cela à Jésus, qui enseigna le Notre Père.",
     "difficulty": "medium",
     "category": "Nouveau Testament",
     "verse_reference": "Luc 11:1"
@@ -1288,9 +1288,9 @@
     "wrong_answers": [
       "Pierre",
       "Paul",
-      "Moise"
+      "Moïse"
     ],
-    "explanation": "Jean-Baptiste parlait de Jesus.",
+    "explanation": "Jean-Baptiste parlait de Jésus.",
     "difficulty": "hard",
     "category": "Nouveau Testament",
     "verse_reference": "Jean 3:30"
