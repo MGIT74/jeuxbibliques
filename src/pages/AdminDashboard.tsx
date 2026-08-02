@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
+import { sanitizeIframeHtml } from '../lib/sanitize';
 import type { Banner, DonationSettings, SmtpSettings, AppNotification } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
@@ -1655,7 +1656,7 @@ function IntegrationTab({ darkMode }: { darkMode: boolean }) {
               </h4>
               <div
                 className="w-full min-h-[400px] rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600"
-                dangerouslySetInnerHTML={{ __html: formData.iframe_code }}
+                dangerouslySetInnerHTML={{ __html: sanitizeIframeHtml(formData.iframe_code) || '' }}
               />
             </div>
           )}

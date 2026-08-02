@@ -26,6 +26,17 @@ router.post('/scores', requireAuth, async (req, res) => {
   if (!['easy', 'medium', 'hard'].includes(difficulty)) {
     return res.status(422).json({ message: 'difficulty invalide.' });
   }
+  // Le client calcule son propre score localement (pas de "vraie" verification
+  // serveur possible sans rejouer la partie), mais on rejette au moins les
+  // valeurs incoherentes qui pourraient fausser le classement ou planter le
+  // calcul de points (division par zero, score negatif, score > max_score).
+  if (
+    typeof score !== 'number' || typeof max_score !== 'number' ||
+    score < 0 || max_score <= 0 || score > max_score ||
+    !Number.isFinite(score) || !Number.isFinite(max_score)
+  ) {
+    return res.status(422).json({ message: 'score/max_score invalides.' });
+  }
 
   const [games] = await pool.query('SELECT id FROM games WHERE slug = ?', [game_slug]);
   if (games.length === 0) {

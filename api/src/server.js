@@ -73,7 +73,9 @@ app.get(/^(?!\/api|\/uploads).*/, (req, res, next) => {
 // Gestion d'erreurs générique
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(err.status || 500).json({ message: err.message || 'Erreur serveur.' });
+  // On ne renvoie jamais le detail technique (message SQL, chemins, etc.)
+  // au client pour une erreur inattendue — seulement logue cote serveur.
+  res.status(err.status || 500).json({ message: 'Erreur serveur.' });
 });
 
 const port = process.env.PORT || 3000;

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Heart, Loader2 } from 'lucide-react';
 import { api } from '../lib/api';
+import { sanitizeIframeHtml } from '../lib/sanitize';
 import type { DonationSettings } from '../types/database';
 
 interface DonationPageProps {
@@ -87,10 +88,10 @@ export function DonationPage({ onBack, darkMode }: DonationPageProps) {
                 Chargement...
               </p>
             </div>
-          ) : settings && settings.iframe_code ? (
+          ) : settings && sanitizeIframeHtml(settings.iframe_code) ? (
             <div
               className="w-full min-h-[500px]"
-              dangerouslySetInnerHTML={{ __html: settings.iframe_code }}
+              dangerouslySetInnerHTML={{ __html: sanitizeIframeHtml(settings.iframe_code)! }}
             />
           ) : (
             <p className={`${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>

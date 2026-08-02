@@ -17,13 +17,18 @@ router.get('/donation-settings/user-counter', async (req, res) => {
   res.json({ show_user_counter: !!(rows[0] && rows[0].show_user_counter) });
 });
 
-// GET /online-users — remplace la presence Supabase Realtime par du polling
+// GET /online-users — remplace la presence Supabase Realtime par du polling.
+// Le compte reste public (affiche a tous), mais la liste detaillee
+// (pseudos, pays, id) n'est renvoyee qu'aux utilisateurs connectes : elle
+// n'a pas besoin d'etre accessible a n'importe qui sur internet sans compte.
 router.get('/online-users', async (req, res) => {
   const [rows] = await pool.query(
     `SELECT id as user_id, username, COALESCE(country, detected_country) as country, last_seen_at as online_at
      FROM users WHERE last_seen_at >= (NOW() - INTERVAL 2 MINUTE)`
   );
-  res.json({ count: rows.length, users: rows });
+
+  const isAuthenticated = !!req.headers.authorization;
+  res.json({ count: rows.length, users: isAuthenticated ? rows : [] });
 });
 
 // --- Admin ---

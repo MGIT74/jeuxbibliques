@@ -1,12 +1,25 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth, JWT_SECRET } = require('../middleware/auth');
 const { sendMail, getSmtpSettings } = require('../lib/mailer');
 
 const router = express.Router();
+
+// Protection contre le bourrage d'identifiants / force brute : 10 tentatives
+// par IP toutes les 15 minutes sur les routes sensibles (login, inscription,
+// renvoi de verification). Les tentatives reussies ne sont pas comptees.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  skipSuccessfulRequests: true,
+  message: { message: 'Trop de tentatives. Réessayez dans quelques minutes.' },
+});
 
 function signToken(userId) {
   return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: '90d' });
@@ -19,7 +32,7 @@ function sanitize(user) {
 }
 
 // POST /register
-router.post('/register', async (req, res) => {
+router.post('/register', authLimiter, async (req, res) => {
   const { email, password, username, church_name } = req.body;
 
   if (!email || !password || !username) {
@@ -71,7 +84,7 @@ router.post('/register', async (req, res) => {
 });
 
 // POST /login
-router.post('/login', async (req, res) => {
+router.post('/login', authLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -120,7 +133,7 @@ router.get('/verify-email', async (req, res) => {
 });
 
 // POST /resend-verification — renvoie un email de verification (utilisateur connecte)
-router.post('/resend-verification', requireAuth, async (req, res) => {
+router.post('/resend-verification', requireAuth, authLimiter, async (req, res) => {
   if (req.user.email_verified) {
     return res.json({ message: 'Cet email est déjà vérifié.' });
   }
