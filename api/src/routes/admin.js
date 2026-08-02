@@ -101,7 +101,7 @@ router.get('/admin/stats/by-game', requireAuth, requireAdmin, async (req, res) =
   res.json(rows.map((row) => ({
     game: {
       id: row.id, slug: row.slug, name: row.name, description: row.description,
-      icon: row.icon, color: row.color, min_age: row.min_age,
+      icon: row.icon, color: row.color, cover_image_url: row.cover_image_url, min_age: row.min_age,
       difficulty_levels: typeof row.difficulty_levels === 'string' ? JSON.parse(row.difficulty_levels) : row.difficulty_levels,
     },
     total_plays: Number(row.total_plays),
