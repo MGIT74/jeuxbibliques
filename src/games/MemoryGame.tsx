@@ -199,33 +199,44 @@ export function MemoryGame({ onBack, darkMode }: MemoryGameProps) {
               key={card.id}
               onClick={() => handleCardClick(card.id)}
               disabled={card.isFlipped || card.isMatched || isChecking}
-              className={`aspect-square rounded-xl transition-all duration-300 transform ${
-                card.isFlipped || card.isMatched
-                  ? 'rotate-y-180'
-                  : 'hover:scale-105'
-              }`}
+              className="aspect-square"
               style={{ perspective: '1000px' }}
             >
+              {/* Carte a deux faces : le conteneur tourne, chaque face a son
+                  backface masque, et la face "contenu" est pre-tournee de
+                  180deg pour redevenir bien lisible (non miroir) une fois la
+                  carte retournee — au lieu de faire pivoter le texte lui-meme. */}
               <div
-                className={`w-full h-full rounded-xl flex items-center justify-center p-2 text-center transition-all duration-300 ${
-                  card.isFlipped || card.isMatched
-                    ? card.isMatched
+                className={`relative w-full h-full transition-transform duration-300 ${
+                  card.isFlipped || card.isMatched ? 'rotate-y-180' : ''
+                }`}
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                {/* Dos de la carte (visible avant retournement) */}
+                <div
+                  className="absolute inset-0 rounded-xl flex items-center justify-center bg-gradient-to-br from-sky-400 to-sky-600 shadow-md hover:shadow-lg"
+                  style={{ backfaceVisibility: 'hidden' }}
+                >
+                  <RotateCcw className="text-white opacity-50" size={24} />
+                </div>
+
+                {/* Face contenu (mot / definition), lisible une fois retournee */}
+                <div
+                  className={`absolute inset-0 rounded-xl rotate-y-180 flex items-center justify-center p-2 text-center ${
+                    card.isMatched
                       ? `bg-gradient-to-br ${cardColors[card.pairId % cardColors.length]} text-white shadow-lg`
                       : darkMode
                         ? 'bg-gray-600 text-white'
                         : 'bg-white border-2 border-sky-300 text-gray-800'
-                    : `bg-gradient-to-br from-sky-400 to-sky-600 shadow-md hover:shadow-lg`
-                }`}
-              >
-                {card.isFlipped || card.isMatched ? (
+                  }`}
+                  style={{ backfaceVisibility: 'hidden' }}
+                >
                   <span className={`text-xs sm:text-sm font-medium ${
                     card.type === 'word' ? 'font-bold' : 'italic'
                   }`}>
                     {card.content}
                   </span>
-                ) : (
-                  <RotateCcw className="text-white opacity-50" size={24} />
-                )}
+                </div>
               </div>
             </button>
           ))}
