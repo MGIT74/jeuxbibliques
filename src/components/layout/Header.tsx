@@ -3,6 +3,7 @@ import { BookOpen, User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users } fro
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnlineUsers } from '../../contexts/OnlineUsersContext';
 import { AuthModal } from '../auth/AuthModal';
+import { NotificationBell } from './NotificationBell';
 import { api } from '../../lib/api';
 
 interface HeaderProps {
@@ -156,6 +157,8 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
+
+              {user && <NotificationBell darkMode={darkMode} />}
 
               {user && profile ? (
                 <div className="relative" ref={menuRef}>

@@ -4,12 +4,12 @@ import {
   ArrowLeft, Loader2, Shield, BarChart3, Clock, Mail, Download,
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
   Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
-  ChevronLeft, ChevronRight, List, CalendarDays
+  ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
-import type { Banner, DonationSettings, SmtpSettings } from '../types/database';
+import type { Banner, DonationSettings, SmtpSettings, AppNotification } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
 interface AdminDashboardProps {
@@ -17,7 +17,7 @@ interface AdminDashboardProps {
   darkMode: boolean;
 }
 
-type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email';
+type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email' | 'notifications';
 
 export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   const { profile } = useAuth();
@@ -43,6 +43,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
     { id: 'banners', label: 'Bannieres', icon: <Image size={18} /> },
     { id: 'integration', label: 'Integration', icon: <Code size={18} /> },
     { id: 'email', label: 'Email (SMTP)', icon: <Send size={18} /> },
+    { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
   ];
 
   return (
@@ -98,6 +99,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
         {activeTab === 'banners' && <BannersTab darkMode={darkMode} />}
         {activeTab === 'integration' && <IntegrationTab darkMode={darkMode} />}
         {activeTab === 'email' && <EmailSettingsTab darkMode={darkMode} />}
+        {activeTab === 'notifications' && <NotificationsTab darkMode={darkMode} />}
       </div>
     </div>
   );
@@ -1909,6 +1911,290 @@ function EmailSettingsTab({ darkMode }: { darkMode: boolean }) {
           <p>Hôte : <code>smtp.hostinger.com</code> — Port : <code>465</code> (SSL activé) ou <code>587</code> (SSL désactivé)</p>
           <p>Identifiant : ton adresse email complète — Mot de passe : celui de cette boîte mail</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+const notifTypeConfig = {
+  info: { icon: Info, label: 'Info', color: 'text-lapis', bg: 'bg-lapis/10', border: 'border-lapis/30' },
+  success: { icon: CheckCircle2, label: 'Succès', color: 'text-emerald-500', bg: 'bg-emerald-500/10', border: 'border-emerald-500/30' },
+  warning: { icon: AlertTriangle, label: 'Avertissement', color: 'text-gold-dim', bg: 'bg-gold/10', border: 'border-gold/30' },
+  urgent: { icon: AlertOctagon, label: 'Urgent', color: 'text-coral', bg: 'bg-coral/10', border: 'border-coral/30' },
+};
+
+function NotificationsTab({ darkMode }: { darkMode: boolean }) {
+  const [notifications, setNotifications] = useState<AppNotification[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<AppNotification | null>(null);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    message: '',
+    type: 'info' as AppNotification['type'],
+    is_active: true,
+  });
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  async function fetchNotifications() {
+    try {
+      const data = await api.get<AppNotification[]>('/admin/notifications');
+      setNotifications(data);
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+    }
+    setLoading(false);
+  }
+
+  function resetForm() {
+    setFormData({ title: '', message: '', type: 'info', is_active: true });
+    setEditing(null);
+    setShowForm(false);
+  }
+
+  function handleEdit(n: AppNotification) {
+    setFormData({ title: n.title, message: n.message, type: n.type, is_active: !!n.is_active });
+    setEditing(n);
+    setShowForm(true);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setActionLoading('form');
+    try {
+      if (editing) {
+        await api.put(`/admin/notifications/${editing.id}`, formData);
+      } else {
+        await api.post('/admin/notifications', formData);
+      }
+      await fetchNotifications();
+      resetForm();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      alert(`Erreur lors de l'enregistrement : ${message}`);
+    }
+    setActionLoading(null);
+  }
+
+  async function toggleActive(n: AppNotification) {
+    setActionLoading(n.id);
+    try {
+      await api.post(`/admin/notifications/${n.id}/toggle`);
+    } catch (err) {
+      alert('Erreur : impossible de changer le statut.');
+    }
+    await fetchNotifications();
+    setActionLoading(null);
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Supprimer cette notification ?')) return;
+    setActionLoading(id);
+    try {
+      await api.delete(`/admin/notifications/${id}`);
+    } catch (err) {
+      alert('Erreur lors de la suppression.');
+    }
+    await fetchNotifications();
+    setActionLoading(null);
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="animate-spin text-gold" size={48} />
+      </div>
+    );
+  }
+
+  const inputClass = `w-full px-4 py-2 rounded-xl border ${
+    darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'
+  } focus:ring-2 focus:ring-gold focus:border-transparent`;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            Notifications ({notifications.length})
+          </h3>
+          <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+            Annonces affichées dans la cloche 🔔 de tous les utilisateurs connectés
+          </p>
+        </div>
+        <button
+          onClick={() => setShowForm(true)}
+          className="btn-primary flex items-center gap-2"
+        >
+          <Plus size={18} />
+          Nouvelle notification
+        </button>
+      </div>
+
+      {showForm && (
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+          <h4 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            {editing ? 'Modifier la notification' : 'Nouvelle notification'}
+          </h4>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                Titre
+              </label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className={inputClass}
+                placeholder="Ex : Nouvelle mise à jour disponible"
+                required
+              />
+            </div>
+
+            <div>
+              <label className={`block text-sm font-medium mb-1 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                Message
+              </label>
+              <textarea
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className={inputClass}
+                placeholder="Détail du message envoyé aux utilisateurs..."
+                rows={3}
+                required
+              />
+            </div>
+
+            <div>
+              <label className={`block text-sm font-medium mb-2 ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                Type
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {(Object.keys(notifTypeConfig) as AppNotification['type'][]).map((t) => {
+                  const config = notifTypeConfig[t];
+                  const Icon = config.icon;
+                  const selected = formData.type === t;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, type: t })}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-xl border-2 transition-all ${
+                        selected
+                          ? `${config.border} ${config.bg} ${config.color}`
+                          : darkMode
+                            ? 'border-gold/10 text-parchment/60'
+                            : 'border-gold-dim/15 text-ink/60'
+                      }`}
+                    >
+                      <Icon size={16} />
+                      <span className="text-sm font-medium">{config.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="notif_is_active"
+                checked={formData.is_active}
+                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                className="w-4 h-4 rounded text-gold focus:ring-gold"
+              />
+              <label htmlFor="notif_is_active" className={`text-sm ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                Notification active (visible immédiatement)
+              </label>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={resetForm}
+                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                disabled={actionLoading === 'form'}
+                className="flex-1 btn-primary disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {actionLoading === 'form' ? <Loader2 className="animate-spin" size={18} /> : editing ? 'Modifier' : 'Publier'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      <div className="grid gap-3">
+        {notifications.length === 0 ? (
+          <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-8 text-center shadow-lg`}>
+            <Bell className={`mx-auto mb-4 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`} size={48} />
+            <p className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Aucune notification pour le moment</p>
+          </div>
+        ) : (
+          notifications.map((n) => {
+            const config = notifTypeConfig[n.type] || notifTypeConfig.info;
+            const Icon = config.icon;
+            return (
+              <div
+                key={n.id}
+                className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-4 shadow-lg flex items-start gap-3 ${!n.is_active ? 'opacity-60' : ''}`}
+              >
+                <div className={`w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center ${config.bg}`}>
+                  <Icon size={18} className={config.color} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{n.title}</h4>
+                    {!n.is_active && (
+                      <span className="px-2 py-0.5 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
+                        Inactive
+                      </span>
+                    )}
+                  </div>
+                  <p className={`text-sm mt-1 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`}>{n.message}</p>
+                  <p className={`text-xs mt-2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
+                    {new Date(n.created_at).toLocaleDateString('fr-FR', {
+                      day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+                    })}
+                  </p>
+                </div>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={() => toggleActive(n)}
+                    disabled={actionLoading === n.id}
+                    className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors disabled:opacity-50`}
+                    title={n.is_active ? 'Désactiver' : 'Activer'}
+                  >
+                    {n.is_active ? <Eye size={18} /> : <EyeOff size={18} />}
+                  </button>
+                  <button
+                    onClick={() => handleEdit(n)}
+                    className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                    title="Modifier"
+                  >
+                    <Pencil size={18} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(n.id)}
+                    disabled={actionLoading === n.id}
+                    className="p-2 rounded-lg hover:bg-coral/10 text-coral transition-colors disabled:opacity-50"
+                    title="Supprimer"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
     </div>
   );

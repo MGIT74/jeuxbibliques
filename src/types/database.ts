@@ -385,6 +385,15 @@ export interface SmtpSettings {
   has_password: boolean;
 }
 
+export interface AppNotification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'success' | 'warning' | 'urgent';
+  is_active?: boolean;
+  created_at: string;
+}
+
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface AdminStats {
