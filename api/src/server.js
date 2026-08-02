@@ -46,10 +46,23 @@ app.use('/api', adminRoutes);
 // --- Frontend React (build Vite) servi depuis le même site, comme l'app "salon" ---
 // api/src/server.js -> ../../dist = dist/ à la racine du repo
 const frontendDist = path.join(__dirname, '..', '..', 'dist');
-app.use(express.static(frontendDist));
+app.use(express.static(frontendDist, {
+  // Les fichiers JS/CSS de Vite ont un hash dans leur nom (ex: index-abc123.js) :
+  // on peut les mettre en cache longtemps sans risque, un nouveau build change le nom.
+  // index.html en revanche ne doit JAMAIS être mis en cache par le navigateur,
+  // sinon un déploiement peut sembler ne "rien changer" pour un visiteur récurrent.
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('index.html')) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  },
+}));
 
 // Fallback SPA : toute route qui n'est ni /api/* ni /uploads/* renvoie index.html
 app.get(/^(?!\/api|\/uploads).*/, (req, res, next) => {
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(frontendDist, 'index.html'), (err) => {
     if (err) next(err);
   });
