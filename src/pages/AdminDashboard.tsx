@@ -4,13 +4,14 @@ import {
   ArrowLeft, Loader2, Shield, BarChart3, Clock, Mail, Download,
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
   Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
-  ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon, Menu
+  ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon, Menu,
+  Sparkles, Heart
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
 import { sanitizeIframeHtml } from '../lib/sanitize';
-import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game } from '../types/database';
+import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game, Card } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
 interface AdminDashboardProps {
@@ -18,7 +19,7 @@ interface AdminDashboardProps {
   darkMode: boolean;
 }
 
-type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email' | 'notifications';
+type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email' | 'notifications' | 'cards';
 
 export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   const { profile } = useAuth();
@@ -46,6 +47,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
     { id: 'integration', label: 'Integration', icon: <Code size={18} /> },
     { id: 'email', label: 'Email (SMTP)', icon: <Send size={18} /> },
     { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
+    { id: 'cards', label: 'Cartes', icon: <Sparkles size={18} /> },
   ];
 
   function selectTab(id: Tab) {
@@ -158,6 +160,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
         {activeTab === 'integration' && <IntegrationTab darkMode={darkMode} />}
         {activeTab === 'email' && <EmailSettingsTab darkMode={darkMode} />}
         {activeTab === 'notifications' && <NotificationsTab darkMode={darkMode} />}
+        {activeTab === 'cards' && <CardsAdminTab darkMode={darkMode} />}
       </div>
     </div>
   );
@@ -2418,6 +2421,325 @@ function NotificationsTab({ darkMode }: { darkMode: boolean }) {
               </div>
             );
           })
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CardsAdminTab({ darkMode }: { darkMode: boolean }) {
+  const [cards, setCards] = useState<Card[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState<Card | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    image_url: '',
+    points_threshold: 100,
+    hearts_reward: 1,
+    is_active: true,
+  });
+
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
+  async function fetchCards() {
+    try {
+      const data = await api.get<Card[]>('/admin/cards');
+      setCards(data);
+    } catch (err) {
+      console.error('Error fetching cards:', err);
+    }
+    setLoading(false);
+  }
+
+  function resetForm() {
+    setFormData({ name: '', description: '', image_url: '', points_threshold: 100, hearts_reward: 1, is_active: true });
+    setEditing(null);
+    setShowForm(false);
+  }
+
+  function handleEdit(card: Card) {
+    setFormData({
+      name: card.name,
+      description: card.description || '',
+      image_url: card.image_url || '',
+      points_threshold: card.points_threshold,
+      hearts_reward: card.hearts_reward,
+      is_active: card.is_active ?? true,
+    });
+    setEditing(card);
+    setShowForm(true);
+  }
+
+  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner une image (JPG ou PNG)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert("L'image ne doit pas dépasser 5 MB");
+      return;
+    }
+    setUploading(true);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setFormData((prev) => ({ ...prev, image_url: reader.result as string }));
+      setUploading(false);
+    };
+    reader.onerror = () => {
+      alert("Erreur lors de la lecture de l'image");
+      setUploading(false);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    try {
+      if (editing) {
+        await api.put(`/admin/cards/${editing.id}`, formData);
+      } else {
+        await api.post('/admin/cards', formData);
+      }
+      await fetchCards();
+      resetForm();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      alert(`Erreur lors de l'enregistrement : ${message}`);
+    }
+    setSaving(false);
+  }
+
+  async function toggleActive(card: Card) {
+    try {
+      await api.post(`/admin/cards/${card.id}/toggle`);
+    } catch (err) {
+      alert('Erreur : impossible de changer le statut.');
+    }
+    await fetchCards();
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Supprimer cette carte ? Les joueurs qui l\'ont déjà débloquée la garderont dans leur historique, mais elle ne sera plus attribuable.')) return;
+    try {
+      await api.delete(`/admin/cards/${id}`);
+    } catch (err) {
+      alert('Erreur lors de la suppression.');
+    }
+    await fetchCards();
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="animate-spin text-gold" size={48} />
+      </div>
+    );
+  }
+
+  const inputClass = `w-full px-3 py-2 rounded-xl border text-sm ${
+    darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'
+  } focus:ring-2 focus:ring-gold focus:border-transparent`;
+  const labelClass = `block text-xs font-medium mb-1 ${darkMode ? 'text-parchment/70' : 'text-ink/70'}`;
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            Cartes à collectionner ({cards.length})
+          </h3>
+          <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+            Débloquées automatiquement quand un joueur atteint le palier de points, avec des cœurs à la clé
+          </p>
+        </div>
+        <button onClick={() => setShowForm(true)} className="btn-primary flex items-center gap-2">
+          <Plus size={18} />
+          Nouvelle carte
+        </button>
+      </div>
+
+      {showForm && (
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-6 shadow-lg`}>
+          <h4 className={`text-lg font-semibold mb-4 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            {editing ? 'Modifier la carte' : 'Nouvelle carte'}
+          </h4>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <label className={labelClass}>Nom (ex : Noé et l'arche)</label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={inputClass}
+                  required
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className={labelClass}>Description (optionnelle)</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows={2}
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Palier de points requis</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={formData.points_threshold}
+                  onChange={(e) => setFormData({ ...formData, points_threshold: Number(e.target.value) })}
+                  className={inputClass}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className={labelClass}>Cœurs offerts à l'obtention</label>
+                <input
+                  type="number"
+                  min={0}
+                  value={formData.hearts_reward}
+                  onChange={(e) => setFormData({ ...formData, hearts_reward: Number(e.target.value) })}
+                  className={inputClass}
+                  required
+                />
+              </div>
+
+              <div className="sm:col-span-2">
+                <label className={labelClass}>Image de la carte (portrait recommandé, ex : 400x500)</label>
+                {formData.image_url && (
+                  <div className="relative mb-2 w-32">
+                    <img
+                      src={formData.image_url}
+                      alt="Aperçu"
+                      className="w-32 aspect-[4/5] object-cover rounded-xl border border-gold/15"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, image_url: '' }))}
+                      className="absolute top-1 right-1 p-1.5 rounded-lg bg-ink-dark/80 text-coral hover:bg-ink-dark transition-colors"
+                      title="Supprimer l'image"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/jpeg,image/jpg,image/png"
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className={`w-full text-xs ${darkMode ? 'text-parchment/70' : 'text-ink/60'} file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-medium file:bg-amber-500 file:text-white hover:file:bg-amber-600 file:cursor-pointer disabled:opacity-50`}
+                />
+                {uploading && (
+                  <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>Lecture de l'image...</p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="card_is_active"
+                checked={formData.is_active}
+                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
+                className="w-4 h-4 rounded text-gold focus:ring-gold"
+              />
+              <label htmlFor="card_is_active" className={`text-sm ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                Carte active (attribuable aux joueurs)
+              </label>
+            </div>
+
+            <div className="flex gap-3 pt-2">
+              <button
+                type="button"
+                onClick={resetForm}
+                className={`flex-1 px-4 py-2 rounded-xl font-medium ${darkMode ? 'bg-ink hover:bg-ink/70 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'} transition-colors`}
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                disabled={saving || uploading}
+                className="flex-1 btn-primary disabled:opacity-50 flex items-center justify-center gap-2"
+              >
+                {saving ? 'Sauvegarde...' : editing ? 'Modifier' : 'Publier'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {cards.length === 0 ? (
+          <div className={`sm:col-span-2 lg:col-span-3 ${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-8 text-center shadow-lg`}>
+            <Sparkles className={`mx-auto mb-4 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`} size={48} />
+            <p className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Aucune carte pour le moment</p>
+          </div>
+        ) : (
+          cards.map((card) => (
+            <div
+              key={card.id}
+              className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg ${!card.is_active ? 'opacity-60' : ''}`}
+            >
+              {card.image_url ? (
+                <img src={card.image_url} alt={card.name} className="w-full aspect-[4/5] object-cover" />
+              ) : (
+                <div className={`w-full aspect-[4/5] flex items-center justify-center ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+                  <Sparkles size={32} className={darkMode ? 'text-parchment/30' : 'text-ink/20'} />
+                </div>
+              )}
+              <div className="p-4">
+                <h4 className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>{card.name}</h4>
+                <div className="flex items-center gap-3 mt-2 text-sm">
+                  <span className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>
+                    🎯 {card.points_threshold} pts
+                  </span>
+                  <span className="flex items-center gap-1 text-coral">
+                    <Heart size={14} className="fill-coral" />
+                    {card.hearts_reward}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 mt-3">
+                  <button
+                    onClick={() => toggleActive(card)}
+                    className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                    title={card.is_active ? 'Désactiver' : 'Activer'}
+                  >
+                    {card.is_active ? <Eye size={16} /> : <EyeOff size={16} />}
+                  </button>
+                  <button
+                    onClick={() => handleEdit(card)}
+                    className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                    title="Modifier"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleDelete(card.id)}
+                    className="p-2 rounded-lg hover:bg-coral/10 text-coral transition-colors"
+                    title="Supprimer"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
         )}
       </div>
     </div>

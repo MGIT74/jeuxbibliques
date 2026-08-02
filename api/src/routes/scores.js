@@ -78,13 +78,34 @@ router.post('/scores', requireAuth, async (req, res) => {
     const pointsEarned = Math.round((score / max_score) * 10 * multiplier);
     await conn.query('UPDATE users SET total_points = total_points + ? WHERE id = ?', [pointsEarned, req.user.id]);
 
+    // Deblocage automatique des cartes de collection : toute carte active dont
+    // le palier de points est desormais atteint, et que le joueur ne possede
+    // pas encore, est debloquee (et ses coeurs credites) dans la meme
+    // transaction que le score, pour rester coherent en cas d'erreur.
+    const [[{ total_points: newTotal }]] = await conn.query(
+      'SELECT total_points FROM users WHERE id = ?', [req.user.id]
+    );
+    const [newlyUnlocked] = await conn.query(
+      `SELECT c.* FROM cards c
+       WHERE c.is_active = 1 AND c.points_threshold <= ?
+         AND NOT EXISTS (SELECT 1 FROM user_cards uc WHERE uc.user_id = ? AND uc.card_id = c.id)`,
+      [newTotal, req.user.id]
+    );
+    for (const card of newlyUnlocked) {
+      await conn.query(
+        'INSERT INTO user_cards (id, user_id, card_id, seen) VALUES (?, ?, ?, 0)',
+        [uuidv4(), req.user.id, card.id]
+      );
+      await conn.query('UPDATE users SET hearts = hearts + ? WHERE id = ?', [card.hearts_reward, req.user.id]);
+    }
+
     await conn.commit();
 
     const [scoreRows] = await pool.query(
       `SELECT s.*, g.name as game_name FROM scores s JOIN games g ON g.id = s.game_id WHERE s.id = ?`,
       [scoreId]
     );
-    res.status(201).json(scoreRows[0]);
+    res.status(201).json({ ...scoreRows[0], newly_unlocked_cards: newlyUnlocked });
   } catch (err) {
     await conn.rollback();
     throw err;

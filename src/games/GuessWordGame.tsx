@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Loader2, HelpCircle, Heart, Check } from 'lucide-react';
+import { Loader2, HelpCircle, Heart, Check, Sparkles } from 'lucide-react';
 import { GameWrapper } from '../components/shared/GameWrapper';
 import { GameComplete } from '../components/shared/GameComplete';
 import { useBibleWords, shuffleArray } from '../hooks/useGameData';
 import { useScore } from '../hooks/useScore';
+import { useCards } from '../contexts/CardsContext';
 import type { Difficulty, BibleWord } from '../types/database';
 
 interface GuessWordGameProps {
@@ -15,6 +16,8 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const { words, loading } = useBibleWords(difficulty);
   const { saveScore } = useScore();
+  const { hearts, useHeart } = useCards();
+  const [usingHeart, setUsingHeart] = useState(false);
 
   const [gameWords, setGameWords] = useState<BibleWord[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -104,6 +107,26 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
     if (currentWord && !currentWord.word.toUpperCase().includes(letter)) {
       setWrongGuesses(w => w + 1);
     }
+  }
+
+  // Utilise un coeur bonus (gagne via la collection de cartes, distinct des
+  // essais restants) pour reveler gratuitement une lettre non encore trouvee.
+  async function handleUseHeart() {
+    if (!currentWord || usingHeart || hearts <= 0 || wordComplete || wrongGuesses >= maxWrongGuesses) return;
+
+    const word = currentWord.word.toUpperCase();
+    const remaining = [...new Set([...word])].filter(
+      (l) => l !== ' ' && l !== '-' && l !== '\'' && !guessedLetters.has(l)
+    );
+    if (remaining.length === 0) return;
+
+    setUsingHeart(true);
+    const success = await useHeart();
+    if (success) {
+      const letter = remaining[Math.floor(Math.random() * remaining.length)];
+      setGuessedLetters((prev) => new Set(prev).add(letter));
+    }
+    setUsingHeart(false);
   }
 
   function renderWord() {
@@ -258,10 +281,10 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
           </div>
         )}
 
-        <div className="mb-6">
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => setShowHint(!showHint)}
-            className={`flex items-center gap-2 mx-auto px-4 py-2 rounded-xl transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-colors ${
               darkMode
                 ? 'bg-gray-700 hover:bg-gray-600 text-gray-300'
                 : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -270,12 +293,26 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
             <HelpCircle size={18} />
             {showHint ? 'Masquer l\'indice' : 'Voir l\'indice'}
           </button>
-          {showHint && currentWord.hint && (
-            <p className={`text-center mt-3 text-sm italic ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
-              Indice : {currentWord.hint}
-            </p>
-          )}
+
+          <button
+            onClick={handleUseHeart}
+            disabled={usingHeart || hearts <= 0 || wordComplete || wrongGuesses >= maxWrongGuesses}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl transition-colors bg-coral/10 hover:bg-coral/20 text-coral disabled:opacity-40 disabled:cursor-not-allowed"
+            title={hearts <= 0 ? 'Gagne des cœurs bonus en débloquant des cartes dans ta collection' : 'Révèle une lettre au hasard'}
+          >
+            <Sparkles size={18} />
+            Révéler une lettre
+            <span className="flex items-center gap-1 font-semibold">
+              <Heart size={14} className="fill-coral" />
+              {hearts}
+            </span>
+          </button>
         </div>
+        {showHint && currentWord.hint && (
+          <p className={`text-center -mt-3 mb-6 text-sm italic ${darkMode ? 'text-parchment/60' : 'text-ink/70'}`}>
+            Indice : {currentWord.hint}
+          </p>
+        )}
 
         <div className="flex flex-wrap justify-center gap-2">
           {alphabet.map((letter) => {

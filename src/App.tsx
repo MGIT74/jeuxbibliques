@@ -3,13 +3,16 @@ import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { Ban, Loader2 } from 'lucide-react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { OnlineUsersProvider } from './contexts/OnlineUsersContext';
+import { CardsProvider } from './contexts/CardsContext';
 import { Header } from './components/layout/Header';
 import { HomePage } from './pages/HomePage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { DonationPage } from './pages/DonationPage';
 import { VerifyEmailPage } from './pages/VerifyEmailPage';
+import { CollectionPage } from './pages/CollectionPage';
 import { ProfileSettings } from './components/profile/ProfileSettings';
 import { AuthModal } from './components/auth/AuthModal';
+import { CardRevealModal } from './components/layout/CardRevealModal';
 import { FreeTrialGate } from './components/shared/FreeTrialGate';
 import { useGames } from './hooks/useGameData';
 import { WordSearchGame } from './games/WordSearchGame';
@@ -158,6 +161,7 @@ function AppContent() {
         onOpenAdmin={() => navigate('/admin')}
         onOpenProfile={() => setShowProfileSettings(true)}
         onOpenDonation={() => navigate('/don')}
+        onOpenCollection={() => navigate('/collection')}
       />
 
       <Routes>
@@ -168,9 +172,12 @@ function AppContent() {
         />
         <Route path="/admin" element={<AdminDashboard onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="/don" element={<DonationPage onBack={() => navigate('/')} darkMode={darkMode} />} />
+        <Route path="/collection" element={<CollectionPage onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="/verifier-email" element={<VerifyEmailPage onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="*" element={<HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />} />
       </Routes>
+
+      <CardRevealModal />
 
       <ProfileSettings
         isOpen={showProfileSettings}
@@ -195,7 +202,9 @@ function App() {
   return (
     <AuthProvider>
       <OnlineUsersProvider>
-        <AppContent />
+        <CardsProvider>
+          <AppContent />
+        </CardsProvider>
       </OnlineUsersProvider>
     </AuthProvider>
   );

@@ -59,6 +59,10 @@ async function migrate() {
   // uploadee par l'admin en base64, en complement de l'icone existante.
   await ensureColumn(connection, 'games', 'cover_image_url', 'LONGTEXT NULL');
 
+  // users.hearts : monnaie persistante (indices) gagnee via les cartes a
+  // collectionner, utilisable pour reveler une lettre dans Devine le Mot.
+  await ensureColumn(connection, 'users', 'hearts', 'INT UNSIGNED NOT NULL DEFAULT 0');
+
   console.log('Migrations complete.');
 
   await connection.end();

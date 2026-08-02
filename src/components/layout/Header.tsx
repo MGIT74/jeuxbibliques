@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { BookOpen, User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users } from 'lucide-react';
+import { BookOpen, User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnlineUsers } from '../../contexts/OnlineUsersContext';
+import { useCards } from '../../contexts/CardsContext';
 import { AuthModal } from '../auth/AuthModal';
 import { NotificationBell } from './NotificationBell';
 import { api } from '../../lib/api';
@@ -12,11 +13,13 @@ interface HeaderProps {
   onOpenAdmin?: () => void;
   onOpenProfile?: () => void;
   onOpenDonation?: () => void;
+  onOpenCollection?: () => void;
 }
 
-export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile, onOpenDonation }: HeaderProps) {
+export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile, onOpenDonation, onOpenCollection }: HeaderProps) {
   const { user, profile, signOut } = useAuth();
   const { onlineCount } = useOnlineUsers();
+  const { hearts } = useCards();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [prevOnlineCount, setPrevOnlineCount] = useState(0);
@@ -176,6 +179,10 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                       <Trophy size={16} />
                       <span className="text-sm font-semibold">{profile.total_points}</span>
                     </div>
+                    <div className="hidden sm:flex items-center gap-1 text-coral">
+                      <Heart size={16} className="fill-coral" />
+                      <span className="text-sm font-semibold">{hearts}</span>
+                    </div>
                   </button>
 
                   {showMenu && (
@@ -190,6 +197,18 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                         >
                           <User size={18} />
                           Mon profil
+                        </button>
+                      )}
+                      {onOpenCollection && (
+                        <button
+                          onClick={() => {
+                            onOpenCollection();
+                            setShowMenu(false);
+                          }}
+                          className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-parchment/80 hover:bg-ink/40' : 'text-ink/80 hover:bg-parchment-dim'} transition-colors`}
+                        >
+                          <Sparkles size={18} />
+                          Ma collection
                         </button>
                       )}
                       {profile?.is_admin && onOpenAdmin && (

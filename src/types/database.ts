@@ -18,6 +18,7 @@ export interface Database {
           newsletter_consent: boolean;
           marketing_consent: boolean;
           consent_date: string | null;
+          hearts: number;
           created_at: string;
           updated_at: string;
         };
@@ -393,6 +394,19 @@ export interface AppNotification {
   type: 'info' | 'success' | 'warning' | 'urgent';
   is_active?: boolean;
   created_at: string;
+}
+
+export interface Card {
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+  points_threshold: number;
+  hearts_reward: number;
+  is_active?: boolean;
+  display_order?: number;
+  unlocked_at?: string;
+  seen?: boolean;
 }
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
