@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles } from 'lucide-react';
+import { User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnlineUsers } from '../../contexts/OnlineUsersContext';
 import { useCards } from '../../contexts/CardsContext';
@@ -94,8 +94,8 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <a href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="seal w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0">
-                <BookOpen size={18} />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl overflow-hidden bg-white ring-2 ring-gold/40 shadow-tile">
+                <img src="/logo.png" alt="Jeux Bibliques" className="w-full h-full object-cover" />
               </div>
               <div className="min-w-0">
                 <h1 className={`font-display text-base sm:text-xl font-semibold truncate ${darkMode ? 'text-parchment' : 'text-ink'}`}>
