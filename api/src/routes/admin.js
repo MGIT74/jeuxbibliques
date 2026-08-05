@@ -143,7 +143,7 @@ router.put('/admin/games/:id', requireAuth, requireAdmin, async (req, res) => {
 
   const [rows] = await pool.query('SELECT * FROM games WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Jeu introuvable.' });
-  res.json(rows[0]);
+  res.json({ ...rows[0], is_active: !!rows[0].is_active });
 });
 
 // Masquer/afficher un jeu dans le menu public, sans le supprimer — utile
@@ -152,7 +152,10 @@ router.post('/admin/games/:id/toggle', requireAuth, requireAdmin, async (req, re
   await pool.query('UPDATE games SET is_active = NOT is_active WHERE id = ?', [req.params.id]);
   const [rows] = await pool.query('SELECT * FROM games WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Jeu introuvable.' });
-  res.json(rows[0]);
+  // MySQL renvoie TINYINT(1) comme un nombre (0/1), pas un booleen JS :
+  // sans cette conversion, "is_active === false" ne matche jamais cote
+  // frontend et l'icone/le badge ne se mettent a jour qu'apres un F5.
+  res.json({ ...rows[0], is_active: !!rows[0].is_active });
 });
 
 module.exports = router;
