@@ -623,6 +623,15 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
     setSaving(false);
   }
 
+  async function toggleActive(id: string) {
+    try {
+      const updated = await api.post<Game>(`/admin/games/${id}/toggle`);
+      setGames((prev) => prev.map((g) => (g.game.id === id ? { ...g, game: updated } : g)));
+    } catch (err) {
+      alert('Erreur : impossible de changer la visibilité du jeu.');
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -640,7 +649,7 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
       {games.map(({ game, total_plays, avg_score }) => (
         <div
           key={game.id}
-          className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg`}
+          className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg ${game.is_active === false ? 'opacity-60' : ''}`}
         >
           {editingId === game.id ? (
             <div className="p-5 space-y-3">
@@ -722,25 +731,42 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
             </div>
           ) : (
             <>
-              {game.cover_image_url ? (
-                <img src={game.cover_image_url} alt={game.name} className="w-full aspect-square object-cover" />
-              ) : (
-                <div className={`w-full aspect-square flex items-center justify-center ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
-                  <Gamepad2 size={40} className={darkMode ? 'text-parchment/30' : 'text-ink/20'} />
-                </div>
-              )}
+              <div className="relative">
+                {game.cover_image_url ? (
+                  <img src={game.cover_image_url} alt={game.name} className="w-full aspect-square object-cover" />
+                ) : (
+                  <div className={`w-full aspect-square flex items-center justify-center ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+                    <Gamepad2 size={40} className={darkMode ? 'text-parchment/30' : 'text-ink/20'} />
+                  </div>
+                )}
+                {game.is_active === false && (
+                  <span className="absolute top-2 left-2 flex items-center gap-1 px-2.5 py-1 rounded-full bg-ink-dark/80 text-parchment/90 text-xs font-medium">
+                    <EyeOff size={12} />
+                    Masqué
+                  </span>
+                )}
+              </div>
               <div className="p-5">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className={`text-lg font-bold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                     {game.name}
                   </h3>
-                  <button
-                    onClick={() => startEdit(game)}
-                    className={`flex-shrink-0 p-1.5 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
-                    title="Modifier"
-                  >
-                    <Pencil size={16} />
-                  </button>
+                  <div className="flex items-center gap-1 flex-shrink-0">
+                    <button
+                      onClick={() => toggleActive(game.id)}
+                      className={`p-1.5 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                      title={game.is_active === false ? 'Rendre visible sur le site' : 'Masquer du menu public (mise à jour/test)'}
+                    >
+                      {game.is_active === false ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                    <button
+                      onClick={() => startEdit(game)}
+                      className={`p-1.5 rounded-lg ${darkMode ? 'hover:bg-ink/60 text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+                      title="Modifier"
+                    >
+                      <Pencil size={16} />
+                    </button>
+                  </div>
                 </div>
                 <p className={`text-sm mb-4 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                   {game.description}

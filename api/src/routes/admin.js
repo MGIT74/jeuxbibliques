@@ -102,6 +102,7 @@ router.get('/admin/stats/by-game', requireAuth, requireAdmin, async (req, res) =
     game: {
       id: row.id, slug: row.slug, name: row.name, description: row.description,
       icon: row.icon, color: row.color, cover_image_url: row.cover_image_url, min_age: row.min_age,
+      is_active: !!row.is_active,
       difficulty_levels: typeof row.difficulty_levels === 'string' ? JSON.parse(row.difficulty_levels) : row.difficulty_levels,
     },
     total_plays: Number(row.total_plays),
@@ -140,6 +141,15 @@ router.put('/admin/games/:id', requireAuth, requireAdmin, async (req, res) => {
   values.push(req.params.id);
   await pool.query(`UPDATE games SET ${fields.join(', ')} WHERE id = ?`, values);
 
+  const [rows] = await pool.query('SELECT * FROM games WHERE id = ?', [req.params.id]);
+  if (rows.length === 0) return res.status(404).json({ message: 'Jeu introuvable.' });
+  res.json(rows[0]);
+});
+
+// Masquer/afficher un jeu dans le menu public, sans le supprimer — utile
+// pour une mise a jour ou un test avant de le rendre visible aux joueurs.
+router.post('/admin/games/:id/toggle', requireAuth, requireAdmin, async (req, res) => {
+  await pool.query('UPDATE games SET is_active = NOT is_active WHERE id = ?', [req.params.id]);
   const [rows] = await pool.query('SELECT * FROM games WHERE id = ?', [req.params.id]);
   if (rows.length === 0) return res.status(404).json({ message: 'Jeu introuvable.' });
   res.json(rows[0]);

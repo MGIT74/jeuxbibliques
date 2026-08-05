@@ -73,6 +73,7 @@ export interface Database {
           cover_image_url: string | null;
           min_age: number;
           difficulty_levels: string[];
+          is_active?: boolean;
           created_at: string;
         };
         Insert: {

@@ -61,6 +61,10 @@ async function migrate() {
   // uploadee par l'admin en base64, en complement de l'icone existante.
   await ensureColumn(connection, 'games', 'cover_image_url', 'LONGTEXT NULL');
 
+  // games.is_active : permet a l'admin de masquer un jeu du menu public
+  // (pour le mettre a jour ou le tester) sans le supprimer.
+  await ensureColumn(connection, 'games', 'is_active', "TINYINT(1) NOT NULL DEFAULT 1");
+
   // users.hearts : monnaie persistante (indices) gagnee via les cartes a
   // collectionner, utilisable pour reveler une lettre dans Devine le Mot.
   await ensureColumn(connection, 'users', 'hearts', 'INT UNSIGNED NOT NULL DEFAULT 0');

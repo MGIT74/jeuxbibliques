@@ -14,9 +14,11 @@ function parseJsonField(row, field) {
   return row;
 }
 
-// GET /games
+// GET /games — seuls les jeux actifs apparaissent dans le menu public.
+// Un jeu masque reste volontairement joignable via /games/:slug (lien
+// direct) pour permettre a l'admin de le tester avant de le republier.
 router.get('/games', async (req, res) => {
-  const [rows] = await pool.query('SELECT * FROM games ORDER BY min_age ASC');
+  const [rows] = await pool.query('SELECT * FROM games WHERE is_active = 1 ORDER BY min_age ASC');
   res.json(rows.map((r) => parseJsonField(r, 'difficulty_levels')));
 });
 
