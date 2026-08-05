@@ -18,6 +18,7 @@ export interface Database {
           newsletter_consent: boolean;
           marketing_consent: boolean;
           consent_date: string | null;
+          country: string | null;
           hearts: number;
           created_at: string;
           updated_at: string;

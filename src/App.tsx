@@ -9,6 +9,7 @@ import { HomePage } from './pages/HomePage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { DonationPage } from './pages/DonationPage';
 import { VerifyEmailPage } from './pages/VerifyEmailPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { CollectionPage } from './pages/CollectionPage';
 import { ProfileSettings } from './components/profile/ProfileSettings';
 import { AuthModal } from './components/auth/AuthModal';
@@ -174,6 +175,7 @@ function AppContent() {
         <Route path="/don" element={<DonationPage onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="/collection" element={<CollectionPage onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="/verifier-email" element={<VerifyEmailPage onBack={() => navigate('/')} darkMode={darkMode} />} />
+        <Route path="/reinitialiser-mot-de-passe" element={<ResetPasswordPage onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="*" element={<HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />} />
       </Routes>
 

@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS users (
   email_verified TINYINT(1) NOT NULL DEFAULT 0,
   verification_token CHAR(36) NULL,
   verification_token_expires DATETIME NULL,
+  password_reset_token CHAR(36) NULL,
+  password_reset_token_expires DATETIME NULL,
   hearts INT UNSIGNED NOT NULL DEFAULT 0,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

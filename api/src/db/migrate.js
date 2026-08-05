@@ -49,6 +49,8 @@ async function migrate() {
   await ensureColumn(connection, 'users', 'email_verified', "TINYINT(1) NOT NULL DEFAULT 0");
   await ensureColumn(connection, 'users', 'verification_token', "CHAR(36) NULL");
   await ensureColumn(connection, 'users', 'verification_token_expires', "DATETIME NULL");
+  await ensureColumn(connection, 'users', 'password_reset_token', "CHAR(36) NULL");
+  await ensureColumn(connection, 'users', 'password_reset_token_expires', "DATETIME NULL");
 
   // banners.image_url : passe de VARCHAR(500) a LONGTEXT pour stocker les
   // images directement en base64 (simplifie l'upload : plus de fichiers,

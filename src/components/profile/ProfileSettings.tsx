@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { X, User, Mail, Save, Loader2, Bell, Megaphone, MapPin } from 'lucide-react';
+import { X, User, Mail, Save, Loader2, Bell, Megaphone, MapPin, Lock, KeyRound } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../lib/api';
 
 interface ProfileSettingsProps {
   isOpen: boolean;
@@ -9,7 +10,7 @@ interface ProfileSettingsProps {
 }
 
 export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsProps) {
-  const { profile, user, updateProfile } = useAuth();
+  const { profile, user, updateProfile, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +21,21 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
   const [country, setCountry] = useState('');
   const [newsletterConsent, setNewsletterConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
+
+  // Changement d'email
+  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [newEmail, setNewEmail] = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailMessage, setEmailMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Changement de mot de passe
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     if (profile) {
@@ -69,6 +85,46 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
     setLoading(false);
   }
 
+  async function handleChangeEmail(e: React.FormEvent) {
+    e.preventDefault();
+    setEmailLoading(true);
+    setEmailMessage(null);
+    try {
+      await api.post('/change-email', { new_email: newEmail.trim(), current_password: emailPassword });
+      await refreshProfile();
+      setEmailMessage({ type: 'success', text: 'Email modifié avec succès.' });
+      setNewEmail('');
+      setEmailPassword('');
+      setTimeout(() => setShowEmailForm(false), 1500);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      setEmailMessage({ type: 'error', text: message });
+    }
+    setEmailLoading(false);
+  }
+
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ type: 'error', text: 'Les deux mots de passe ne correspondent pas.' });
+      return;
+    }
+    setPasswordLoading(true);
+    setPasswordMessage(null);
+    try {
+      await api.post('/change-password', { current_password: currentPassword, new_password: newPassword });
+      setPasswordMessage({ type: 'success', text: 'Mot de passe modifié avec succès.' });
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => setShowPasswordForm(false), 1500);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erreur inconnue';
+      setPasswordMessage({ type: 'error', text: message });
+    }
+    setPasswordLoading(false);
+  }
+
   const inputClass = `w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
     darkMode
       ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40 focus:ring-gold focus:border-gold'
@@ -103,9 +159,47 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
                 className={`${inputClass} opacity-60 cursor-not-allowed`}
               />
             </div>
-            <p className={`text-xs mt-1 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
-              L'email ne peut pas etre modifie
-            </p>
+            <button
+              type="button"
+              onClick={() => { setShowEmailForm(!showEmailForm); setEmailMessage(null); }}
+              className={`text-xs mt-1.5 underline ${darkMode ? 'text-gold' : 'text-lapis'}`}
+            >
+              {showEmailForm ? 'Annuler' : "Changer d'adresse email"}
+            </button>
+
+            {showEmailForm && (
+              <div className={`mt-3 p-4 rounded-xl space-y-3 ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'}`}>
+                <input
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="Nouvelle adresse email"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                  required
+                />
+                <input
+                  type="password"
+                  value={emailPassword}
+                  onChange={(e) => setEmailPassword(e.target.value)}
+                  placeholder="Mot de passe actuel (confirmation)"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                  required
+                />
+                {emailMessage && (
+                  <p className={`text-xs ${emailMessage.type === 'success' ? 'text-emerald-500' : 'text-coral'}`}>
+                    {emailMessage.text}
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={handleChangeEmail}
+                  disabled={emailLoading}
+                  className="btn-primary w-full text-sm py-2 disabled:opacity-50"
+                >
+                  {emailLoading ? 'Enregistrement...' : "Confirmer l'email"}
+                </button>
+              </div>
+            )}
           </div>
 
           <div>
@@ -230,6 +324,62 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
                 </p>
               </div>
             </label>
+          </div>
+
+          <div className={`p-4 rounded-xl ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'}`}>
+            <button
+              type="button"
+              onClick={() => { setShowPasswordForm(!showPasswordForm); setPasswordMessage(null); }}
+              className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}
+            >
+              <KeyRound size={16} />
+              Changer le mot de passe
+            </button>
+
+            {showPasswordForm && (
+              <div className="mt-3 space-y-3">
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Mot de passe actuel"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                  required
+                />
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Nouveau mot de passe (8 caractères min.)"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                  required
+                  minLength={8}
+                />
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirme le nouveau mot de passe"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                  required
+                  minLength={8}
+                />
+                {passwordMessage && (
+                  <p className={`text-xs ${passwordMessage.type === 'success' ? 'text-emerald-500' : 'text-coral'}`}>
+                    {passwordMessage.text}
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={handleChangePassword}
+                  disabled={passwordLoading}
+                  className="btn-primary w-full text-sm py-2 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <Lock size={16} />
+                  {passwordLoading ? 'Enregistrement...' : 'Confirmer le mot de passe'}
+                </button>
+              </div>
+            )}
           </div>
 
           {error && (

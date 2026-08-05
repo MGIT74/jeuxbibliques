@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { X, Mail, Lock, User, Loader2, Church } from 'lucide-react';
+import { X, Mail, Lock, User, Loader2, Church, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../lib/api';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -8,16 +9,32 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const [churchName, setChurchName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [forgotMessage, setForgotMessage] = useState<string | null>(null);
   const { signIn, signUp } = useAuth();
 
   if (!isOpen) return null;
+
+  async function handleForgotPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setForgotMessage(null);
+    try {
+      const res = await api.post<{ message: string }>('/forgot-password', { email });
+      setForgotMessage(res.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,9 +94,55 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         </div>
 
         <h2 className="font-display text-2xl font-semibold text-ink mb-6 text-center">
-          {mode === 'signin' ? 'Connexion' : 'Créer un compte'}
+          {mode === 'signin' ? 'Connexion' : mode === 'signup' ? 'Créer un compte' : 'Mot de passe oublié'}
         </h2>
 
+        {mode === 'forgot' ? (
+          <div>
+            {forgotMessage ? (
+              <p className="text-ink/70 text-center bg-emerald-500/10 text-emerald-700 p-4 rounded-tile">
+                {forgotMessage}
+              </p>
+            ) : (
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <p className="text-sm text-ink/60 text-center mb-2">
+                  Entre l'adresse email de ton compte, on t'enverra un lien pour choisir un nouveau mot de passe.
+                </p>
+                <div>
+                  <label className="block text-sm font-medium text-ink/70 mb-1">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-dim" size={20} />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-gold-dim/30 bg-white rounded-full focus:ring-2 focus:ring-gold/50 focus:border-transparent transition-all text-ink"
+                      placeholder="ton@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {error && (
+                  <p className="text-coral text-sm text-center bg-coral/10 p-3 rounded-full">{error}</p>
+                )}
+
+                <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2">
+                  {loading ? <Loader2 className="animate-spin" size={20} /> : 'Envoyer le lien'}
+                </button>
+              </form>
+            )}
+
+            <button
+              onClick={() => { setMode('signin'); setForgotMessage(null); setError(null); }}
+              className="mt-6 flex items-center gap-2 text-lapis hover:text-lapis-bright font-semibold mx-auto"
+            >
+              <ArrowLeft size={16} />
+              Retour à la connexion
+            </button>
+          </div>
+        ) : (
+        <>
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === 'signup' && (
             <>
@@ -150,6 +213,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 minLength={6}
               />
             </div>
+            {mode === 'signin' && (
+              <button
+                type="button"
+                onClick={() => { setMode('forgot'); setError(null); }}
+                className="mt-2 text-sm text-lapis hover:text-lapis-bright"
+              >
+                Mot de passe oublié ?
+              </button>
+            )}
           </div>
 
           {error && (
@@ -201,6 +273,8 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             )}
           </p>
         </div>
+        </>
+        )}
       </div>
     </div>
   );
