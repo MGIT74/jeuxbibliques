@@ -46,4 +46,18 @@ async function sendMail({ to, subject, html }) {
   }
 }
 
-module.exports = { sendMail, getSmtpSettings, buildTransport };
+// Notifie tous les comptes administrateurs actifs (inscription, changement
+// d'identifiants...). N'echoue jamais silencieusement vers l'appelant :
+// chaque envoi est independant, une erreur sur l'un n'empeche pas les autres.
+async function notifyAdmins({ subject, html }) {
+  const [admins] = await pool.query(
+    'SELECT email FROM users WHERE is_admin = 1 AND is_blocked = 0 AND email IS NOT NULL'
+  );
+  for (const admin of admins) {
+    sendMail({ to: admin.email, subject, html }).catch((err) =>
+      console.error(`[mailer] Echec notification admin (${admin.email}):`, err)
+    );
+  }
+}
+
+module.exports = { sendMail, getSmtpSettings, buildTransport, notifyAdmins };

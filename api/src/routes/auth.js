@@ -5,7 +5,7 @@ const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth, JWT_SECRET } = require('../middleware/auth');
-const { sendMail, getSmtpSettings } = require('../lib/mailer');
+const { sendMail, getSmtpSettings, notifyAdmins } = require('../lib/mailer');
 
 const router = express.Router();
 
@@ -78,6 +78,17 @@ router.post('/register', authLimiter, async (req, res) => {
         <p>Si tu n'es pas à l'origine de cette inscription, tu peux ignorer ce message.</p>
       `,
     }).catch((err) => console.error('Erreur envoi email inscription:', err));
+
+    notifyAdmins({
+      subject: 'Nouvelle inscription — Jeux Bibliques',
+      html: `
+        <p>Un nouveau joueur vient de s'inscrire sur Jeux Bibliques :</p>
+        <ul>
+          <li><strong>Pseudo :</strong> ${username.trim()}</li>
+          <li><strong>Email :</strong> ${normalizedEmail}</li>
+        </ul>
+      `,
+    });
   }
 
   res.status(201).json({ user: sanitize(rows[0]), token });
@@ -252,6 +263,18 @@ router.post('/change-email', requireAuth, authLimiter, async (req, res) => {
         <p><a href="${verifyLink}">Clique ici pour la vérifier</a> (lien valable 48h).</p>
       `,
     }).catch((err) => console.error('Erreur envoi email (nouvelle adresse):', err));
+
+    notifyAdmins({
+      subject: 'Changement d\'email utilisateur — Jeux Bibliques',
+      html: `
+        <p>Un utilisateur vient de changer l'email de son compte :</p>
+        <ul>
+          <li><strong>Pseudo :</strong> ${req.user.username || ''}</li>
+          <li><strong>Ancien email :</strong> ${oldEmail || '(aucun)'}</li>
+          <li><strong>Nouvel email :</strong> ${normalizedEmail}</li>
+        </ul>
+      `,
+    });
   }
 
   const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [req.user.id]);
@@ -287,6 +310,17 @@ router.post('/change-password', requireAuth, authLimiter, async (req, res) => {
         <p>Si tu n'es pas à l'origine de cette modification, contacte un administrateur immédiatement.</p>
       `,
     }).catch((err) => console.error('Erreur envoi email confirmation mot de passe:', err));
+
+    notifyAdmins({
+      subject: 'Changement de mot de passe utilisateur — Jeux Bibliques',
+      html: `
+        <p>Un utilisateur vient de changer son mot de passe :</p>
+        <ul>
+          <li><strong>Pseudo :</strong> ${req.user.username || ''}</li>
+          <li><strong>Email :</strong> ${req.user.email || '(aucun)'}</li>
+        </ul>
+      `,
+    });
   }
 
   res.json({ message: 'Mot de passe modifié avec succès.' });
