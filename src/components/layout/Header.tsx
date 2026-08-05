@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { BookOpen, User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnlineUsers } from '../../contexts/OnlineUsersContext';
@@ -20,6 +21,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
   const { user, profile, signOut } = useAuth();
   const { onlineCount } = useOnlineUsers();
   const { hearts } = useCards();
+  const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [prevOnlineCount, setPrevOnlineCount] = useState(0);
@@ -239,6 +241,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                         onClick={() => {
                           signOut();
                           setShowMenu(false);
+                          navigate('/');
                         }}
                         className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-parchment/80 hover:bg-ink/40' : 'text-ink/80 hover:bg-parchment-dim'} transition-colors`}
                       >
