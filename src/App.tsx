@@ -25,6 +25,7 @@ import { VerseOrderGame } from './games/VerseOrderGame';
 import { MemoryGame } from './games/MemoryGame';
 import { CharacterMatchGame } from './games/CharacterMatchGame';
 import { CompleteVerseGame } from './games/CompleteVerseGame';
+import { BreastplateGame } from './games/BreastplateGame';
 import type { Game } from './types/database';
 
 type GameSlug =
@@ -36,7 +37,8 @@ type GameSlug =
   | 'verse-order'
   | 'memory'
   | 'character-match'
-  | 'complete-verse';
+  | 'complete-verse'
+  | 'pectoral';
 
 function BlockedBanner({ darkMode, onDismiss }: { darkMode: boolean; onDismiss: () => void }) {
   return (
@@ -105,6 +107,7 @@ function GamePage({ darkMode, onRequestAuth }: { darkMode: boolean; onRequestAut
     'memory': <MemoryGame {...gameProps} />,
     'character-match': <CharacterMatchGame {...gameProps} />,
     'complete-verse': <CompleteVerseGame {...gameProps} />,
+    'pectoral': <BreastplateGame {...gameProps} />,
   };
 
   const gameComponent = gameComponents[selectedGame.slug as GameSlug];

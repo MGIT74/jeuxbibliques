@@ -1,6 +1,6 @@
 import {
   Search, HelpCircle, BookOpen, MessageCircle, CheckCircle,
-  ArrowUpDown, Grid3x3, Users, PenTool, Star, LucideIcon
+  ArrowUpDown, Grid3x3, Users, PenTool, Star, Gem, LucideIcon
 } from 'lucide-react';
 import type { Game } from '../../types/database';
 
@@ -21,6 +21,7 @@ const iconMap: Record<string, LucideIcon> = {
   Users,
   PenTool,
   Star,
+  Gem,
 };
 
 // Chaque teinte est traitée comme une "encre" de médaillon : un dégradé
@@ -35,6 +36,7 @@ const colorMap: Record<string, { seal: string; ring: string; badge: string }> = 
   sky: { seal: 'from-sky-600 to-ink', ring: 'ring-sky-400/40', badge: 'bg-sky-600/90' },
   cyan: { seal: 'from-cyan-600 to-ink', ring: 'ring-cyan-400/40', badge: 'bg-cyan-600/90' },
   lime: { seal: 'from-lime-600 to-ink', ring: 'ring-lime-400/40', badge: 'bg-lime-600/90' },
+  violet: { seal: 'from-violet-600 to-ink', ring: 'ring-violet-400/40', badge: 'bg-violet-600/90' },
 };
 
 export function GameCard({ game, onClick, darkMode }: GameCardProps) {

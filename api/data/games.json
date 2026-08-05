@@ -115,5 +115,18 @@
       "medium",
       "hard"
     ]
+  },
+  {
+    "slug": "pectoral",
+    "name": "Le Pectoral du Grand Prêtre",
+    "description": "Reconstitue les 12 pierres precieuses du pectoral selon Exode 28",
+    "icon": "Gem",
+    "color": "violet",
+    "min_age": 5,
+    "difficulty_levels": [
+      "easy",
+      "medium",
+      "hard"
+    ]
   }
 ]
