@@ -207,12 +207,52 @@ router.post('/change-email', requireAuth, authLimiter, async (req, res) => {
   }
 
   const normalizedEmail = new_email.toLowerCase().trim();
+  if (normalizedEmail === req.user.email) {
+    return res.status(422).json({ message: 'Cette adresse est déjà celle de ton compte.' });
+  }
   const [existing] = await pool.query('SELECT id FROM users WHERE email = ? AND id != ?', [normalizedEmail, req.user.id]);
   if (existing.length > 0) {
     return res.status(409).json({ message: 'Cet email est déjà utilisé par un autre compte.' });
   }
 
-  await pool.query('UPDATE users SET email = ?, email_verified = 0 WHERE id = ?', [normalizedEmail, req.user.id]);
+  const oldEmail = req.user.email;
+  const verificationToken = uuidv4();
+  const verificationExpires = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+  await pool.query(
+    'UPDATE users SET email = ?, email_verified = 0, verification_token = ?, verification_token_expires = ? WHERE id = ?',
+    [normalizedEmail, verificationToken, verificationExpires, req.user.id]
+  );
+
+  // Notifications de securite : on previent l'ANCIENNE adresse au cas ou ce
+  // changement n'etait pas voulu, et on envoie un lien de verification a la
+  // NOUVELLE adresse (n'empechent jamais la reponse de reussir si l'email echoue).
+  const smtp = await getSmtpSettings();
+  if (smtp && smtp.is_active) {
+    if (oldEmail) {
+      sendMail({
+        to: oldEmail,
+        subject: 'Ton email de connexion a été modifié — Jeux Bibliques',
+        html: `
+          <p>Bonjour ${req.user.username || ''},</p>
+          <p>L'adresse email de ton compte Jeux Bibliques vient d'être changée vers <strong>${normalizedEmail}</strong>.</p>
+          <p>Si tu n'es pas à l'origine de cette modification, contacte un administrateur immédiatement.</p>
+        `,
+      }).catch((err) => console.error('Erreur envoi email (ancienne adresse):', err));
+    }
+
+    const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+    const verifyLink = `${appUrl}/verifier-email?token=${verificationToken}`;
+    sendMail({
+      to: normalizedEmail,
+      subject: 'Confirme ta nouvelle adresse email — Jeux Bibliques',
+      html: `
+        <p>Bonjour ${req.user.username || ''},</p>
+        <p>Ton compte Jeux Bibliques utilise maintenant cette adresse email.</p>
+        <p><a href="${verifyLink}">Clique ici pour la vérifier</a> (lien valable 48h).</p>
+      `,
+    }).catch((err) => console.error('Erreur envoi email (nouvelle adresse):', err));
+  }
 
   const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [req.user.id]);
   res.json(sanitize(rows[0]));
@@ -235,6 +275,20 @@ router.post('/change-password', requireAuth, authLimiter, async (req, res) => {
 
   const newHash = await bcrypt.hash(new_password, 10);
   await pool.query('UPDATE users SET password = ? WHERE id = ?', [newHash, req.user.id]);
+
+  const smtp = await getSmtpSettings();
+  if (smtp && smtp.is_active && req.user.email) {
+    sendMail({
+      to: req.user.email,
+      subject: 'Ton mot de passe a été modifié — Jeux Bibliques',
+      html: `
+        <p>Bonjour ${req.user.username || ''},</p>
+        <p>Le mot de passe de ton compte Jeux Bibliques vient d'être modifié.</p>
+        <p>Si tu n'es pas à l'origine de cette modification, contacte un administrateur immédiatement.</p>
+      `,
+    }).catch((err) => console.error('Erreur envoi email confirmation mot de passe:', err));
+  }
+
   res.json({ message: 'Mot de passe modifié avec succès.' });
 });
 

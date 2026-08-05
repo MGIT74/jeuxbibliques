@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, User, Mail, Save, Loader2, Bell, Megaphone, MapPin, Lock, KeyRound } from 'lucide-react';
+import { X, User, Mail, Save, Loader2, Bell, Megaphone, MapPin, Lock, ShieldCheck, ChevronRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../lib/api';
 
@@ -10,7 +10,7 @@ interface ProfileSettingsProps {
 }
 
 export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsProps) {
-  const { profile, user, updateProfile, refreshProfile } = useAuth();
+  const { profile, user, updateProfile } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,20 +22,7 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
   const [newsletterConsent, setNewsletterConsent] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
 
-  // Changement d'email
-  const [showEmailForm, setShowEmailForm] = useState(false);
-  const [newEmail, setNewEmail] = useState('');
-  const [emailPassword, setEmailPassword] = useState('');
-  const [emailLoading, setEmailLoading] = useState(false);
-  const [emailMessage, setEmailMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-
-  // Changement de mot de passe
-  const [showPasswordForm, setShowPasswordForm] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordLoading, setPasswordLoading] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [activeSecurityModal, setActiveSecurityModal] = useState<'email' | 'password' | null>(null);
 
   useEffect(() => {
     if (profile) {
@@ -85,46 +72,6 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
     setLoading(false);
   }
 
-  async function handleChangeEmail(e: React.FormEvent) {
-    e.preventDefault();
-    setEmailLoading(true);
-    setEmailMessage(null);
-    try {
-      await api.post('/change-email', { new_email: newEmail.trim(), current_password: emailPassword });
-      await refreshProfile();
-      setEmailMessage({ type: 'success', text: 'Email modifié avec succès.' });
-      setNewEmail('');
-      setEmailPassword('');
-      setTimeout(() => setShowEmailForm(false), 1500);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur inconnue';
-      setEmailMessage({ type: 'error', text: message });
-    }
-    setEmailLoading(false);
-  }
-
-  async function handleChangePassword(e: React.FormEvent) {
-    e.preventDefault();
-    if (newPassword !== confirmPassword) {
-      setPasswordMessage({ type: 'error', text: 'Les deux mots de passe ne correspondent pas.' });
-      return;
-    }
-    setPasswordLoading(true);
-    setPasswordMessage(null);
-    try {
-      await api.post('/change-password', { current_password: currentPassword, new_password: newPassword });
-      setPasswordMessage({ type: 'success', text: 'Mot de passe modifié avec succès.' });
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setTimeout(() => setShowPasswordForm(false), 1500);
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erreur inconnue';
-      setPasswordMessage({ type: 'error', text: message });
-    }
-    setPasswordLoading(false);
-  }
-
   const inputClass = `w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
     darkMode
       ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40 focus:ring-gold focus:border-gold'
@@ -148,60 +95,6 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className={labelClass}>Email</label>
-            <div className="relative">
-              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={20} />
-              <input
-                type="email"
-                value={user?.email || ''}
-                disabled
-                className={`${inputClass} opacity-60 cursor-not-allowed`}
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => { setShowEmailForm(!showEmailForm); setEmailMessage(null); }}
-              className={`text-xs mt-1.5 underline ${darkMode ? 'text-gold' : 'text-lapis'}`}
-            >
-              {showEmailForm ? 'Annuler' : "Changer d'adresse email"}
-            </button>
-
-            {showEmailForm && (
-              <div className={`mt-3 p-4 rounded-xl space-y-3 ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'}`}>
-                <input
-                  type="email"
-                  value={newEmail}
-                  onChange={(e) => setNewEmail(e.target.value)}
-                  placeholder="Nouvelle adresse email"
-                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
-                  required
-                />
-                <input
-                  type="password"
-                  value={emailPassword}
-                  onChange={(e) => setEmailPassword(e.target.value)}
-                  placeholder="Mot de passe actuel (confirmation)"
-                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
-                  required
-                />
-                {emailMessage && (
-                  <p className={`text-xs ${emailMessage.type === 'success' ? 'text-emerald-500' : 'text-coral'}`}>
-                    {emailMessage.text}
-                  </p>
-                )}
-                <button
-                  type="button"
-                  onClick={handleChangeEmail}
-                  disabled={emailLoading}
-                  className="btn-primary w-full text-sm py-2 disabled:opacity-50"
-                >
-                  {emailLoading ? 'Enregistrement...' : "Confirmer l'email"}
-                </button>
-              </div>
-            )}
-          </div>
-
           <div>
             <label className={labelClass}>Nom d'utilisateur</label>
             <div className="relative">
@@ -326,62 +219,6 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
             </label>
           </div>
 
-          <div className={`p-4 rounded-xl ${darkMode ? 'bg-ink/40' : 'bg-parchment-dim'}`}>
-            <button
-              type="button"
-              onClick={() => { setShowPasswordForm(!showPasswordForm); setPasswordMessage(null); }}
-              className={`flex items-center gap-2 text-sm font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}
-            >
-              <KeyRound size={16} />
-              Changer le mot de passe
-            </button>
-
-            {showPasswordForm && (
-              <div className="mt-3 space-y-3">
-                <input
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  placeholder="Mot de passe actuel"
-                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
-                  required
-                />
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  placeholder="Nouveau mot de passe (8 caractères min.)"
-                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
-                  required
-                  minLength={8}
-                />
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Confirme le nouveau mot de passe"
-                  className={`w-full px-3 py-2 rounded-lg border text-sm ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
-                  required
-                  minLength={8}
-                />
-                {passwordMessage && (
-                  <p className={`text-xs ${passwordMessage.type === 'success' ? 'text-emerald-500' : 'text-coral'}`}>
-                    {passwordMessage.text}
-                  </p>
-                )}
-                <button
-                  type="button"
-                  onClick={handleChangePassword}
-                  disabled={passwordLoading}
-                  className="btn-primary w-full text-sm py-2 disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  <Lock size={16} />
-                  {passwordLoading ? 'Enregistrement...' : 'Confirmer le mot de passe'}
-                </button>
-              </div>
-            )}
-          </div>
-
           {error && (
             <p className="text-red-500 text-sm text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
               {error}
@@ -412,6 +249,253 @@ export function ProfileSettings({ isOpen, onClose, darkMode }: ProfileSettingsPr
             )}
           </button>
         </form>
+
+        {/* Securite : email et mot de passe, volontairement en dehors du
+            formulaire principal (des <form> imbriquees + touche Entree
+            auraient pu declencher le mauvais enregistrement). */}
+        <div className="mt-6 pt-5 border-t border-gold/10">
+          <h3 className={`flex items-center gap-2 text-sm font-semibold mb-3 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            <ShieldCheck size={16} />
+            Sécurité
+          </h3>
+
+          <button
+            type="button"
+            onClick={() => setActiveSecurityModal('email')}
+            className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl mb-2 transition-colors ${
+              darkMode ? 'bg-ink/40 hover:bg-ink/60 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'
+            }`}
+          >
+            <span className="flex items-center gap-2 text-sm">
+              <Mail size={16} />
+              <span className="text-left">
+                Adresse email
+                <span className={`block text-xs ${darkMode ? 'text-parchment/50' : 'text-ink/50'}`}>{user?.email}</span>
+              </span>
+            </span>
+            <ChevronRight size={16} className={darkMode ? 'text-parchment/40' : 'text-ink/30'} />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveSecurityModal('password')}
+            className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl transition-colors ${
+              darkMode ? 'bg-ink/40 hover:bg-ink/60 text-parchment' : 'bg-parchment-dim hover:bg-parchment-dim/70 text-ink'
+            }`}
+          >
+            <span className="flex items-center gap-2 text-sm">
+              <Lock size={16} />
+              Mot de passe
+            </span>
+            <ChevronRight size={16} className={darkMode ? 'text-parchment/40' : 'text-ink/30'} />
+          </button>
+        </div>
+      </div>
+
+      {activeSecurityModal === 'email' && (
+        <ChangeEmailModal darkMode={darkMode} onClose={() => setActiveSecurityModal(null)} />
+      )}
+      {activeSecurityModal === 'password' && (
+        <ChangePasswordModal darkMode={darkMode} onClose={() => setActiveSecurityModal(null)} />
+      )}
+    </div>
+  );
+}
+
+function ChangeEmailModal({ darkMode, onClose }: { darkMode: boolean; onClose: () => void }) {
+  const { user, refreshProfile } = useAuth();
+  const [newEmail, setNewEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      await api.post('/change-email', { new_email: newEmail.trim(), current_password: currentPassword });
+      await refreshProfile();
+      setSuccess(true);
+      setTimeout(onClose, 1800);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
+    }
+    setLoading(false);
+  }
+
+  const inputClass = `w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
+    darkMode
+      ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40 focus:ring-gold focus:border-gold'
+      : 'bg-white border-gold-dim/25 text-ink placeholder-ink/40 focus:ring-lapis focus:border-lapis'
+  } focus:ring-2`;
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-xl max-w-sm w-full p-6 relative`}>
+        <button
+          onClick={onClose}
+          className={`absolute top-4 right-4 ${darkMode ? 'text-parchment/50 hover:text-parchment' : 'text-ink/40 hover:text-ink/70'}`}
+        >
+          <X size={22} />
+        </button>
+
+        <div className="seal w-12 h-12 mx-auto mb-4">
+          <Mail size={20} />
+        </div>
+        <h3 className={`text-lg font-bold text-center mb-1 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+          Changer l'adresse email
+        </h3>
+        <p className={`text-xs text-center mb-5 ${darkMode ? 'text-parchment/50' : 'text-ink/50'}`}>
+          Actuellement : {user?.email}
+        </p>
+
+        {success ? (
+          <p className="text-center text-emerald-500 text-sm bg-emerald-500/10 p-3 rounded-lg">
+            Email modifié ! Vérifie ta nouvelle boîte mail pour confirmer.
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <Mail className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={18} />
+              <input
+                type="email"
+                value={newEmail}
+                onChange={(e) => setNewEmail(e.target.value)}
+                placeholder="Nouvelle adresse email"
+                className={inputClass}
+                required
+                autoFocus
+              />
+            </div>
+            <div className="relative">
+              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={18} />
+              <input
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Mot de passe actuel"
+                className={inputClass}
+                required
+              />
+            </div>
+
+            {error && (
+              <p className="text-coral text-sm text-center bg-coral/10 p-3 rounded-lg">{error}</p>
+            )}
+
+            <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2">
+              {loading ? <Loader2 className="animate-spin" size={18} /> : "Confirmer le nouvel email"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ChangePasswordModal({ darkMode, onClose }: { darkMode: boolean; onClose: () => void }) {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (newPassword !== confirmPassword) {
+      setError('Les deux mots de passe ne correspondent pas.');
+      return;
+    }
+    setLoading(true);
+    try {
+      await api.post('/change-password', { current_password: currentPassword, new_password: newPassword });
+      setSuccess(true);
+      setTimeout(onClose, 1500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erreur inconnue');
+    }
+    setLoading(false);
+  }
+
+  const inputClass = `w-full pl-10 pr-4 py-3 border rounded-xl transition-all ${
+    darkMode
+      ? 'bg-ink border-gold/20 text-parchment placeholder-parchment/40 focus:ring-gold focus:border-gold'
+      : 'bg-white border-gold-dim/25 text-ink placeholder-ink/40 focus:ring-lapis focus:border-lapis'
+  } focus:ring-2`;
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[60] p-4">
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl shadow-xl max-w-sm w-full p-6 relative`}>
+        <button
+          onClick={onClose}
+          className={`absolute top-4 right-4 ${darkMode ? 'text-parchment/50 hover:text-parchment' : 'text-ink/40 hover:text-ink/70'}`}
+        >
+          <X size={22} />
+        </button>
+
+        <div className="seal w-12 h-12 mx-auto mb-4">
+          <Lock size={20} />
+        </div>
+        <h3 className={`text-lg font-bold text-center mb-5 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+          Changer le mot de passe
+        </h3>
+
+        {success ? (
+          <p className="text-center text-emerald-500 text-sm bg-emerald-500/10 p-3 rounded-lg">
+            Mot de passe modifié avec succès !
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="relative">
+              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={18} />
+              <input
+                type="password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                placeholder="Mot de passe actuel"
+                className={inputClass}
+                required
+                autoFocus
+              />
+            </div>
+            <div className="relative">
+              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={18} />
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Nouveau mot de passe (8 car. min.)"
+                className={inputClass}
+                required
+                minLength={8}
+              />
+            </div>
+            <div className="relative">
+              <Lock className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`} size={18} />
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirme le nouveau mot de passe"
+                className={inputClass}
+                required
+                minLength={8}
+              />
+            </div>
+
+            {error && (
+              <p className="text-coral text-sm text-center bg-coral/10 p-3 rounded-lg">{error}</p>
+            )}
+
+            <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-50 flex items-center justify-center gap-2">
+              {loading ? <Loader2 className="animate-spin" size={18} /> : 'Confirmer le mot de passe'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

@@ -24,6 +24,12 @@ const { seed } = require('./db/seed');
 
 const app = express();
 
+// Le site est servi derriere un proxy inverse (Nginx) : sans ce reglage,
+// express-rate-limit ne peut pas determiner l'IP reelle du visiteur a
+// partir de l'en-tete X-Forwarded-For et remonte une erreur de validation
+// a chaque requete.
+app.set('trust proxy', 1);
+
 const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || '*').split(',').map((o) => o.trim());
 app.use(cors({
   origin: allowedOrigins.includes('*') ? true : allowedOrigins,
