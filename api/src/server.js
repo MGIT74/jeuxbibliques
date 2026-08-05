@@ -65,8 +65,16 @@ app.use(express.static(frontendDist, {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('index.html')) {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    } else {
+    } else if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+      // Seuls les fichiers dans dist/assets/ ont un nom hashe par Vite
+      // (ex: index-abc123.js) : eux seuls peuvent etre mis en cache
+      // longtemps sans risque, un nouveau build change automatiquement leur nom.
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      // Tout le reste (favicon.png, logo.png, icon-*.png, manifest, og-image...)
+      // garde le MEME nom d'un deploiement a l'autre : un cache long ici
+      // empecherait le navigateur de jamais voir la nouvelle version.
+      res.setHeader('Cache-Control', 'public, max-age=300, must-revalidate');
     }
   },
 }));
