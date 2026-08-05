@@ -93,17 +93,9 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <a href="/" className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 rounded-xl overflow-hidden bg-white ring-2 ring-gold/40 shadow-tile">
-                <img src="/logo.png" alt="Jeux Bibliques" className="w-full h-full object-cover" />
-              </div>
-              <div className="min-w-0">
-                <h1 className={`font-display text-base sm:text-xl font-semibold truncate ${darkMode ? 'text-parchment' : 'text-ink'}`}>
-                  Jeux Bibliques
-                </h1>
-                <p className={`eyebrow hidden sm:block normal-case tracking-normal text-[11px] font-medium ${darkMode ? 'text-parchment/50' : 'text-ink/50'}`}>
-                  Apprends en t'amusant
-                </p>
+            <a href="/" className="flex items-center flex-shrink-0">
+              <div className="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl overflow-hidden bg-white shadow-tile">
+                <img src="/logo.png" alt="Jeux Bibliques" className="w-full h-full object-contain" />
               </div>
             </a>
 
