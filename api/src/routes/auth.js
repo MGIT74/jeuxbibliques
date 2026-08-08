@@ -6,6 +6,8 @@ const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth, JWT_SECRET } = require('../middleware/auth');
 const { sendMail, getSmtpSettings, notifyAdmins } = require('../lib/mailer');
+const { sanitizeUser } = require('../lib/sanitizeUser');
+const { escapeHtml } = require('../lib/escapeHtml');
 
 const router = express.Router();
 
@@ -21,14 +23,21 @@ const authLimiter = rateLimit({
   message: { message: 'Trop de tentatives. Réessayez dans quelques minutes.' },
 });
 
-function signToken(userId) {
-  return jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: '90d' });
+// Le JWT embarque token_version : incrementer cette valeur en base (fait au
+// changement de mot de passe) invalide immediatement tous les tokens deja
+// emis pour ce compte, meme si leur duree de validite n'est pas ecoulee.
+function signToken(userId, tokenVersion) {
+  return jwt.sign({ sub: userId, v: tokenVersion || 0 }, JWT_SECRET, { expiresIn: '30d' });
 }
 
-function sanitize(user) {
-  if (!user) return user;
-  const { password, ...rest } = user;
-  return rest;
+const sanitize = sanitizeUser;
+
+// Limites de longueur raisonnables sur les champs texte libres du profil :
+// evite les valeurs demesurees stockees en base et affichees un peu partout
+// (liste admin, emails...), sans etre restrictif pour un usage normal.
+function clampText(value, maxLength) {
+  if (typeof value !== 'string') return value;
+  return value.trim().slice(0, maxLength);
 }
 
 // POST /register
@@ -41,6 +50,10 @@ router.post('/register', authLimiter, async (req, res) => {
   if (password.length < 8) {
     return res.status(422).json({ errors: { password: ['Le mot de passe doit contenir au moins 8 caractères.'] } });
   }
+  const cleanUsername = clampText(username, 40);
+  if (cleanUsername.length < 2) {
+    return res.status(422).json({ errors: { username: ['Le pseudo doit contenir au moins 2 caractères.'] } });
+  }
 
   const normalizedEmail = email.toLowerCase().trim();
   const [existing] = await pool.query('SELECT id FROM users WHERE email = ?', [normalizedEmail]);
@@ -52,15 +65,16 @@ router.post('/register', authLimiter, async (req, res) => {
   const passwordHash = await bcrypt.hash(password, 10);
   const verificationToken = uuidv4();
   const verificationExpires = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48h
+  const cleanChurchName = church_name ? clampText(church_name, 255) : null;
 
   await pool.query(
     `INSERT INTO users (id, email, password, username, church_name, age_group, total_points, is_admin, newsletter_consent, marketing_consent, is_blocked, verification_token, verification_token_expires)
      VALUES (?, ?, ?, ?, ?, 'adult', 0, 0, 0, 0, 0, ?, ?)`,
-    [id, normalizedEmail, passwordHash, username.trim(), church_name ? church_name.trim() : null, verificationToken, verificationExpires]
+    [id, normalizedEmail, passwordHash, cleanUsername, cleanChurchName, verificationToken, verificationExpires]
   );
 
   const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
-  const token = signToken(id);
+  const token = signToken(id, 0);
 
   // Email de bienvenue / verification — n'empeche jamais l'inscription de
   // reussir si le SMTP n'est pas configure ou echoue (voir sendMail).
@@ -68,11 +82,12 @@ router.post('/register', authLimiter, async (req, res) => {
   if (smtp && smtp.is_active) {
     const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
     const verifyLink = `${appUrl}/verifier-email?token=${verificationToken}`;
+    const safeUsername = escapeHtml(cleanUsername);
     sendMail({
       to: normalizedEmail,
       subject: 'Bienvenue sur Jeux Bibliques — vérifie ton email',
       html: `
-        <p>Bonjour ${username.trim()},</p>
+        <p>Bonjour ${safeUsername},</p>
         <p>Merci de t'être inscrit(e) sur Jeux Bibliques !</p>
         <p><a href="${verifyLink}">Clique ici pour vérifier ton adresse email</a> (lien valable 48h).</p>
         <p>Si tu n'es pas à l'origine de cette inscription, tu peux ignorer ce message.</p>
@@ -84,8 +99,8 @@ router.post('/register', authLimiter, async (req, res) => {
       html: `
         <p>Un nouveau joueur vient de s'inscrire sur Jeux Bibliques :</p>
         <ul>
-          <li><strong>Pseudo :</strong> ${username.trim()}</li>
-          <li><strong>Email :</strong> ${normalizedEmail}</li>
+          <li><strong>Pseudo :</strong> ${safeUsername}</li>
+          <li><strong>Email :</strong> ${escapeHtml(normalizedEmail)}</li>
         </ul>
       `,
     });
@@ -113,7 +128,7 @@ router.post('/login', authLimiter, async (req, res) => {
     return res.status(403).json({ message: 'Ce compte a été bloqué.', reason: user.blocked_reason });
   }
 
-  const token = signToken(user.id);
+  const token = signToken(user.id, user.token_version);
   res.json({ user: sanitize(user), token });
 });
 
@@ -183,6 +198,11 @@ router.get('/me', requireAuth, (req, res) => {
 });
 
 // PUT /me
+// Longueurs max par champ texte libre + verification que avatar_url est bien
+// une URL http(s) (ou un data:image/... pour les avatars uploades) : evite
+// de stocker un schema "javascript:" ou une chaine demesuree.
+const ME_TEXT_LIMITS = { username: 40, full_name: 100, church_name: 255, country: 100 };
+
 router.put('/me', requireAuth, async (req, res) => {
   const allowed = [
     'username', 'avatar_url', 'age_group', 'full_name', 'church_name',
@@ -190,7 +210,23 @@ router.put('/me', requireAuth, async (req, res) => {
   ];
   const updates = {};
   for (const key of allowed) {
-    if (key in req.body) updates[key] = req.body[key];
+    if (!(key in req.body)) continue;
+    let value = req.body[key];
+
+    if (key in ME_TEXT_LIMITS && typeof value === 'string') {
+      value = clampText(value, ME_TEXT_LIMITS[key]);
+    }
+    if (key === 'avatar_url' && typeof value === 'string' && value.trim()) {
+      const isSafeUrl = /^https?:\/\//i.test(value) || /^data:image\/(png|jpe?g|webp|gif);base64,/i.test(value);
+      if (!isSafeUrl) {
+        return res.status(422).json({ message: "avatar_url doit être une URL http(s) ou une image encodée valide." });
+      }
+    }
+    updates[key] = value;
+  }
+
+  if (updates.username !== undefined && updates.username.length < 2) {
+    return res.status(422).json({ message: 'Le pseudo doit contenir au moins 2 caractères.' });
   }
 
   if (Object.keys(updates).length === 0) {
@@ -240,13 +276,15 @@ router.post('/change-email', requireAuth, authLimiter, async (req, res) => {
   // NOUVELLE adresse (n'empechent jamais la reponse de reussir si l'email echoue).
   const smtp = await getSmtpSettings();
   if (smtp && smtp.is_active) {
+    const safeUsername = escapeHtml(req.user.username || '');
+    const safeNewEmail = escapeHtml(normalizedEmail);
     if (oldEmail) {
       sendMail({
         to: oldEmail,
         subject: 'Ton email de connexion a été modifié — Jeux Bibliques',
         html: `
-          <p>Bonjour ${req.user.username || ''},</p>
-          <p>L'adresse email de ton compte Jeux Bibliques vient d'être changée vers <strong>${normalizedEmail}</strong>.</p>
+          <p>Bonjour ${safeUsername},</p>
+          <p>L'adresse email de ton compte Jeux Bibliques vient d'être changée vers <strong>${safeNewEmail}</strong>.</p>
           <p>Si tu n'es pas à l'origine de cette modification, contacte un administrateur immédiatement.</p>
         `,
       }).catch((err) => console.error('Erreur envoi email (ancienne adresse):', err));
@@ -258,7 +296,7 @@ router.post('/change-email', requireAuth, authLimiter, async (req, res) => {
       to: normalizedEmail,
       subject: 'Confirme ta nouvelle adresse email — Jeux Bibliques',
       html: `
-        <p>Bonjour ${req.user.username || ''},</p>
+        <p>Bonjour ${safeUsername},</p>
         <p>Ton compte Jeux Bibliques utilise maintenant cette adresse email.</p>
         <p><a href="${verifyLink}">Clique ici pour la vérifier</a> (lien valable 48h).</p>
       `,
@@ -269,9 +307,9 @@ router.post('/change-email', requireAuth, authLimiter, async (req, res) => {
       html: `
         <p>Un utilisateur vient de changer l'email de son compte :</p>
         <ul>
-          <li><strong>Pseudo :</strong> ${req.user.username || ''}</li>
-          <li><strong>Ancien email :</strong> ${oldEmail || '(aucun)'}</li>
-          <li><strong>Nouvel email :</strong> ${normalizedEmail}</li>
+          <li><strong>Pseudo :</strong> ${safeUsername}</li>
+          <li><strong>Ancien email :</strong> ${escapeHtml(oldEmail || '(aucun)')}</li>
+          <li><strong>Nouvel email :</strong> ${safeNewEmail}</li>
         </ul>
       `,
     });
@@ -297,15 +335,23 @@ router.post('/change-password', requireAuth, authLimiter, async (req, res) => {
   }
 
   const newHash = await bcrypt.hash(new_password, 10);
-  await pool.query('UPDATE users SET password = ? WHERE id = ?', [newHash, req.user.id]);
+  // token_version + 1 invalide immediatement tout JWT deja emis pour ce
+  // compte (session volee, appareil partage...) : seul le nouveau token
+  // renvoye ci-dessous reste valide.
+  await pool.query(
+    'UPDATE users SET password = ?, token_version = token_version + 1 WHERE id = ?',
+    [newHash, req.user.id]
+  );
+  const newTokenVersion = (req.user.token_version || 0) + 1;
 
   const smtp = await getSmtpSettings();
   if (smtp && smtp.is_active && req.user.email) {
+    const safeUsername = escapeHtml(req.user.username || '');
     sendMail({
       to: req.user.email,
       subject: 'Ton mot de passe a été modifié — Jeux Bibliques',
       html: `
-        <p>Bonjour ${req.user.username || ''},</p>
+        <p>Bonjour ${safeUsername},</p>
         <p>Le mot de passe de ton compte Jeux Bibliques vient d'être modifié.</p>
         <p>Si tu n'es pas à l'origine de cette modification, contacte un administrateur immédiatement.</p>
       `,
@@ -316,14 +362,18 @@ router.post('/change-password', requireAuth, authLimiter, async (req, res) => {
       html: `
         <p>Un utilisateur vient de changer son mot de passe :</p>
         <ul>
-          <li><strong>Pseudo :</strong> ${req.user.username || ''}</li>
-          <li><strong>Email :</strong> ${req.user.email || '(aucun)'}</li>
+          <li><strong>Pseudo :</strong> ${safeUsername}</li>
+          <li><strong>Email :</strong> ${escapeHtml(req.user.email || '(aucun)')}</li>
         </ul>
       `,
     });
   }
 
-  res.json({ message: 'Mot de passe modifié avec succès.' });
+  // Le compte lui-meme change de token_version : on renvoie tout de suite un
+  // token a jour pour que l'utilisateur ne soit pas deconnecte de force par
+  // son propre changement de mot de passe.
+  const token = signToken(req.user.id, newTokenVersion);
+  res.json({ message: 'Mot de passe modifié avec succès.', token });
 });
 
 // POST /forgot-password — envoie un lien de reinitialisation par email.
@@ -361,7 +411,7 @@ router.post('/forgot-password', authLimiter, async (req, res) => {
     to: normalizedEmail,
     subject: 'Réinitialisation de ton mot de passe — Jeux Bibliques',
     html: `
-      <p>Bonjour ${user.username || ''},</p>
+      <p>Bonjour ${escapeHtml(user.username || '')},</p>
       <p>Tu as demandé à réinitialiser ton mot de passe.</p>
       <p><a href="${resetLink}">Clique ici pour choisir un nouveau mot de passe</a> (lien valable 1h).</p>
       <p>Si tu n'es pas à l'origine de cette demande, tu peux ignorer ce message.</p>
@@ -395,8 +445,12 @@ router.post('/reset-password', authLimiter, async (req, res) => {
   }
 
   const newHash = await bcrypt.hash(new_password, 10);
+  // Invalide aussi toute session existante (voir /change-password) : un
+  // mot de passe reinitialise via email doit deconnecter tout token deja
+  // emis, notamment celui d'un eventuel attaquant.
   await pool.query(
-    'UPDATE users SET password = ?, password_reset_token = NULL, password_reset_token_expires = NULL WHERE id = ?',
+    `UPDATE users SET password = ?, password_reset_token = NULL, password_reset_token_expires = NULL,
+       token_version = token_version + 1 WHERE id = ?`,
     [newHash, user.id]
   );
 

@@ -66,6 +66,16 @@ router.get('/banners', async (req, res) => {
 // depuis le navigateur : plus de fichier, plus d'upload separe, plus de
 // dependance a multer — le formulaire d'ajout/modification suffit.
 
+// image_url est rendu en <img src>, link_url en <a href> (voir BannerSlider) :
+// on n'accepte que des schemas surs pour eviter un "javascript:" ou un SVG
+// avec script embarque (data:image/svg+xml peut executer du JS a l'affichage).
+function isSafeImageUrl(url) {
+  return /^https?:\/\//i.test(url) || /^data:image\/(png|jpe?g|webp|gif);base64,/i.test(url);
+}
+function isSafeLinkUrl(url) {
+  return !url || /^https?:\/\//i.test(url) || url.startsWith('/');
+}
+
 router.get('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   const [rows] = await pool.query('SELECT * FROM banners ORDER BY display_order ASC');
   res.json(rows.map(r => withIsoDates(fixBannerUrl(r, req))));
@@ -76,6 +86,12 @@ router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
 
   if (!title || !image_url) {
     return res.status(422).json({ message: 'title et image_url sont requis.' });
+  }
+  if (!isSafeImageUrl(image_url)) {
+    return res.status(422).json({ message: 'image_url doit être une URL http(s) ou une image encodée (png/jpeg/webp/gif).' });
+  }
+  if (!isSafeLinkUrl(link_url)) {
+    return res.status(422).json({ message: 'link_url doit être une URL http(s) ou un chemin relatif.' });
   }
 
   const id = uuidv4();
@@ -91,6 +107,13 @@ router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
 
 router.put('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => {
   const { title, image_url, link_url, is_active, display_order, duration_seconds, start_date, end_date } = req.body;
+
+  if (image_url && !isSafeImageUrl(image_url)) {
+    return res.status(422).json({ message: 'image_url doit être une URL http(s) ou une image encodée (png/jpeg/webp/gif).' });
+  }
+  if (!isSafeLinkUrl(link_url)) {
+    return res.status(422).json({ message: 'link_url doit être une URL http(s) ou un chemin relatif.' });
+  }
 
   await pool.query(
     `UPDATE banners SET title = ?, image_url = ?, link_url = ?, is_active = ?, display_order = ?,

@@ -1,13 +1,9 @@
 const express = require('express');
 const pool = require('../db/pool');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { sanitizeUser: sanitize } = require('../lib/sanitizeUser');
 
 const router = express.Router();
-
-function sanitize(user) {
-  const { password, ...rest } = user;
-  return rest;
-}
 
 // GET /admin/users
 router.get('/admin/users', requireAuth, requireAdmin, async (req, res) => {

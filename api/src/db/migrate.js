@@ -69,6 +69,13 @@ async function migrate() {
   // collectionner, utilisable pour reveler une lettre dans Devine le Mot.
   await ensureColumn(connection, 'users', 'hearts', 'INT UNSIGNED NOT NULL DEFAULT 0');
 
+  // users.token_version : incremente a chaque changement de mot de passe pour
+  // invalider immediatement tous les JWT deja emis (session hijacking /
+  // token vole) sans avoir a gerer une liste de revocation separee. Le JWT
+  // embarque la version au moment de sa creation ; requireAuth compare cette
+  // valeur a celle en base a chaque requete.
+  await ensureColumn(connection, 'users', 'token_version', 'INT UNSIGNED NOT NULL DEFAULT 0');
+
   console.log('Migrations complete.');
 
   await connection.end();

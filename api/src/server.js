@@ -35,6 +35,17 @@ app.use(cors({
   origin: allowedOrigins.includes('*') ? true : allowedOrigins,
 }));
 
+// En-tetes de securite HTTP basiques (equivalent minimal a "helmet", sans
+// ajouter de dependance) : empeche le site d'etre charge dans une iframe
+// tierce (clickjacking), desactive le MIME-sniffing, et limite les fuites
+// d'URL via l'en-tete Referer envoye vers d'autres sites.
+app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 app.use(express.json({ limit: '10mb' }));
 
 // Fichiers uploadés (bannières) servis statiquement

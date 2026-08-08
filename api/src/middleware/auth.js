@@ -26,6 +26,12 @@ async function requireAuth(req, res, next) {
     if (user.is_blocked) {
       return res.status(403).json({ message: 'Ce compte a été bloqué.', reason: user.blocked_reason });
     }
+    // Un changement/reinitialisation de mot de passe incremente
+    // token_version en base : tout JWT emis avant (version differente,
+    // ou absente pour les tokens emis avant l'ajout de ce champ) est refuse.
+    if ((payload.v || 0) !== (user.token_version || 0)) {
+      return res.status(401).json({ message: 'Session expirée, merci de te reconnecter.' });
+    }
 
     // Suivi de présence pour le compteur "en ligne" (remplace la presence Supabase Realtime)
     pool.query('UPDATE users SET last_seen_at = NOW() WHERE id = ?', [user.id]).catch(() => {});

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, User, Mail, Save, Loader2, Bell, Megaphone, MapPin, Lock, ShieldCheck, ChevronRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { api } from '../../lib/api';
+import { api, setToken } from '../../lib/api';
 
 interface ProfileSettingsProps {
   isOpen: boolean;
@@ -586,7 +586,15 @@ function ChangePasswordModal({ darkMode, onClose }: { darkMode: boolean; onClose
     }
     setLoading(true);
     try {
-      await api.post('/change-password', { current_password: currentPassword, new_password: newPassword });
+      // Changer son propre mot de passe invalide cote serveur tous les
+      // tokens deja emis pour ce compte (voir /change-password) : on
+      // enregistre donc immediatement le nouveau token renvoye, sinon
+      // l'utilisateur serait deconnecte de force par sa propre action.
+      const { token } = await api.post<{ message: string; token: string }>(
+        '/change-password',
+        { current_password: currentPassword, new_password: newPassword }
+      );
+      setToken(token);
       setSuccess(true);
       setTimeout(onClose, 1500);
     } catch (err) {

@@ -1,9 +1,25 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
+
+// Limite l'enregistrement de scores par UTILISATEUR (pas juste par IP) :
+// sans ca, rien n'empechait un script d'appeler POST /scores en boucle avec
+// score = max_score pour gonfler total_points a l'infini et debloquer
+// instantanement toutes les cartes de collection. 60 parties / 10 min reste
+// largement suffisant pour un usage normal (parties de quelques secondes a
+// quelques minutes) tout en rendant le farming automatise peu rentable.
+const scoreLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.user?.id || req.ip,
+  message: { message: 'Trop de parties enregistrées en peu de temps. Réessaie dans quelques minutes.' },
+});
 
 // GET /scores — historique du joueur connecté
 router.get('/scores', requireAuth, async (req, res) => {
@@ -17,7 +33,7 @@ router.get('/scores', requireAuth, async (req, res) => {
 });
 
 // POST /scores — reproduit la logique de l'ancien hook useScore.ts, côté serveur
-router.post('/scores', requireAuth, async (req, res) => {
+router.post('/scores', requireAuth, scoreLimiter, async (req, res) => {
   const { game_slug, score, max_score, difficulty, time_spent } = req.body;
 
   if (!game_slug || score == null || !max_score || !difficulty || time_spent == null) {
@@ -36,6 +52,12 @@ router.post('/scores', requireAuth, async (req, res) => {
     !Number.isFinite(score) || !Number.isFinite(max_score)
   ) {
     return res.status(422).json({ message: 'score/max_score invalides.' });
+  }
+  // Un temps de jeu quasi nul (< 1s) est incompatible avec une vraie partie
+  // jouee humainement : signe fort d'un appel automatise/rejoue de l'API
+  // plutot que d'une partie reelle.
+  if (typeof time_spent !== 'number' || !Number.isFinite(time_spent) || time_spent < 1) {
+    return res.status(422).json({ message: 'time_spent invalide.' });
   }
 
   const [games] = await pool.query('SELECT id FROM games WHERE slug = ?', [game_slug]);
