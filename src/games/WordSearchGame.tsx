@@ -20,6 +20,14 @@ interface Cell {
   wordIndex: number | null;
 }
 
+// La grille n'est composee que de lettres non accentuees (A-Z) : un mot
+// contenant un accent (ex: "MALÉDICTION") ne pouvait donc jamais trouver
+// de case ou se caler correctement, et echouait silencieusement a se
+// placer tout en restant affiche dans la liste — impossible a trouver.
+function stripAccents(text: string): string {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 const DIRECTIONS = [
   [0, 1],
   [1, 0],
@@ -57,15 +65,22 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
 
   const gridSize = difficulty === 'easy' ? 8 : difficulty === 'medium' ? 10 : 12;
   const wordCount = difficulty === 'easy' ? 4 : difficulty === 'medium' ? 6 : 8;
-  const maxScore = wordCount;
+  // wordsToFind ne contient que les mots reellement places dans la grille
+  // (voir generateGrid) : s'appuyer dessus garantit un score coherent meme
+  // dans le rare cas ou un mot n'aurait pas pu etre case.
+  const maxScore = wordsToFind.length || wordCount;
 
   const generateGrid = useCallback(() => {
     if (words.length === 0) return;
 
     const selectedWords = shuffleArray(words)
-      .filter(w => w.word.length <= gridSize)
+      .map(w => stripAccents(w.word.toUpperCase()))
+      .filter(word => word.length <= gridSize)
       .slice(0, wordCount)
-      .map(w => w.word.toUpperCase());
+      // Les mots les plus longs sont places en premier, pendant que la
+      // grille est encore vide : ca reduit fortement le risque qu'un mot
+      // ne trouve jamais de place (et donc qu'il reste introuvable).
+      .sort((a, b) => b.length - a.length);
 
     const newGrid: Cell[][] = Array(gridSize).fill(null).map((_, row) =>
       Array(gridSize).fill(null).map((_, col) => ({
@@ -100,19 +115,24 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
       }
     }
 
-    selectedWords.forEach((word, wordIdx) => {
+    const placedWords: string[] = [];
+    selectedWords.forEach((word) => {
       let placed = false;
       let attempts = 0;
-      while (!placed && attempts < 100) {
+      while (!placed && attempts < 400) {
         const direction = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)];
         const startRow = Math.floor(Math.random() * gridSize);
         const startCol = Math.floor(Math.random() * gridSize);
         if (canPlaceWord(word, startRow, startCol, direction)) {
-          placeWord(word, startRow, startCol, direction, wordIdx);
+          placeWord(word, startRow, startCol, direction, placedWords.length);
           placed = true;
         }
         attempts++;
       }
+      // Un mot qui n'a pas pu etre case (grille trop pleine, mot trop long
+      // pour l'espace restant...) n'est jamais ajoute a la liste a trouver :
+      // impossible d'afficher un mot introuvable par definition.
+      if (placed) placedWords.push(word);
     });
 
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -125,7 +145,7 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
     }
 
     setGrid(newGrid);
-    setWordsToFind(selectedWords.map(word => ({ word, found: false })));
+    setWordsToFind(placedWords.map(word => ({ word, found: false })));
     setScore(0);
     setIsComplete(false);
     setSelectedCells([]);
@@ -215,7 +235,7 @@ export function WordSearchGame({ onBack, darkMode }: WordSearchGameProps) {
       const newScore = score + 1;
       setScore(newScore);
 
-      if (newScore === wordCount) {
+      if (newScore === maxScore) {
         setIsComplete(true);
         saveScore('word-search', newScore, maxScore, difficulty, Math.floor((Date.now() - startTime) / 1000));
       }
