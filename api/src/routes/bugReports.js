@@ -25,15 +25,26 @@ router.post('/bug-reports', requireAuth, reportLimiter, async (req, res) => {
   if (!description || !description.trim()) {
     return res.status(422).json({ message: 'La description du bug est obligatoire.' });
   }
+  if (description.trim().length > 3000) {
+    return res.status(422).json({ message: 'La description est trop longue (3000 caractères max).' });
+  }
   if (!screenshot_url) {
     return res.status(422).json({ message: 'Une capture d\'écran est obligatoire.' });
   }
+  // Verifie que c'est bien une image encodee en base64 (data URI), pas
+  // n'importe quel texte glisse dans ce champ.
+  if (!/^data:image\/(png|jpe?g|webp|gif);base64,/.test(screenshot_url)) {
+    return res.status(422).json({ message: 'Format de capture d\'écran invalide.' });
+  }
+  // page_url est juste informatif : on le tronque par securite plutot que
+  // de rejeter la requete pour un champ non-critique.
+  const safePageUrl = page_url ? String(page_url).slice(0, 500) : null;
 
   const id = uuidv4();
   await pool.query(
     `INSERT INTO bug_reports (id, user_id, description, screenshot_url, page_url)
      VALUES (?, ?, ?, ?, ?)`,
-    [id, req.user.id, description.trim(), screenshot_url, page_url || null]
+    [id, req.user.id, description.trim(), screenshot_url, safePageUrl]
   );
 
   res.status(201).json({ message: 'Signalement envoyé, merci !' });
