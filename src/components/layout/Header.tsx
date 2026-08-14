@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles } from 'lucide-react';
+import { User, LogOut, Trophy, Moon, Sun, Settings, Heart, Users, Sparkles, Bug } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useOnlineUsers } from '../../contexts/OnlineUsersContext';
 import { useCards } from '../../contexts/CardsContext';
 import { AuthModal } from '../auth/AuthModal';
 import { NotificationBell } from './NotificationBell';
+import { ReportBugModal } from './ReportBugModal';
 import { api } from '../../lib/api';
 
 interface HeaderProps {
@@ -23,6 +24,7 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
   const { hearts } = useCards();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showReportBug, setShowReportBug] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [prevOnlineCount, setPrevOnlineCount] = useState(0);
   const [showUserCounter, setShowUserCounter] = useState(false);
@@ -205,6 +207,16 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
                           Ma collection
                         </button>
                       )}
+                      <button
+                        onClick={() => {
+                          setShowReportBug(true);
+                          setShowMenu(false);
+                        }}
+                        className={`w-full flex items-center gap-2 px-4 py-2 ${darkMode ? 'text-parchment/80 hover:bg-ink/40' : 'text-ink/80 hover:bg-parchment-dim'} transition-colors`}
+                      >
+                        <Bug size={18} />
+                        Signaler un bug
+                      </button>
                       {profile?.is_admin && onOpenAdmin && (
                         <button
                           onClick={() => {
@@ -257,6 +269,9 @@ export function Header({ darkMode, onToggleDarkMode, onOpenAdmin, onOpenProfile,
       </header>
 
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      {showReportBug && (
+        <ReportBugModal darkMode={darkMode} onClose={() => setShowReportBug(false)} />
+      )}
     </>
   );
 }

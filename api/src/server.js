@@ -18,6 +18,7 @@ const donationSettingsRoutes = require('./routes/donationSettings');
 const smtpSettingsRoutes = require('./routes/smtpSettings');
 const notificationsRoutes = require('./routes/notifications');
 const cardsRoutes = require('./routes/cards');
+const bugReportsRoutes = require('./routes/bugReports');
 const adminRoutes = require('./routes/admin');
 const { migrate } = require('./db/migrate');
 const { seed } = require('./db/seed');
@@ -52,6 +53,7 @@ app.use('/api', donationSettingsRoutes);
 app.use('/api', smtpSettingsRoutes);
 app.use('/api', notificationsRoutes);
 app.use('/api', cardsRoutes);
+app.use('/api', bugReportsRoutes);
 app.use('/api', adminRoutes);
 
 // --- Frontend React (build Vite) servi depuis le même site, comme l'app "salon" ---

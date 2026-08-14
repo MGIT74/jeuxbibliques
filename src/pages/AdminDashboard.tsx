@@ -5,13 +5,13 @@ import {
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
   Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
   ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon, Menu,
-  Sparkles, Heart
+  Sparkles, Heart, Bug
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
 import { sanitizeIframeHtml } from '../lib/sanitize';
-import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game, Card } from '../types/database';
+import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game, Card, BugReport } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
 
 interface AdminDashboardProps {
@@ -19,7 +19,7 @@ interface AdminDashboardProps {
   darkMode: boolean;
 }
 
-type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email' | 'notifications' | 'cards';
+type Tab = 'overview' | 'users' | 'scores' | 'games' | 'marketing' | 'banners' | 'integration' | 'email' | 'notifications' | 'cards' | 'reports';
 
 export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
   const { profile } = useAuth();
@@ -48,6 +48,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
     { id: 'email', label: 'Email (SMTP)', icon: <Send size={18} /> },
     { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
     { id: 'cards', label: 'Cartes', icon: <Sparkles size={18} /> },
+    { id: 'reports', label: 'Signalement', icon: <Bug size={18} /> },
   ];
 
   function selectTab(id: Tab) {
@@ -161,6 +162,7 @@ export function AdminDashboard({ onBack, darkMode }: AdminDashboardProps) {
         {activeTab === 'email' && <EmailSettingsTab darkMode={darkMode} />}
         {activeTab === 'notifications' && <NotificationsTab darkMode={darkMode} />}
         {activeTab === 'cards' && <CardsAdminTab darkMode={darkMode} />}
+        {activeTab === 'reports' && <BugReportsTab darkMode={darkMode} />}
       </div>
     </div>
   );
@@ -2768,6 +2770,151 @@ function CardsAdminTab({ darkMode }: { darkMode: boolean }) {
           ))
         )}
       </div>
+    </div>
+  );
+}
+
+const STATUS_CONFIG: Record<BugReport['status'], { label: string; color: string; bg: string }> = {
+  new: { label: 'Nouveau', color: 'text-coral', bg: 'bg-coral/10' },
+  in_progress: { label: 'En cours', color: 'text-gold-dim', bg: 'bg-gold/10' },
+  resolved: { label: 'Résolu', color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+};
+
+function BugReportsTab({ darkMode }: { darkMode: boolean }) {
+  const [reports, setReports] = useState<BugReport[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  async function fetchReports() {
+    try {
+      const data = await api.get<BugReport[]>('/admin/bug-reports');
+      setReports(data);
+    } catch (err) {
+      console.error('Error fetching bug reports:', err);
+    }
+    setLoading(false);
+  }
+
+  async function updateStatus(id: string, status: BugReport['status']) {
+    try {
+      await api.put(`/admin/bug-reports/${id}/status`, { status });
+      setReports((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
+    } catch (err) {
+      alert('Erreur : impossible de changer le statut.');
+    }
+  }
+
+  async function handleDelete(id: string) {
+    if (!confirm('Supprimer ce signalement ?')) return;
+    try {
+      await api.delete(`/admin/bug-reports/${id}`);
+      setReports((prev) => prev.filter((r) => r.id !== id));
+    } catch (err) {
+      alert('Erreur lors de la suppression.');
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="animate-spin text-gold" size={48} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+          Signalements de bugs ({reports.length})
+        </h3>
+        <p className={`text-sm ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+          Envoyés par les joueurs depuis le menu "Signaler un bug"
+        </p>
+      </div>
+
+      {reports.length === 0 ? (
+        <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-8 text-center shadow-lg`}>
+          <Bug className={`mx-auto mb-4 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`} size={48} />
+          <p className={darkMode ? 'text-parchment/60' : 'text-ink/50'}>Aucun signalement pour le moment</p>
+        </div>
+      ) : (
+        <div className="grid gap-4">
+          {reports.map((report) => {
+            const status = STATUS_CONFIG[report.status];
+            return (
+              <div key={report.id} className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-5 shadow-lg flex flex-col sm:flex-row gap-4`}>
+                <img
+                  src={report.screenshot_url}
+                  alt="Capture d'écran du bug"
+                  onClick={() => setZoomedImage(report.screenshot_url)}
+                  className="w-full sm:w-40 h-32 object-cover rounded-xl border border-gold/15 cursor-zoom-in flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 flex-wrap mb-2">
+                    <div>
+                      <p className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                        {report.username || 'Utilisateur inconnu'}
+                      </p>
+                      {report.email && (
+                        <p className={`text-xs ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>{report.email}</p>
+                      )}
+                    </div>
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${status.bg} ${status.color}`}>
+                      {status.label}
+                    </span>
+                  </div>
+                  <p className={`text-sm mb-3 whitespace-pre-wrap ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>
+                    {report.description}
+                  </p>
+                  {report.page_url && (
+                    <p className={`text-xs mb-3 truncate ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
+                      Page : {report.page_url}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <p className={`text-xs ${darkMode ? 'text-parchment/40' : 'text-ink/40'}`}>
+                      {new Date(report.created_at).toLocaleDateString('fr-FR', {
+                        day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit',
+                      })}
+                    </p>
+                    <div className="flex-1" />
+                    <select
+                      value={report.status}
+                      onChange={(e) => updateStatus(report.id, e.target.value as BugReport['status'])}
+                      className={`text-xs px-2 py-1.5 rounded-lg border ${darkMode ? 'bg-ink border-gold/20 text-parchment' : 'bg-white border-gold-dim/25 text-ink'}`}
+                    >
+                      <option value="new">Nouveau</option>
+                      <option value="in_progress">En cours</option>
+                      <option value="resolved">Résolu</option>
+                    </select>
+                    <button
+                      onClick={() => handleDelete(report.id)}
+                      className="p-1.5 rounded-lg hover:bg-coral/10 text-coral transition-colors"
+                      title="Supprimer"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {zoomedImage && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4 cursor-zoom-out"
+          onClick={() => setZoomedImage(null)}
+        >
+          <img src={zoomedImage} alt="Capture d'écran agrandie" className="max-w-full max-h-full rounded-xl" />
+        </div>
+      )}
     </div>
   );
 }

@@ -411,6 +411,18 @@ export interface Card {
   seen?: boolean;
 }
 
+export interface BugReport {
+  id: string;
+  user_id: string | null;
+  username?: string;
+  email?: string;
+  description: string;
+  screenshot_url: string;
+  page_url: string | null;
+  status: 'new' | 'in_progress' | 'resolved';
+  created_at: string;
+}
+
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface AdminStats {
