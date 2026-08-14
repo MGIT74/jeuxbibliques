@@ -12,6 +12,15 @@ interface GuessWordGameProps {
   darkMode: boolean;
 }
 
+// Le clavier ne propose que des lettres A-Z sans accent : un mot comme
+// "ESPÉRANCE" ne pourrait jamais être complété si on le comparait tel
+// quel. On retire les accents uniquement pour la mecanique de jeu
+// (comparaison de lettres, cases a remplir) — le mot final revele a la fin
+// garde lui son orthographe complete, a but educatif.
+function stripAccents(text: string): string {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
   const [difficulty, setDifficulty] = useState<Difficulty>('easy');
   const { words, loading } = useBibleWords(difficulty);
@@ -54,7 +63,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
 
   const isWordGuessed = useCallback(() => {
     if (!currentWord) return false;
-    const word = currentWord.word.toUpperCase();
+    const word = stripAccents(currentWord.word.toUpperCase());
     return [...word].every(letter =>
       letter === ' ' || letter === '-' || letter === '\'' || guessedLetters.has(letter)
     );
@@ -104,7 +113,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
     newGuessed.add(letter);
     setGuessedLetters(newGuessed);
 
-    if (currentWord && !currentWord.word.toUpperCase().includes(letter)) {
+    if (currentWord && !stripAccents(currentWord.word.toUpperCase()).includes(letter)) {
       setWrongGuesses(w => w + 1);
     }
   }
@@ -114,7 +123,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
   async function handleUseHeart() {
     if (!currentWord || usingHeart || hearts <= 0 || wordComplete || wrongGuesses >= maxWrongGuesses) return;
 
-    const word = currentWord.word.toUpperCase();
+    const word = stripAccents(currentWord.word.toUpperCase());
     const remaining = [...new Set([...word])].filter(
       (l) => l !== ' ' && l !== '-' && l !== '\'' && !guessedLetters.has(l)
     );
@@ -131,7 +140,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
 
   function renderWord() {
     if (!currentWord) return null;
-    const word = currentWord.word.toUpperCase();
+    const word = stripAccents(currentWord.word.toUpperCase());
 
     return (
       <div className="flex flex-wrap justify-center gap-2">
@@ -317,7 +326,7 @@ export function GuessWordGame({ onBack, darkMode }: GuessWordGameProps) {
         <div className="flex flex-wrap justify-center gap-2">
           {alphabet.map((letter) => {
             const isGuessed = guessedLetters.has(letter);
-            const isInWord = currentWord.word.toUpperCase().includes(letter);
+            const isInWord = stripAccents(currentWord.word.toUpperCase()).includes(letter);
             const isDisabled = isGuessed || wrongGuesses >= maxWrongGuesses || wordComplete;
 
             return (
