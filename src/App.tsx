@@ -137,6 +137,7 @@ function AppContent() {
   const [showProfileSettings, setShowProfileSettings] = useState(false);
   const [showBlockedBanner, setShowBlockedBanner] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
 
   useEffect(() => {
     if (isBlocked) {
@@ -172,7 +173,7 @@ function AppContent() {
         <Route path="/" element={<HomePage onSelectGame={handleSelectGame} darkMode={darkMode} />} />
         <Route
           path="/jeux/:slug"
-          element={<GamePage darkMode={darkMode} onRequestAuth={() => setShowAuthModal(true)} />}
+          element={<GamePage darkMode={darkMode} onRequestAuth={() => { setAuthModalMode('signup'); setShowAuthModal(true); }} />}
         />
         <Route path="/admin" element={<AdminDashboard onBack={() => navigate('/')} darkMode={darkMode} />} />
         <Route path="/don" element={<DonationPage onBack={() => navigate('/')} darkMode={darkMode} />} />
@@ -192,6 +193,7 @@ function AppContent() {
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
+        initialMode={authModalMode}
       />
       {showBlockedBanner && (
         <BlockedBanner

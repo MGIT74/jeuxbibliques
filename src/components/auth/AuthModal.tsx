@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Mail, Lock, User, Loader2, Church, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../lib/api';
@@ -6,10 +6,11 @@ import { api } from '../../lib/api';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  initialMode?: 'signin' | 'signup';
 }
 
-export function AuthModal({ isOpen, onClose }: AuthModalProps) {
-  const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>('signin');
+export function AuthModal({ isOpen, onClose, initialMode = 'signin' }: AuthModalProps) {
+  const [mode, setMode] = useState<'signin' | 'signup' | 'forgot'>(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -18,6 +19,12 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [forgotMessage, setForgotMessage] = useState<string | null>(null);
   const { signIn, signUp } = useAuth();
+
+  // A chaque reouverture de la modale, on repart sur le mode demande
+  // (ex : "signup" quand on vient du popup d'incitation a creer un compte).
+  useEffect(() => {
+    if (isOpen) setMode(initialMode);
+  }, [isOpen, initialMode]);
 
   if (!isOpen) return null;
 
