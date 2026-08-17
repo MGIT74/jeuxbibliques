@@ -215,3 +215,11 @@ CREATE TABLE IF NOT EXISTS bug_reports (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_bug_reports_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS banner_clicks (
+  id CHAR(36) PRIMARY KEY,
+  banner_id CHAR(36) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_banner_clicks_banner FOREIGN KEY (banner_id) REFERENCES banners(id) ON DELETE CASCADE,
+  INDEX idx_banner_clicks_banner_date (banner_id, created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

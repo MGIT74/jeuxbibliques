@@ -944,6 +944,24 @@ function MarketingTab({ darkMode }: { darkMode: boolean }) {
   );
 }
 
+// Formate la periode affichee au-dessus du mini-graphique de clics
+// (ex: "17 août 2026", "17 - 23 août 2026", "Août 2026").
+function formatStatsRange(period: string, startIso: string, endIso: string): string {
+  const start = new Date(startIso);
+  const endInclusive = new Date(new Date(endIso).getTime() - 1);
+
+  if (period === 'day') {
+    return start.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  if (period === 'month') {
+    return start.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  }
+  const sameMonth = start.getUTCMonth() === endInclusive.getUTCMonth();
+  const startLabel = start.toLocaleDateString('fr-FR', { day: 'numeric', month: sameMonth ? undefined : 'long' });
+  const endLabel = endInclusive.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  return `${startLabel} - ${endLabel}`;
+}
+
 function BannersTab({ darkMode }: { darkMode: boolean }) {
   const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(true);
@@ -954,6 +972,16 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
   const [uploadMethod, setUploadMethod] = useState<'file' | 'url'>('file');
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list');
   const [calendarMonth, setCalendarMonth] = useState(new Date());
+
+  // Mini-statistiques : clics par banniere sur une periode navigable
+  // (jour / semaine / mois, avant/apres).
+  const [statsPeriod, setStatsPeriod] = useState<'day' | 'week' | 'month'>('week');
+  const [statsOffset, setStatsOffset] = useState(0);
+  const [statsData, setStatsData] = useState<{
+    period: string; start: string; end: string; total: number;
+    banners: { id: string; title: string; clicks: number }[];
+  } | null>(null);
+  const [statsLoading, setStatsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -969,6 +997,34 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
   useEffect(() => {
     fetchBanners();
   }, []);
+
+  useEffect(() => {
+    fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statsPeriod, statsOffset]);
+
+  function computeStatsDate(): string {
+    // Calcule la date de reference (au format YYYY-MM-DD) a partir du
+    // decalage (0 = periode courante, -1 = precedente, +1 = suivante...).
+    const today = new Date();
+    const d = new Date(today);
+    if (statsPeriod === 'day') d.setDate(d.getDate() + statsOffset);
+    if (statsPeriod === 'week') d.setDate(d.getDate() + statsOffset * 7);
+    if (statsPeriod === 'month') d.setMonth(d.getMonth() + statsOffset);
+    return d.toISOString().slice(0, 10);
+  }
+
+  async function fetchStats() {
+    setStatsLoading(true);
+    try {
+      const date = computeStatsDate();
+      const data = await api.get<typeof statsData>(`/admin/banners/stats?period=${statsPeriod}&date=${date}`);
+      setStatsData(data);
+    } catch (err) {
+      console.error('Error fetching banner stats:', err);
+    }
+    setStatsLoading(false);
+  }
 
   async function fetchBanners() {
     try {
@@ -1186,10 +1242,6 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
           <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
             Bannieres publicitaires ({banners.length})
           </h3>
-          <p className={`flex items-center gap-1.5 text-sm mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
-            <MousePointerClick size={14} className="text-lapis" />
-            {banners.reduce((sum, b) => sum + (b.click_count ?? 0), 0)} clics au total sur toutes les bannières
-          </p>
         </div>
         <div className="flex items-center gap-3">
           <div className={`flex rounded-xl overflow-hidden ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
@@ -1227,6 +1279,102 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
             Ajouter
           </button>
         </div>
+      </div>
+
+      {/* Mini-statistiques de clics, navigables par jour / semaine / mois */}
+      <div className={`${darkMode ? 'bg-ink-light' : 'bg-white'} rounded-2xl p-5 shadow-lg`}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
+          <h4 className={`flex items-center gap-2 font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            <MousePointerClick size={18} className="text-lapis" />
+            Statistiques de clics
+          </h4>
+
+          <div className="flex items-center gap-2">
+            <div className={`flex rounded-xl overflow-hidden ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+              {(['day', 'week', 'month'] as const).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => { setStatsPeriod(p); setStatsOffset(0); }}
+                  className={`px-3 py-1.5 text-xs font-medium transition-colors ${
+                    statsPeriod === p
+                      ? 'bg-amber-500 text-white'
+                      : darkMode ? 'text-parchment/80 hover:bg-ink/60' : 'text-ink/70 hover:bg-parchment-dim/70'
+                  }`}
+                >
+                  {p === 'day' ? 'Jour' : p === 'week' ? 'Semaine' : 'Mois'}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={() => setStatsOffset((o) => o - 1)}
+            className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors`}
+            title="Période précédente"
+          >
+            <ChevronLeft size={18} />
+          </button>
+
+          <div className="text-center">
+            <p className={`text-sm font-medium ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+              {statsData && formatStatsRange(statsData.period, statsData.start, statsData.end)}
+            </p>
+            {statsOffset !== 0 && (
+              <button
+                onClick={() => setStatsOffset(0)}
+                className="text-xs text-lapis hover:underline"
+              >
+                Revenir à aujourd'hui
+              </button>
+            )}
+          </div>
+
+          <button
+            onClick={() => setStatsOffset((o) => o + 1)}
+            disabled={statsOffset >= 0}
+            className={`p-2 rounded-lg ${darkMode ? 'hover:bg-ink text-parchment/70' : 'hover:bg-parchment-dim text-ink/60'} transition-colors disabled:opacity-30 disabled:cursor-not-allowed`}
+            title="Période suivante"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+
+        {statsLoading ? (
+          <div className="flex justify-center py-6">
+            <Loader2 className="animate-spin text-gold" size={28} />
+          </div>
+        ) : !statsData || statsData.banners.length === 0 ? (
+          <p className={`text-sm text-center py-4 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>
+            Aucune bannière pour le moment
+          </p>
+        ) : (
+          <div className="space-y-2.5">
+            {statsData.banners.map((b) => {
+              const maxClicks = Math.max(...statsData.banners.map((x) => x.clicks), 1);
+              return (
+                <div key={b.id}>
+                  <div className="flex items-center justify-between text-sm mb-1">
+                    <span className={`truncate ${darkMode ? 'text-parchment/80' : 'text-ink/80'}`}>{b.title}</span>
+                    <span className={`font-semibold flex-shrink-0 ml-2 ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+                      {b.clicks}
+                    </span>
+                  </div>
+                  <div className={`h-2 rounded-full overflow-hidden ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-lapis to-lapis-bright transition-all"
+                      style={{ width: `${(b.clicks / maxClicks) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+            <p className={`text-xs text-right pt-1 ${darkMode ? 'text-parchment/50' : 'text-ink/40'}`}>
+              Total : {statsData.total} clic{statsData.total > 1 ? 's' : ''} sur la période
+            </p>
+          </div>
+        )}
       </div>
 
       {showForm && (
@@ -1650,17 +1798,17 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                     <h4 className={`font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
                       {banner.title}
                     </h4>
-                    {banner.link_url && (
-                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                    <div className="flex items-center gap-2 mt-1 flex-wrap">
+                      {banner.link_url && (
                         <p className={`text-xs truncate ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                           {banner.link_url}
                         </p>
-                        <span className="flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-lapis/10 text-lapis font-medium whitespace-nowrap">
-                          <MousePointerClick size={12} />
-                          {banner.click_count ?? 0} clic{(banner.click_count ?? 0) > 1 ? 's' : ''}
-                        </span>
-                      </div>
-                    )}
+                      )}
+                      <span className="flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-lapis/10 text-lapis font-medium whitespace-nowrap">
+                        <MousePointerClick size={12} />
+                        {banner.click_count ?? 0} clic{(banner.click_count ?? 0) > 1 ? 's' : ''}
+                      </span>
+                    </div>
                     {(banner.start_date || banner.end_date) && (
                       <div className={`flex items-center gap-1 mt-2 text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
                         <Calendar size={12} />

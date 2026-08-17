@@ -75,8 +75,14 @@ router.get('/banners', async (req, res) => {
 // visiteur non connecte : les pubs sont visibles de tous). Volontairement
 // silencieux sur les erreurs : un souci de tracking ne doit jamais bloquer
 // la redirection vers le lien de la bannière cote utilisateur.
+// Le compteur cumule (rapide a lire), et chaque clic est aussi loggue avec
+// son horodatage dans banner_clicks (pour le filtre jour/semaine/mois).
 router.post('/banners/:id/click', clickLimiter, async (req, res) => {
   await pool.query('UPDATE banners SET click_count = click_count + 1 WHERE id = ?', [req.params.id]);
+  await pool.query(
+    'INSERT INTO banner_clicks (id, banner_id, created_at) VALUES (?, ?, UTC_TIMESTAMP())',
+    [uuidv4(), req.params.id]
+  );
   res.json({ message: 'ok' });
 });
 
@@ -88,6 +94,51 @@ router.post('/banners/:id/click', clickLimiter, async (req, res) => {
 router.get('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   const [rows] = await pool.query('SELECT * FROM banners ORDER BY display_order ASC');
   res.json(rows.map(r => withIsoDates(fixBannerUrl(r, req))));
+});
+
+// GET /admin/banners/stats?period=day|week|month&date=YYYY-MM-DD
+// Renvoie le nombre de clics par banniere sur la periode demandee, ainsi
+// que les bornes de la periode (pour afficher "1 - 7 aout 2026" etc. et
+// permettre au front de naviguer avant/apres).
+router.get('/admin/banners/stats', requireAuth, requireAdmin, async (req, res) => {
+  const period = ['day', 'week', 'month'].includes(req.query.period) ? req.query.period : 'day';
+  const refDate = req.query.date ? new Date(`${req.query.date}T00:00:00Z`) : new Date();
+  if (isNaN(refDate.getTime())) {
+    return res.status(422).json({ message: 'Date invalide.' });
+  }
+
+  let start, end;
+  if (period === 'day') {
+    start = new Date(Date.UTC(refDate.getUTCFullYear(), refDate.getUTCMonth(), refDate.getUTCDate()));
+    end = new Date(start.getTime() + 24 * 60 * 60 * 1000);
+  } else if (period === 'week') {
+    // Semaine du lundi au dimanche.
+    const day = refDate.getUTCDay(); // 0 = dimanche
+    const diffToMonday = day === 0 ? -6 : 1 - day;
+    start = new Date(Date.UTC(refDate.getUTCFullYear(), refDate.getUTCMonth(), refDate.getUTCDate() + diffToMonday));
+    end = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
+  } else {
+    start = new Date(Date.UTC(refDate.getUTCFullYear(), refDate.getUTCMonth(), 1));
+    end = new Date(Date.UTC(refDate.getUTCFullYear(), refDate.getUTCMonth() + 1, 1));
+  }
+
+  const [rows] = await pool.query(
+    `SELECT b.id, b.title, COUNT(bc.id) as clicks
+     FROM banners b
+     LEFT JOIN banner_clicks bc ON bc.banner_id = b.id AND bc.created_at >= ? AND bc.created_at < ?
+     GROUP BY b.id
+     ORDER BY clicks DESC, b.display_order ASC`,
+    [start, end]
+  );
+
+  const banners = rows.map((r) => ({ id: r.id, title: r.title, clicks: Number(r.clicks) }));
+  res.json({
+    period,
+    start: start.toISOString(),
+    end: end.toISOString(),
+    total: banners.reduce((sum, b) => sum + b.clicks, 0),
+    banners,
+  });
 });
 
 router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
