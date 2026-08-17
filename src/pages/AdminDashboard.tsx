@@ -5,7 +5,7 @@ import {
   Bell, Megaphone, Check, X, Ban, Unlock, Trash2, AlertTriangle,
   Image, Plus, Pencil, Eye, EyeOff, GripVertical, Code, Send,
   ChevronLeft, ChevronRight, List, CalendarDays, Info, CheckCircle2, AlertOctagon, Menu,
-  Sparkles, Heart, Bug
+  Sparkles, Heart, Bug, MousePointerClick
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
@@ -1182,9 +1182,15 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
-          Bannieres publicitaires ({banners.length})
-        </h3>
+        <div>
+          <h3 className={`text-lg font-semibold ${darkMode ? 'text-parchment' : 'text-ink'}`}>
+            Bannieres publicitaires ({banners.length})
+          </h3>
+          <p className={`flex items-center gap-1.5 text-sm mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+            <MousePointerClick size={14} className="text-lapis" />
+            {banners.reduce((sum, b) => sum + (b.click_count ?? 0), 0)} clics au total sur toutes les bannières
+          </p>
+        </div>
         <div className="flex items-center gap-3">
           <div className={`flex rounded-xl overflow-hidden ${darkMode ? 'bg-ink' : 'bg-parchment-dim'}`}>
             <button
@@ -1645,9 +1651,15 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
                       {banner.title}
                     </h4>
                     {banner.link_url && (
-                      <p className={`text-xs truncate mt-1 ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
-                        {banner.link_url}
-                      </p>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        <p className={`text-xs truncate ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>
+                          {banner.link_url}
+                        </p>
+                        <span className="flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-lapis/10 text-lapis font-medium whitespace-nowrap">
+                          <MousePointerClick size={12} />
+                          {banner.click_count ?? 0} clic{(banner.click_count ?? 0) > 1 ? 's' : ''}
+                        </span>
+                      </div>
                     )}
                     {(banner.start_date || banner.end_date) && (
                       <div className={`flex items-center gap-1 mt-2 text-xs ${darkMode ? 'text-parchment/60' : 'text-ink/50'}`}>

@@ -302,6 +302,7 @@ export interface Database {
           duration_seconds: number;
           start_date: string | null;
           end_date: string | null;
+          click_count: number;
           created_by: string | null;
           created_at: string;
           updated_at: string;

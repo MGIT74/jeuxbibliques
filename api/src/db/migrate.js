@@ -57,6 +57,9 @@ async function migrate() {
   // plus de dossier /uploads, plus de dependance a multer).
   await ensureColumnType(connection, 'banners', 'image_url', 'longtext', 'LONGTEXT NOT NULL');
 
+  // banners.click_count : statistiques de clics sur chaque bannière publicitaire.
+  await ensureColumn(connection, 'banners', 'click_count', "INT UNSIGNED NOT NULL DEFAULT 0");
+
   // games.cover_image_url : image de couverture carree (design "vrai jeu"),
   // uploadee par l'admin en base64, en complement de l'icone existante.
   await ensureColumn(connection, 'games', 'cover_image_url', 'LONGTEXT NULL');

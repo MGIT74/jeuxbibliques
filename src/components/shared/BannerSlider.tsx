@@ -30,6 +30,12 @@ export function BannerSlider() {
     setImageErrors((prev) => new Set(prev).add(bannerId));
   };
 
+  // Envoie le comptage de clic sans jamais bloquer/retarder l'ouverture du
+  // lien (fire-and-forget) : une pub reste cliquable meme si le tracking echoue.
+  function handleBannerClick(bannerId: string) {
+    api.post(`/banners/${bannerId}/click`).catch(() => {});
+  }
+
   const validBanners = banners.filter((banner) => !imageErrors.has(banner.id));
 
   const extendedBanners = validBanners.length > 0
@@ -89,6 +95,7 @@ export function BannerSlider() {
                   href={banner.link_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => handleBannerClick(banner.id)}
                   className="block w-full h-full"
                 >
                   <img

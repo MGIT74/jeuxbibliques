@@ -1,11 +1,21 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const rateLimit = require('express-rate-limit');
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../db/pool');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
+
+// Limite raisonnable pour eviter qu'un script ne vienne gonfler
+// artificiellement les statistiques de clics.
+const clickLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Anciennes bannieres uploadees sur disque (avant simplification) : encore
 // servies depuis /uploads pour ne pas casser les liens existants.
@@ -59,6 +69,15 @@ router.get('/banners', async (req, res) => {
      ORDER BY display_order ASC`
   );
   res.json(rows.map(r => withIsoDates(fixBannerUrl(r, req))));
+});
+
+// POST /banners/:id/click — comptabilise un clic (public, meme pour un
+// visiteur non connecte : les pubs sont visibles de tous). Volontairement
+// silencieux sur les erreurs : un souci de tracking ne doit jamais bloquer
+// la redirection vers le lien de la bannière cote utilisateur.
+router.post('/banners/:id/click', clickLimiter, async (req, res) => {
+  await pool.query('UPDATE banners SET click_count = click_count + 1 WHERE id = ?', [req.params.id]);
+  res.json({ message: 'ok' });
 });
 
 // --- Admin ---
