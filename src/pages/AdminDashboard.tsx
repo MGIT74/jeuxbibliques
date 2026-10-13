@@ -10,6 +10,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import { useAdminStats, useAdminUsers, useAdminScores, useGameStats, useMarketingUsers } from '../hooks/useAdmin';
 import { api } from '../lib/api';
+import { compressImage } from '../lib/image';
 import { sanitizeIframeHtml } from '../lib/sanitize';
 import type { Banner, DonationSettings, SmtpSettings, AppNotification, Game, Card, BugReport } from '../types/database';
 import { LiveWorldMap } from '../components/admin/LiveWorldMap';
@@ -586,7 +587,7 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
     setUploading(false);
   }
 
-  function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -600,16 +601,13 @@ function GamesTab({ darkMode }: { darkMode: boolean }) {
     }
 
     setUploading(true);
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFormData((prev) => ({ ...prev, cover_image_url: reader.result as string }));
-      setUploading(false);
-    };
-    reader.onerror = () => {
+    try {
+      const compressed = await compressImage(file, { maxWidth: 900, maxHeight: 900, quality: 0.85 });
+      setFormData((prev) => ({ ...prev, cover_image_url: compressed }));
+    } catch {
       alert("Erreur lors de la lecture de l'image");
-      setUploading(false);
-    };
-    reader.readAsDataURL(file);
+    }
+    setUploading(false);
   }
 
   async function handleSave(id: string) {
@@ -1067,20 +1065,14 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
     }
 
     setUploading(true);
-
-    // Lecture directe en base64 dans le navigateur : aucun appel reseau
-    // separe, aucun fichier sur le serveur — le formulaire envoie
-    // directement l'image avec le reste des donnees a la sauvegarde.
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFormData((prev) => ({ ...prev, image_url: reader.result as string }));
-      setUploading(false);
-    };
-    reader.onerror = () => {
+    try {
+      // Redimensionne + compresse dans le navigateur : envoi quasi instantane.
+      const compressed = await compressImage(file, { maxWidth: 1600, maxHeight: 1600, quality: 0.82 });
+      setFormData((prev) => ({ ...prev, image_url: compressed }));
+    } catch {
       alert('Erreur lors de la lecture de l\'image');
-      setUploading(false);
-    };
-    reader.readAsDataURL(file);
+    }
+    setUploading(false);
   }
 
   function formatDateTimeLocal(isoString: string | null): string {
@@ -1129,12 +1121,13 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
 
     try {
       if (editingBanner) {
-        await api.put(`/admin/banners/${editingBanner.id}`, payload);
+        const saved = await api.put<Banner>(`/admin/banners/${editingBanner.id}`, payload);
+        setBanners((prev) => prev.map((b) => (b.id === saved.id ? saved : b)));
       } else {
         // created_by est déterminé côté serveur à partir de l'utilisateur authentifié
-        await api.post('/admin/banners', payload);
+        const saved = await api.post<Banner>('/admin/banners', payload);
+        setBanners((prev) => [...prev, saved].sort((a, b) => a.display_order - b.display_order));
       }
-      await fetchBanners();
       resetForm();
     } catch (err) {
       console.error('Error saving banner:', err);
@@ -1149,11 +1142,11 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
     setActionLoading(banner.id);
     try {
       await api.post(`/admin/banners/${banner.id}/toggle`);
+      setBanners((prev) => prev.map((b) => (b.id === banner.id ? { ...b, is_active: !b.is_active } : b)));
     } catch (err) {
       console.error('Error toggling banner:', err);
       alert('Erreur : impossible de changer le statut de la bannière.');
     }
-    await fetchBanners();
     setActionLoading(null);
   }
 
@@ -1163,10 +1156,10 @@ function BannersTab({ darkMode }: { darkMode: boolean }) {
     setActionLoading(id);
     try {
       await api.delete(`/admin/banners/${id}`);
+      setBanners((prev) => prev.filter((b) => b.id !== id));
     } catch (err) {
       console.error('Error deleting banner:', err);
     }
-    await fetchBanners();
     setActionLoading(null);
   }
 
@@ -2664,7 +2657,7 @@ function CardsAdminTab({ darkMode }: { darkMode: boolean }) {
     setShowForm(true);
   }
 
-  function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('image/')) {
@@ -2676,16 +2669,13 @@ function CardsAdminTab({ darkMode }: { darkMode: boolean }) {
       return;
     }
     setUploading(true);
-    const reader = new FileReader();
-    reader.onload = () => {
-      setFormData((prev) => ({ ...prev, image_url: reader.result as string }));
-      setUploading(false);
-    };
-    reader.onerror = () => {
+    try {
+      const compressed = await compressImage(file, { maxWidth: 800, maxHeight: 800, quality: 0.85 });
+      setFormData((prev) => ({ ...prev, image_url: compressed }));
+    } catch {
       alert("Erreur lors de la lecture de l'image");
-      setUploading(false);
-    };
-    reader.readAsDataURL(file);
+    }
+    setUploading(false);
   }
 
   async function handleSubmit(e: React.FormEvent) {
