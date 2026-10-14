@@ -44,6 +44,16 @@ function toIsoUtc(mysqlDateString) {
   return mysqlDateString.replace(' ', 'T') + 'Z';
 }
 
+// Le navigateur envoie des dates ISO ("2026-10-14T05:59:00.000Z") que MySQL
+// refuse dans une colonne DATETIME : on les convertit en "YYYY-MM-DD HH:MM:SS"
+// (UTC). Renvoie null si vide, undefined si la date est invalide.
+function toMysqlDate(value) {
+  if (!value) return null;
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return undefined;
+  return d.toISOString().slice(0, 19).replace('T', ' ');
+}
+
 function withIsoDates(banner) {
   if (!banner) return banner;
   return {
@@ -147,12 +157,17 @@ router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
   if (!title || !image_url) {
     return res.status(422).json({ message: 'title et image_url sont requis.' });
   }
+  const startMy = toMysqlDate(start_date);
+  const endMy = toMysqlDate(end_date);
+  if (startMy === undefined || endMy === undefined) {
+    return res.status(422).json({ message: 'Date de diffusion invalide.' });
+  }
 
   const id = uuidv4();
   await pool.query(
     `INSERT INTO banners (id, title, image_url, link_url, is_active, display_order, duration_seconds, start_date, end_date, created_by)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [id, title, image_url, link_url || null, !!is_active, display_order || 0, duration_seconds || 5, start_date || null, end_date || null, req.user.id]
+    [id, title, image_url, link_url || null, !!is_active, display_order || 0, duration_seconds || 5, startMy, endMy, req.user.id]
   );
 
   const [rows] = await pool.query('SELECT * FROM banners WHERE id = ?', [id]);
@@ -162,11 +177,20 @@ router.post('/admin/banners', requireAuth, requireAdmin, async (req, res) => {
 router.put('/admin/banners/:id', requireAuth, requireAdmin, async (req, res) => {
   const { title, image_url, link_url, is_active, display_order, duration_seconds, start_date, end_date } = req.body;
 
+  if (!title || !image_url) {
+    return res.status(422).json({ message: 'title et image_url sont requis.' });
+  }
+  const startMy = toMysqlDate(start_date);
+  const endMy = toMysqlDate(end_date);
+  if (startMy === undefined || endMy === undefined) {
+    return res.status(422).json({ message: 'Date de diffusion invalide.' });
+  }
+
   await pool.query(
     `UPDATE banners SET title = ?, image_url = ?, link_url = ?, is_active = ?, display_order = ?,
        duration_seconds = ?, start_date = ?, end_date = ?
      WHERE id = ?`,
-    [title, image_url, link_url || null, !!is_active, display_order || 0, duration_seconds || 5, start_date || null, end_date || null, req.params.id]
+    [title, image_url, link_url || null, !!is_active, display_order || 0, duration_seconds || 5, startMy, endMy, req.params.id]
   );
 
   const [rows] = await pool.query('SELECT * FROM banners WHERE id = ?', [req.params.id]);
