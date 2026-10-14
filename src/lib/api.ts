@@ -48,7 +48,21 @@ async function request<T>(
     ...(options.headers || {}),
   };
 
-  const response = await fetch(`${API_URL}${path}`, { ...options, headers });
+  // Delai maximum : une requete qui ne repond pas ne doit jamais laisser
+  // l'interface tourner dans le vide.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 45000);
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}${path}`, { ...options, headers, signal: controller.signal });
+  } catch (e) {
+    if ((e as Error).name === 'AbortError') {
+      throw new ApiError('Le serveur met trop de temps a repondre. Reessayez dans un instant.', 0);
+    }
+    throw new ApiError('Connexion au serveur impossible. Verifiez votre connexion.', 0);
+  } finally {
+    clearTimeout(timer);
+  }
 
   // 401 = token invalide/expiré : on nettoie côté client
   if (response.status === 401) {
@@ -60,7 +74,7 @@ async function request<T>(
 
   if (!response.ok) {
     throw new ApiError(
-      data?.message || 'Une erreur est survenue.',
+      data?.message || (response.status === 413 ? 'Image trop volumineuse.' : 'Une erreur est survenue.'),
       response.status,
       data?.errors
     );

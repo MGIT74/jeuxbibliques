@@ -3,6 +3,23 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+// Express 4 ne rattrape pas les erreurs des routes async : si la base
+// refuse une requete (image trop lourde, colonne trop petite...), la
+// promesse est rejetee, aucune reponse n'est envoyee et le navigateur
+// "mouline" indefiniment. On transmet donc l'erreur au gestionnaire
+// d'erreurs, qui repond proprement.
+const Layer = require('express/lib/router/layer');
+Layer.prototype.handle_request = function handleRequest(req, res, next) {
+  const fn = this.handle;
+  if (fn.length > 3) return next();
+  try {
+    const result = fn(req, res, next);
+    if (result && typeof result.catch === 'function') result.catch(next);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Filet de sécurité : en Express 4, une exception dans une route async
 // (ex. la base de données qui coupe un instant) ne serait pas rattrapée et
 // ferait planter tout le processus Node. On log au lieu de crasher.
